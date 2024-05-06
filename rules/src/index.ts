@@ -1,3 +1,3 @@
-export { GameTemplateRules } from './GameTemplateRules'
-export { GameTemplateOptionsSpec } from './GameTemplateOptions'
-export { GameTemplateSetup } from './GameTemplateSetup'
+export { ArcticRules } from './ArcticRules'
+export { ArcticOptionsSpec } from './ArcticOptions'
+export { ArcticSetup } from './ArcticSetup'
