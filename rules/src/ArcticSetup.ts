@@ -15,6 +15,7 @@ export class ArcticSetup extends MaterialGameSetup<PlayerColor, MaterialType, Lo
 
   setupMaterial(_options: ArcticOptions) {
     this.setupAnimalCardsDeck()
+    this.setupReserve()
   }
 
   setupAnimalCardsDeck() {
@@ -22,6 +23,14 @@ export class ArcticSetup extends MaterialGameSetup<PlayerColor, MaterialType, Lo
       ({ id: animalCard, location: { type: LocationType.AnimalCardsDeck } })
     ))
     this.material(MaterialType.AnimalCard).shuffle()
+  }
+
+  setupReserve() {
+    this.material(MaterialType.AnimalCard)
+      .location(LocationType.AnimalCardsDeck)
+      .sort(item => -item.location.x!)
+      .limit(5 * (this.game.players.length - 1))
+      .moveItems({ type: LocationType.Reserve })
   }
 
   start() {

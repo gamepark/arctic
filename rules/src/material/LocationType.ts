@@ -1,4 +1,5 @@
 export enum LocationType {
   TableCenter = 1,
-  AnimalCardsDeck
+  AnimalCardsDeck,
+  Reserve
 }

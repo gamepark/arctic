@@ -17,7 +17,8 @@ export class ArcticRules extends MaterialRules<PlayerColor, MaterialType, Locati
 
   locationsStrategies = {
     [MaterialType.AnimalCard]: {
-      [LocationType.AnimalCardsDeck]: new PositiveSequenceStrategy()
+      [LocationType.AnimalCardsDeck]: new PositiveSequenceStrategy(),
+      [LocationType.Reserve]: new PositiveSequenceStrategy()
     }
   }
 }
