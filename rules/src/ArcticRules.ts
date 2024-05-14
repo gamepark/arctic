@@ -1,4 +1,4 @@
-import { MaterialRules } from '@gamepark/rules-api'
+import { MaterialRules, PositiveSequenceStrategy } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
@@ -13,5 +13,11 @@ import { RuleId } from './rules/RuleId'
 export class ArcticRules extends MaterialRules<PlayerColor, MaterialType, LocationType> {
   rules = {
     [RuleId.PlayerTurn]: PlayerTurn
+  }
+
+  locationsStrategies = {
+    [MaterialType.AnimalCard]: {
+      [LocationType.AnimalCardsDeck]: new PositiveSequenceStrategy()
+    }
   }
 }

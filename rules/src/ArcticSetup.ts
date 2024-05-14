@@ -21,6 +21,7 @@ export class ArcticSetup extends MaterialGameSetup<PlayerColor, MaterialType, Lo
     this.material(MaterialType.AnimalCard).createItems(animalCards.map(animalCard =>
       ({ id: animalCard, location: { type: LocationType.AnimalCardsDeck } })
     ))
+    this.material(MaterialType.AnimalCard).shuffle()
   }
 
   start() {
