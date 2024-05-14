@@ -6,6 +6,7 @@ import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
 import { RuleId } from './rules/RuleId'
+import { animals } from './material/Animal'
 
 /**
  * This class creates a new Game based on the game options
@@ -16,6 +17,7 @@ export class ArcticSetup extends MaterialGameSetup<PlayerColor, MaterialType, Lo
   setupMaterial(_options: ArcticOptions) {
     this.setupAnimalCardsDeck()
     this.setupReserve()
+    this.setupPower()
   }
 
   setupAnimalCardsDeck() {
@@ -31,6 +33,12 @@ export class ArcticSetup extends MaterialGameSetup<PlayerColor, MaterialType, Lo
       .sort(item => -item.location.x!)
       .limit(5 * (this.game.players.length - 1))
       .moveItems({ type: LocationType.Reserve })
+  }
+
+  setupPower() {
+    this.material(MaterialType.PowerCard).createItems(animals.map(animal =>
+      ({ id:animal * 10 + Math.floor(Math.random()*2), location: {type: LocationType.Powers}})
+    ))
   }
 
   start() {
