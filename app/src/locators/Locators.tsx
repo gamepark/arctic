@@ -5,9 +5,11 @@ import { ItemLocator } from '@gamepark/react-game'
 import { animalCardsDeckLocator } from './AnimalCardsDeckLocator'
 import { reserveLocator } from './ReserveLocator'
 import { tableCenterLocator } from './TableCenterLocator'
+import { powerLocator } from './PowerLocator'
 
 export const Locators: Partial<Record<LocationType, ItemLocator<PlayerColor, MaterialType, LocationType>>> = {
   [LocationType.TableCenter]: tableCenterLocator,
   [LocationType.AnimalCardsDeck]: animalCardsDeckLocator,
-  [LocationType.Reserve]: reserveLocator
+  [LocationType.Reserve]: reserveLocator,
+  [LocationType.Powers]: powerLocator
 }

@@ -6,7 +6,7 @@ export enum PowerCard {
   Moose1 = 30,
   Moose2 = 31,
   Orca1 = 40,
-  Orca = 41,
+  Orca2 = 41,
   Puffin1 = 50,
   Puffin2 = 51,
   Walrus1 = 60,
