@@ -23,5 +23,8 @@
   "devDependencies": {
     "@gamepark/rules-api": "~6.18.0",
     "i18next": "^22.0.3"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
   }
 }

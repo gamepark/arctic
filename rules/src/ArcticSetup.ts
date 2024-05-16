@@ -7,6 +7,8 @@ import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
 import { RuleId } from './rules/RuleId'
 import { animals } from './material/Animal'
+import { totemTiles } from './material/TotemTile'
+import shuffle from 'lodash/shuffle'
 
 /**
  * This class creates a new Game based on the game options
@@ -18,6 +20,7 @@ export class ArcticSetup extends MaterialGameSetup<PlayerColor, MaterialType, Lo
     this.setupAnimalCardsDeck()
     this.setupReserve()
     this.setupPower()
+    this.setupTotem()
   }
 
   setupAnimalCardsDeck() {
@@ -39,6 +42,15 @@ export class ArcticSetup extends MaterialGameSetup<PlayerColor, MaterialType, Lo
     this.material(MaterialType.PowerCard).createItems(animals.map(animal =>
       ({ id:animal * 10 + Math.floor(Math.random()*2), location: {type: LocationType.Powers}})
     ))
+  }
+  
+  setupTotem() {
+    const shuffledTotemTiles = shuffle(totemTiles)
+    for (const player of this.game.players) {
+      this.material(MaterialType.TotemTile).createItem({
+        id: shuffledTotemTiles.pop(), location: { type: LocationType.PlayerTotem, player }
+      })
+    }
   }
 
   start() {

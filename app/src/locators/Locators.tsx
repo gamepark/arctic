@@ -6,10 +6,12 @@ import { animalCardsDeckLocator } from './AnimalCardsDeckLocator'
 import { reserveLocator } from './ReserveLocator'
 import { tableCenterLocator } from './TableCenterLocator'
 import { powerLocator } from './PowerLocator'
+import { totemTileLocator } from './PlayerTotem'
 
 export const Locators: Partial<Record<LocationType, ItemLocator<PlayerColor, MaterialType, LocationType>>> = {
   [LocationType.TableCenter]: tableCenterLocator,
   [LocationType.AnimalCardsDeck]: animalCardsDeckLocator,
   [LocationType.Reserve]: reserveLocator,
-  [LocationType.Powers]: powerLocator
+  [LocationType.Powers]: powerLocator,
+  [LocationType.PlayerTotem]: totemTileLocator,
 }

@@ -1,4 +1,4 @@
-import { MaterialRules, PositiveSequenceStrategy } from '@gamepark/rules-api'
+import { FillGapStrategy, MaterialRules, PositiveSequenceStrategy } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
@@ -19,6 +19,9 @@ export class ArcticRules extends MaterialRules<PlayerColor, MaterialType, Locati
     [MaterialType.AnimalCard]: {
       [LocationType.AnimalCardsDeck]: new PositiveSequenceStrategy(),
       [LocationType.Reserve]: new PositiveSequenceStrategy()
+    },
+    [MaterialType.PowerCard]: {
+      [LocationType.Powers]: new FillGapStrategy()
     }
   }
 }
