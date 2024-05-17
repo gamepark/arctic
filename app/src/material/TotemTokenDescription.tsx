@@ -9,8 +9,8 @@ import Puffin from '../images/tokens/PuffinToken.png'
 import Walrus from '../images/tokens/WalrusToken.png'
 
 class TotemTokenDescription extends TokenDescription {
-    width = 2
-    height = 2
+    width = 2.55
+    height = 2.75
 
     images = {
         [TotemToken.Bear]: Bear,

@@ -9,6 +9,7 @@ import { RuleId } from './rules/RuleId'
 import { animals } from './material/Animal'
 import { totemTiles } from './material/TotemTile'
 import shuffle from 'lodash/shuffle'
+import { Landscape } from './material/Landscape'
 
 /**
  * This class creates a new Game based on the game options
@@ -28,7 +29,7 @@ export class ArcticSetup extends MaterialGameSetup<PlayerColor, MaterialType, Lo
 
   setupTotemToken() {
     this.material(MaterialType.TotemToken).createItems(animals.map(totem =>
-      ({ id: totem, location: { type: LocationType.TotemTokens } })
+      ({ id: totem, location: { type: LocationType.LandscapeCard, id: Landscape.Landscape3 } })
     ))
   }
 

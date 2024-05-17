@@ -26,7 +26,7 @@ export class ArcticRules extends SecretMaterialRules<PlayerColor, MaterialType, 
       [LocationType.Powers]: new FillGapStrategy()
     },
     [MaterialType.TotemToken]: {
-      [LocationType.TotemTokens]: new FillGapStrategy()
+      [LocationType.LandscapeCard]: new FillGapStrategy()
     },
   }
 
