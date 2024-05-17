@@ -3,5 +3,6 @@ export enum LocationType {
   AnimalCardsDeck,
   Reserve,
   Powers,
-  PlayerTotem
+  PlayerTotem,
+  PlayerHand
 }

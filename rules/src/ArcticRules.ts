@@ -18,17 +18,20 @@ export class ArcticRules extends SecretMaterialRules<PlayerColor, MaterialType, 
   locationsStrategies = {
     [MaterialType.AnimalCard]: {
       [LocationType.AnimalCardsDeck]: new PositiveSequenceStrategy(),
-      [LocationType.Reserve]: new PositiveSequenceStrategy()
+      [LocationType.Reserve]: new PositiveSequenceStrategy(),
+      [LocationType.PlayerHand]: new PositiveSequenceStrategy()
     },
     [MaterialType.PowerCard]: {
       [LocationType.Powers]: new FillGapStrategy()
     }
+
   }
 
   hidingStrategies = {
     [MaterialType.AnimalCard]: {
       [LocationType.AnimalCardsDeck]: hideItemId,
-      [LocationType.Reserve]: hideItemId
+      [LocationType.Reserve]: hideItemId,
+      [LocationType.PlayerHand]: hideItemIdToOthers
     },
     [MaterialType.TotemTile] : {
       [LocationType.PlayerTotem]: hideItemIdToOthers

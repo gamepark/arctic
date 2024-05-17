@@ -21,6 +21,7 @@ export class ArcticSetup extends MaterialGameSetup<PlayerColor, MaterialType, Lo
     this.setupReserve()
     this.setupPower()
     this.setupTotem()
+    this.dealPlayerCards()
   }
 
   setupAnimalCardsDeck() {
@@ -50,6 +51,18 @@ export class ArcticSetup extends MaterialGameSetup<PlayerColor, MaterialType, Lo
       this.material(MaterialType.TotemTile).createItem({
         id: shuffledTotemTiles.pop(), location: { type: LocationType.PlayerTotem, player }
       })
+    }
+  }
+
+  dealPlayerCards(){
+    const deck = this.material(MaterialType.AnimalCard)
+      .location(LocationType.AnimalCardsDeck)
+      .deck()
+    
+    for (const player of this.game.players) {
+      deck.deal({
+        type: LocationType.PlayerHand, player
+      },3)
     }
   }
 
