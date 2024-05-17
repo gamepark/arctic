@@ -7,4 +7,5 @@ export enum LocationType {
   PlayerHand,
   LandscapeCard,
   River,
+  AnimalPile,
 }

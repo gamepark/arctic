@@ -10,6 +10,7 @@ import { totemTileLocator } from './PlayerTotemLocator'
 import { playerHandLocator } from './PlayerHandLocator'
 import { landscapeCardLocator } from './LandscapeCardLocator'
 import { riverLocator } from './RiverLocator'
+import { animalPileLocator } from './AnimalPileLocator'
 
 export const Locators: Partial<Record<LocationType, ItemLocator<PlayerColor, MaterialType, LocationType>>> = {
   [LocationType.TableCenter]: tableCenterLocator,
@@ -20,4 +21,5 @@ export const Locators: Partial<Record<LocationType, ItemLocator<PlayerColor, Mat
   [LocationType.PlayerHand]: playerHandLocator,
   [LocationType.LandscapeCard]: landscapeCardLocator,
   [LocationType.River]: riverLocator,
+  [LocationType.AnimalPile]: animalPileLocator,
 }
