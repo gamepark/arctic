@@ -8,6 +8,7 @@ import { tableCenterLocator } from './TableCenterLocator'
 import { powerLocator } from './PowerLocator'
 import { totemTileLocator } from './PlayerTotemLocator'
 import { playerHandLocator } from './PlayerHandLocator'
+import { totemTokensLocator } from './TotemTokensLocator'
 
 export const Locators: Partial<Record<LocationType, ItemLocator<PlayerColor, MaterialType, LocationType>>> = {
   [LocationType.TableCenter]: tableCenterLocator,
@@ -16,4 +17,5 @@ export const Locators: Partial<Record<LocationType, ItemLocator<PlayerColor, Mat
   [LocationType.Powers]: powerLocator,
   [LocationType.PlayerTotem]: totemTileLocator,
   [LocationType.PlayerHand]: playerHandLocator,
+  [LocationType.TotemTokens]: totemTokensLocator,
 }

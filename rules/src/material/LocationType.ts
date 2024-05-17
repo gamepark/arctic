@@ -4,5 +4,6 @@ export enum LocationType {
   Reserve,
   Powers,
   PlayerTotem,
-  PlayerHand
+  PlayerHand,
+  TotemTokens,
 }

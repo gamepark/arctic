@@ -23,8 +23,10 @@ export class ArcticRules extends SecretMaterialRules<PlayerColor, MaterialType, 
     },
     [MaterialType.PowerCard]: {
       [LocationType.Powers]: new FillGapStrategy()
-    }
-
+    },
+    [MaterialType.TotemToken]: {
+      [LocationType.TotemTokens]: new FillGapStrategy()
+    },
   }
 
   hidingStrategies = {
@@ -33,7 +35,7 @@ export class ArcticRules extends SecretMaterialRules<PlayerColor, MaterialType, 
       [LocationType.Reserve]: hideItemId,
       [LocationType.PlayerHand]: hideItemIdToOthers
     },
-    [MaterialType.TotemTile] : {
+    [MaterialType.TotemTile]: {
       [LocationType.PlayerTotem]: hideItemIdToOthers
     }
   }
