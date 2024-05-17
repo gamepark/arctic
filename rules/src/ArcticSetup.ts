@@ -83,6 +83,6 @@ export class ArcticSetup extends MaterialGameSetup<PlayerColor, MaterialType, Lo
   }
 
   start() {
-    this.startPlayerTurn(RuleId.PlayerTurn, this.game.players[0])
+    this.startPlayerTurn(RuleId.PlayAnimalCards, this.game.players[0])
   }
 }

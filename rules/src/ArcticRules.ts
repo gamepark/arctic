@@ -2,7 +2,7 @@ import { FillGapStrategy, PositiveSequenceStrategy, SecretMaterialRules, hideIte
 import { PlayerColor } from './PlayerColor'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
-import { PlayerTurn } from './rules/PlayerTurn'
+import { PlayAnimalCardsRule } from './rules/PlayAnimalCardsRule'
 import { RuleId } from './rules/RuleId'
 
 
@@ -12,7 +12,7 @@ import { RuleId } from './rules/RuleId'
  */
 export class ArcticRules extends SecretMaterialRules<PlayerColor, MaterialType, LocationType> {
   rules = {
-    [RuleId.PlayerTurn]: PlayerTurn
+    [RuleId.PlayAnimalCards]: PlayAnimalCardsRule
   }
 
   locationsStrategies = {
