@@ -23,6 +23,7 @@ export class ArcticSetup extends MaterialGameSetup<PlayerColor, MaterialType, Lo
     this.setupPower()
     this.setupTotem()
     this.dealPlayerCards()
+    this.setupRiver()
   }
 
   setupTotemToken() {
@@ -71,6 +72,13 @@ export class ArcticSetup extends MaterialGameSetup<PlayerColor, MaterialType, Lo
         type: LocationType.PlayerHand, player
       }, 3)
     }
+  }
+
+  setupRiver() {
+    this.material(MaterialType.AnimalCard)
+      .location(LocationType.AnimalCardsDeck)
+      .limit(6)
+      .moveItems({ type: LocationType.River })
   }
 
   start() {

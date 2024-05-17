@@ -19,7 +19,8 @@ export class ArcticRules extends SecretMaterialRules<PlayerColor, MaterialType, 
     [MaterialType.AnimalCard]: {
       [LocationType.AnimalCardsDeck]: new PositiveSequenceStrategy(),
       [LocationType.Reserve]: new PositiveSequenceStrategy(),
-      [LocationType.PlayerHand]: new PositiveSequenceStrategy()
+      [LocationType.PlayerHand]: new PositiveSequenceStrategy(),
+      [LocationType.River]: new FillGapStrategy(),
     },
     [MaterialType.PowerCard]: {
       [LocationType.Powers]: new FillGapStrategy()

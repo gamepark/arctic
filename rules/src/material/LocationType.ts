@@ -6,4 +6,5 @@ export enum LocationType {
   PlayerTotem,
   PlayerHand,
   TotemTokens,
+  River,
 }
