@@ -6,13 +6,13 @@ class PlayerHandLocator extends HandLocator {
         const index = getRelativePlayerIndex(context, location.player)
         switch (index) {
             case 0:
-                return { x: 0, y: 15, z: 0 }
+                return { x: 0, y: 22, z: 0 }
             case 1:
-                return { x: -15, y: -15, z: 0 }
+                return { x: -30, y: -25, z: 0 }
             case 2:
-                return { x: 0, y: -15, z: 0 }
+                return { x: 0, y: -25, z: 0 }
             default:
-                return { x: 15, y: -15, z: 0 }
+                return { x: 30, y: -25, z: 0 }
         }
     }
 
@@ -21,9 +21,18 @@ class PlayerHandLocator extends HandLocator {
             return 15
         }
         else {
-            return 2
+            return 1
         }
     }
+
+    getRotateZ(item: MaterialItem, context: ItemContext): number {
+        const index = getRelativePlayerIndex(context, item.location.player);
+        if (index === 1 || index === 2 || index === 3) {
+            return -super.getRotateZ(item, context);
+        }
+        return super.getRotateZ(item, context);
+    }
+
 }
 
 export const playerHandLocator = new PlayerHandLocator()

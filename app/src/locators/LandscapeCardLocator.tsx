@@ -10,11 +10,11 @@ class LandscapeCardLocator extends GridLocator {
         return location.id
     }
 
-    positionOnParent = { x: 20, y: 20 }
+    positionOnParent = { x: 25, y: 19 }
 
-    itemsGap = { x: totemTokenDescription.width + 1, y: 0 }
+    itemsGap = { x: totemTokenDescription.width + 0.7, y: 0 }
     itemsPerLine = 2
-    linesGap = { x: 0, y: totemTokenDescription.height + 1 }
+    linesGap = { x: 0, y: totemTokenDescription.height + 0.05 }
 }
 
 export const landscapeCardLocator = new LandscapeCardLocator()

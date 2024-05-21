@@ -6,13 +6,13 @@ class TotemTileLocator extends ItemLocator {
     const index = getRelativePlayerIndex(context, item.location.player)
     switch (index) {
       case 0:
-        return { x: 0, y: 15, z: 0 }
+        return { x: 30, y: 22, z: 0 }
       case 1:
-        return { x: -15, y: -15, z: 0 }
+        return { x: -40, y: -25, z: 0 }
       case 2:
-        return { x: 0, y: -15, z: 0 }
+        return { x: -10, y: -25, z: 0 }
       default:
-        return { x: 15, y: -15, z: 0 }
+        return { x: 20, y: -25, z: 0 }
     }
   }
 }
