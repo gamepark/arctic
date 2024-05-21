@@ -11,6 +11,7 @@ import { playerHandLocator } from './PlayerHandLocator'
 import { landscapeCardLocator } from './LandscapeCardLocator'
 import { riverLocator } from './RiverLocator'
 import { animalPileLocator } from './AnimalPileLocator'
+import { powerPileLocator } from './PowerPileLocator'
 
 export const Locators: Partial<Record<LocationType, ItemLocator<PlayerColor, MaterialType, LocationType>>> = {
   [LocationType.TableCenter]: tableCenterLocator,
@@ -22,4 +23,5 @@ export const Locators: Partial<Record<LocationType, ItemLocator<PlayerColor, Mat
   [LocationType.LandscapeCard]: landscapeCardLocator,
   [LocationType.River]: riverLocator,
   [LocationType.AnimalPile]: animalPileLocator,
+  [LocationType.PowerPile]: powerPileLocator,
 }

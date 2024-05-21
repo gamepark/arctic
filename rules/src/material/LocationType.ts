@@ -8,4 +8,5 @@ export enum LocationType {
   LandscapeCard,
   River,
   AnimalPile,
+  PowerPile,
 }

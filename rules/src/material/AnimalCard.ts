@@ -124,3 +124,7 @@ export enum AnimalCard {
 }
 
 export const animalCards = Object.values(AnimalCard).filter(isEnumValue)
+
+export function getAnimalFromCard(card: AnimalCard) {
+  return Math.floor(card / 100)
+}
