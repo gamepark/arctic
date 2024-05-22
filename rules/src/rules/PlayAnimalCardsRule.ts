@@ -14,9 +14,9 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
       this.memorize('Value deposit', 1, this.player);
     }
     else {
-      const pileCardsId = this.material(MaterialType.AnimalCard).location(LocationType.AnimalPile).getItems().map(item => item.id)
-      const valueDeposit = 6 - parseInt(pileCardsId[pileCardsId.length - 1].toString().slice(-1), 10)
-      this.memorize('Value deposit', valueDeposit, this.player)
+      const pileCardsId = this.material(MaterialType.AnimalCard).location(LocationType.AnimalPile).player(this.player).getItems().map(item => item.id)
+      const depositValue = 6 - parseInt(pileCardsId[pileCardsId.length - 1].toString().slice(-1), 10)
+      this.memorize('Value deposit', depositValue, this.player)
     }
 
     return []
