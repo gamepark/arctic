@@ -1,5 +1,6 @@
 import { HandLocator, ItemContext, getRelativePlayerIndex } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
+import { playerHandDescription } from './descriptions/PlayerHandDescription'
 
 class PlayerHandLocator extends HandLocator {
     getCoordinates(location: Location, context: ItemContext): Coordinates {
@@ -32,6 +33,8 @@ class PlayerHandLocator extends HandLocator {
         }
         return super.getRotateZ(item, context);
     }
+
+    locationDescription = playerHandDescription
 
 }
 

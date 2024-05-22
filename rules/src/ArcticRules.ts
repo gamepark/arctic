@@ -4,6 +4,7 @@ import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayAnimalCardsRule } from './rules/PlayAnimalCardsRule'
 import { RuleId } from './rules/RuleId'
+import { DrawAnimalCardsRule } from './rules/DrawAnimalCardsRule'
 
 
 /**
@@ -12,7 +13,8 @@ import { RuleId } from './rules/RuleId'
  */
 export class ArcticRules extends SecretMaterialRules<PlayerColor, MaterialType, LocationType> {
   rules = {
-    [RuleId.PlayAnimalCards]: PlayAnimalCardsRule
+    [RuleId.PlayAnimalCards]: PlayAnimalCardsRule,
+    [RuleId.DrawAnimalCards]: DrawAnimalCardsRule,
   }
 
   locationsStrategies = {
