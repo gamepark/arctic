@@ -34,7 +34,7 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
         const powerCard = this.material(MaterialType.PowerCard).id<PowerCard>(id => Math.floor(id / 10) === animalId)
         return [
           powerCard.moveItem({ type: LocationType.PowerPile, player: this.player }),
-          this.rules().startRule(RuleId.DrawAnimalCards)
+          this.rules().startRule(RuleId.MoveAnimalTokens)
         ]
       }
     }
