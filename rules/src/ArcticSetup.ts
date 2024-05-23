@@ -4,7 +4,7 @@ import { ArcticRules } from './ArcticRules'
 import { animalCards } from './material/AnimalCard'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
-import { PlayerColor } from './PlayerColor'
+import { PlayerId } from './PlayerId'
 import { RuleId } from './rules/RuleId'
 import { animals } from './material/Animal'
 import { totemTiles } from './material/TotemTile'
@@ -14,7 +14,7 @@ import { Landscape } from './material/Landscape'
 /**
  * This class creates a new Game based on the game options
  */
-export class ArcticSetup extends MaterialGameSetup<PlayerColor, MaterialType, LocationType, ArcticOptions> {
+export class ArcticSetup extends MaterialGameSetup<PlayerId, MaterialType, LocationType, ArcticOptions> {
   Rules = ArcticRules
 
   setupMaterial(_options: ArcticOptions) {

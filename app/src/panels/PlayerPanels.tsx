@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { PlayerColor } from '@gamepark/arctic/PlayerColor'
+import { PlayerId } from '@gamepark/arctic/PlayerId'
 import { PlayerPanel, usePlayers } from '@gamepark/react-game'
 import { FC } from 'react'
 import { createPortal } from 'react-dom'
@@ -15,7 +15,7 @@ export const PlayerPanels: FC<any> = () => {
   return createPortal(
     <>
       {players.map((player, index) =>
-        <PlayerPanel key={player.id} playerId={player.id} color={playerColorCode[player.id]} css={panelPosition(index)}/>
+        <PlayerPanel key={player.id} playerId={player.id} color={playerColorCode[player.id]} css={panelPosition(index)} />
       )}
     </>,
     root
@@ -29,9 +29,9 @@ const panelPosition = (index: number) => css`
   height: 14em;
 `
 
-export const playerColorCode: Record<PlayerColor, string> = {
-  [PlayerColor.Red]: 'red',
-  [PlayerColor.Blue]: 'blue',
-  [PlayerColor.Green]: 'green',
-  [PlayerColor.Yellow]: 'yellow'
+export const playerColorCode: Record<PlayerId, string> = {
+  1: 'red',
+  2: 'blue',
+  3: 'green',
+  4: 'yellow'
 }

@@ -1,5 +1,5 @@
 import { FillGapStrategy, PositiveSequenceStrategy, SecretMaterialRules, hideItemId, hideItemIdToOthers } from '@gamepark/rules-api'
-import { PlayerColor } from './PlayerColor'
+import { PlayerId } from './PlayerId'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayAnimalCardsRule } from './rules/PlayAnimalCardsRule'
@@ -11,7 +11,7 @@ import { DrawAnimalCardsRule } from './rules/DrawAnimalCardsRule'
  * This class implements the rules of the board game.
  * It must follow Game Park "Rules" API so that the Game Park server can enforce the rules.
  */
-export class ArcticRules extends SecretMaterialRules<PlayerColor, MaterialType, LocationType> {
+export class ArcticRules extends SecretMaterialRules<PlayerId, MaterialType, LocationType> {
   rules = {
     [RuleId.PlayAnimalCards]: PlayAnimalCardsRule,
     [RuleId.DrawAnimalCards]: DrawAnimalCardsRule,
