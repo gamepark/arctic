@@ -5,7 +5,7 @@ import { MaterialType } from './material/MaterialType'
 import { PlayAnimalCardsRule } from './rules/PlayAnimalCardsRule'
 import { RuleId } from './rules/RuleId'
 import { DrawAnimalCardsRule } from './rules/DrawAnimalCardsRule'
-import { MoveAnimalTokens } from './rules/MoveAnimalTokens'
+import { MoveAnimalTokensRule } from './rules/MoveAnimalTokensRule'
 
 
 /**
@@ -15,7 +15,7 @@ import { MoveAnimalTokens } from './rules/MoveAnimalTokens'
 export class ArcticRules extends SecretMaterialRules<PlayerId, MaterialType, LocationType> {
   rules = {
     [RuleId.PlayAnimalCards]: PlayAnimalCardsRule,
-    [RuleId.MoveAnimalTokens]: MoveAnimalTokens,
+    [RuleId.MoveAnimalTokens]: MoveAnimalTokensRule,
     [RuleId.DrawAnimalCards]: DrawAnimalCardsRule,
   }
 
