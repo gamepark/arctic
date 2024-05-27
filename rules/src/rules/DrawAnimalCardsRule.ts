@@ -7,7 +7,7 @@ import { RuleId } from './RuleId'
 export class DrawAnimalCardsRule extends PlayerTurnRule {
   onRuleStart() {
     const topPileCard = this.material(MaterialType.AnimalCard).location(LocationType.AnimalPile).player(this.player).sort(item => -item.location.x!).getItem()
-    const drawValue = topPileCard!.id % 10
+    const drawValue = (topPileCard!.id % 10) + 1
     this.memorize<number>(Memory.DrawValue, drawValue)
     return []
   }
