@@ -9,4 +9,5 @@ export enum LocationType {
   River,
   AnimalPile,
   PowerPile,
+  PenaltyZone,
 }
