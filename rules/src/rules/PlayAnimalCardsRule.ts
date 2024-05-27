@@ -13,7 +13,7 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
       this.memorize<number>(Memory.DepositValue, 1)
     }
     else {
-      const depositValue = 6 - ((topPileCard.id % 10) + 1)
+      const depositValue = 6 - ((topPileCard.id % 10))
       this.memorize<number>(Memory.DepositValue, depositValue)
     }
 
