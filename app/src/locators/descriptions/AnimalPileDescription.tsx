@@ -13,6 +13,7 @@ class AnimalPileDescription extends LocationDescription {
     coordinates = { x: 20, y: 20, z: 5 }
     width = animalCardDescription.width
     ratio = animalCardDescription.ratio
+    borderRadius = animalCardDescription.borderRadius
 }
 
 export const animalPileDescription = new AnimalPileDescription()

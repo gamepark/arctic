@@ -1,3 +1,4 @@
+import { css } from '@emotion/react'
 import { TotemToken } from '@gamepark/arctic/material/TotemToken'
 import { TokenDescription } from '@gamepark/react-game'
 
@@ -11,6 +12,12 @@ import Walrus from '../images/tokens/WalrusToken.png'
 class TotemTokenDescription extends TokenDescription {
     width = 2.55
     height = 2.75
+
+    getFrontExtraCss() {
+        return css`
+            border-radius: 80% / 60%;
+        `
+    }
 
     images = {
         [TotemToken.Bear]: Bear,

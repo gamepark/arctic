@@ -18,7 +18,7 @@ class PowerPileLocator extends PileLocator {
     }
 
     locationDescription = animalPileDescription
-    maxAngle = 5
+    maxAngle = 0
 
 }
 

@@ -15,34 +15,34 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
         const associatedAnimalIndex = landscapes.indexOf(this.material(MaterialType.TotemToken).id(this.remind<number>(Memory.AssociatedAnimalId)).getItem()?.location.id)
 
         if (mainAnimalIndex == 5 && associatedAnimalIndex == 5) {
-            return [...this.material(MaterialType.TotemToken).location(LocationType.LandscapeCard).id(this.remind<number>(Memory.MainAnimalId))
-                .moveItems({ type: LocationType.LandscapeCard, id: landscapes[mainAnimalIndex - 1] })]
+            return this.material(MaterialType.TotemToken).location(LocationType.LandscapeCard).id(this.remind<number>(Memory.MainAnimalId))
+                .moveItems({ type: LocationType.LandscapeCard, id: landscapes[mainAnimalIndex - 1] })
         }
 
         if (mainAnimalIndex == 0 && associatedAnimalIndex == 0) {
             this.memorize<number>("test", 10)
-            return [...this.material(MaterialType.TotemToken).location(LocationType.LandscapeCard).id(this.remind<number>(Memory.MainAnimalId))
-                .moveItems({ type: LocationType.LandscapeCard, id: landscapes[mainAnimalIndex + 1] })]
+            return this.material(MaterialType.TotemToken).location(LocationType.LandscapeCard).id(this.remind<number>(Memory.MainAnimalId))
+                .moveItems({ type: LocationType.LandscapeCard, id: landscapes[mainAnimalIndex + 1] })
         }
 
         if (mainAnimalIndex == 5) {
-            return [...this.material(MaterialType.TotemToken).location(LocationType.LandscapeCard).id(this.remind<number>(Memory.AssociatedAnimalId))
-                .moveItems({ type: LocationType.LandscapeCard, id: landscapes[associatedAnimalIndex + 1] })]
+            return this.material(MaterialType.TotemToken).location(LocationType.LandscapeCard).id(this.remind<number>(Memory.AssociatedAnimalId))
+                .moveItems({ type: LocationType.LandscapeCard, id: landscapes[associatedAnimalIndex + 1] })
         }
 
         if (mainAnimalIndex == 0) {
-            return [...this.material(MaterialType.TotemToken).location(LocationType.LandscapeCard).id(this.remind<number>(Memory.MainAnimalId))
-                .moveItems({ type: LocationType.LandscapeCard, id: landscapes[mainAnimalIndex + 1] })]
+            return this.material(MaterialType.TotemToken).location(LocationType.LandscapeCard).id(this.remind<number>(Memory.MainAnimalId))
+                .moveItems({ type: LocationType.LandscapeCard, id: landscapes[mainAnimalIndex + 1] })
         }
 
         if (associatedAnimalIndex == 5) {
-            return [...this.material(MaterialType.TotemToken).location(LocationType.LandscapeCard).id(this.remind<number>(Memory.MainAnimalId))
-                .moveItems({ type: LocationType.LandscapeCard, id: landscapes[mainAnimalIndex + 1] })]
+            return this.material(MaterialType.TotemToken).location(LocationType.LandscapeCard).id(this.remind<number>(Memory.MainAnimalId))
+                .moveItems({ type: LocationType.LandscapeCard, id: landscapes[mainAnimalIndex + 1] })
         }
 
         if (associatedAnimalIndex == 0) {
-            return [...this.material(MaterialType.TotemToken).location(LocationType.LandscapeCard).id(this.remind<number>(Memory.AssociatedAnimalId))
-                .moveItems({ type: LocationType.LandscapeCard, id: landscapes[associatedAnimalIndex + 1] })]
+            return this.material(MaterialType.TotemToken).location(LocationType.LandscapeCard).id(this.remind<number>(Memory.AssociatedAnimalId))
+                .moveItems({ type: LocationType.LandscapeCard, id: landscapes[associatedAnimalIndex + 1] })
         }
         return []
     }
@@ -51,7 +51,8 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
         const mainAnimalIndex = landscapes.indexOf(this.material(MaterialType.TotemToken).id(this.remind<number>(Memory.MainAnimalId)).getItem()?.location.id)
         const associatedAnimalIndex = landscapes.indexOf(this.material(MaterialType.TotemToken).id(this.remind<number>(Memory.AssociatedAnimalId)).getItem()?.location.id)
 
-        return [...this.material(MaterialType.TotemToken).location(LocationType.LandscapeCard).id(this.remind<number>(Memory.MainAnimalId))
+        return [
+          ...this.material(MaterialType.TotemToken).location(LocationType.LandscapeCard).id(this.remind<number>(Memory.MainAnimalId))
             .moveItems({ type: LocationType.LandscapeCard, id: landscapes[mainAnimalIndex + 1] }),
         ...this.material(MaterialType.TotemToken).location(LocationType.LandscapeCard).id(this.remind<number>(Memory.AssociatedAnimalId))
             .moveItems({ type: LocationType.LandscapeCard, id: landscapes[associatedAnimalIndex + 1] }),
