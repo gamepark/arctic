@@ -2,5 +2,7 @@ export enum Memory {
   DepositValue,
   DrawValue,
   TokensMoved,
-  WalrusUsed
+  WalrusUsed,
+  HasPlacedCard,
+  PuffinUsed
 }
