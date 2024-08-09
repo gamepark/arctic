@@ -12,7 +12,7 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
     const topPileCard = this.animalPile.sort(item => -item.location.x!).getItem()
 
 
-    if (!topPileCard) {
+    if (!topPileCard || topPileCard.location.rotation) {
       this.memorize(Memory.DepositValue, 1)
     } else {
       const depositValue = 6 - ((topPileCard.id % 10))

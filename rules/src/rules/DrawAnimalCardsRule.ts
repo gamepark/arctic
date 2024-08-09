@@ -20,8 +20,31 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
     if (this.canModifyValue) {
       moves.push(
         this.customMove(CustomMoveType.ModifyValue, 1),
-        this.customMove(CustomMoveType.ModifyValue, -1),
+        this.customMove(CustomMoveType.ModifyValue, -1)
       )
+    }
+
+    if (this.canGivePenaltyCard) {
+      const penalties = this.penalties
+      for (const player of this.game.players) {
+        if (player === this.player) continue
+        moves.push(
+          penalties.moveItem(({
+            type: LocationType.PenaltyZone,
+            player: player
+          }))
+        )
+      }
+    }
+
+    if (this.canDrawFromPenaltyCards) {
+      moves.push(
+        ...this.penalties.moveItems({
+          type: LocationType.PlayerHand,
+          player: this.player
+        })
+      )
+
     }
 
     moves.push(
@@ -45,27 +68,28 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
 
   onCustomMove(move: CustomMove) {
     if (!isCustomMoveType(CustomMoveType.ModifyValue)(move)) return []
-    this.memorize(Memory.DepositValue, (depositValue) => depositValue + move.data)
+    this.memorize(Memory.DepositValue, (depositValue: number) => depositValue + move.data)
     this.memorize(Memory.Modifier, move.data)
     if (!this.depositValue) return [this.rules().startPlayerTurn(RuleId.PlayAnimalCards, this.nextPlayer)]
     return []
   }
 
   afterItemMove(move: ItemMove): MaterialMove[] {
+    if (isMoveItemType(MaterialType.AnimalCard)(move) && move.location.type === LocationType.PenaltyZone) {
+      this.memorize(Memory.BearUsed, true)
+    }
+
     if (!isMoveItemType(MaterialType.AnimalCard)(move) || move.location.type !== LocationType.PlayerHand) return []
-    const isRefillDirectly = this.isRiverRefillDirectly
 
     this.memorize<number>(Memory.DrawValue, value => value - 1)
+    const missingCards = 6 - this.river.length
     if (this.remind<number>(Memory.DrawValue) == 0) {
-      const missingCards = 6 - this.material(MaterialType.AnimalCard).location(LocationType.River).length
       return [
         ...this.dealCards(missingCards),
         this.rules().startPlayerTurn(RuleId.PlayAnimalCards, this.nextPlayer)
       ]
-    } else {
-      if (isRefillDirectly) {
-        return this.dealCards()
-      }
+    } else if (this.isRiverRefillDirectly) {
+      return this.dealCards(missingCards)
     }
 
     return []
@@ -81,6 +105,14 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
     return this
       .material(MaterialType.AnimalCard)
       .location(LocationType.AnimalCardsDeck)
+      .deck()
+  }
+
+  get penalties() {
+    return this
+      .material(MaterialType.AnimalCard)
+      .location(LocationType.PenaltyZone)
+      .player(this.player)
       .deck()
   }
 
@@ -117,12 +149,31 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
       .id((id: PowerCard) => id === PowerCard.Moose2).length > 0
   }
 
+  get canGivePenaltyCard() {
+    if (!this.penalties.length || this.remind(Memory.BearUsed)) return false
+    return this
+      .material(MaterialType.PowerCard)
+      .location(LocationType.PowerPile)
+      .player(this.player)
+      .id((id: PowerCard) => id === PowerCard.Bear1).length > 0
+  }
+
+  get canDrawFromPenaltyCards() {
+    if (!this.penalties.length) return false
+    return this
+      .material(MaterialType.PowerCard)
+      .location(LocationType.PowerPile)
+      .player(this.player)
+      .id((id: PowerCard) => id === PowerCard.Bear2).length > 0
+  }
+
   get depositValue() {
     return this.remind(Memory.DepositValue)
   }
 
   onRuleEnd() {
     this.forget(Memory.Modifier)
+    this.forget(Memory.BearUsed)
     return []
   }
 }
