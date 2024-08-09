@@ -10,6 +10,7 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
   onRuleStart() {
     const { mainLandscapeIndex, mainToken, associatedLandscapeIndex, associatedToken } = this.animals
 
+    console.log(mainLandscapeIndex, associatedLandscapeIndex)
     if (mainLandscapeIndex === 5 && associatedLandscapeIndex === 5) {
       return [
         mainToken.moveItem({
@@ -59,7 +60,7 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
       return [
         associatedToken.moveItem({
           type: LocationType.LandscapeCard,
-          id: landscapes[mainLandscapeIndex + 1]
+          id: landscapes[associatedLandscapeIndex + 1]
         })
       ]
     }

@@ -14,6 +14,7 @@ class AnimalPileLocator extends PileLocator {
 
     locationDescription = new AnimalPileDescription()
     maxAngle = 5
+    limit = 100
 
 }
 

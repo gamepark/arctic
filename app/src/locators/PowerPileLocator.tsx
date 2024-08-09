@@ -7,8 +7,8 @@ import { getPlayerPosition } from './PlayerPosition'
 class PowerPileLocator extends GridLocator {
     // TODO: remove when itemGap is a function
     itemsGap = {}
-    linesGap = { y: animalCardDescription.width + 0.1}
-    itemsPerLine = 3
+    linesGap = { y: animalCardDescription.width + 0.2}
+    itemsPerLine = 2
     getPosition(item: MaterialItem, context: ItemContext): Coordinates {
         const { x, y, z } = this.getCoordinates(item, context)
         const index = this.getItemIndex(item, context)
@@ -25,20 +25,20 @@ class PowerPileLocator extends GridLocator {
 
     getItemPerLine(item: MaterialItem, context: ItemContext): number {
         if (!context.player || item.location.player !== context.player) return 6
-        return 3
+        return 2
     }
 
     getItemGap(item: MaterialItem, context: ItemContext): Partial<Coordinates> {
         if (!context.player || item.location.player !== context.player) return { x: powerCardDescription.height * 0.1, z: 0.5 }
-        return { x: powerCardDescription.height * 0.4, z: 0.05 }
+        return { x: powerCardDescription.height + 0.2, z: 0.05 }
     }
 
     getCoordinates(item: MaterialItem, context: ItemContext): Coordinates {
         const index = getRelativePlayerIndex(context, item.location.player)
         const position = getPlayerPosition(context.rules.players.length, index)
         if (context.player && index === 0) {
-            position.x -= animalCardDescription.width * 6.7
-            position.y -= animalCardDescription.width * 0.5
+            position.x += animalCardDescription.width * 4.5
+            position.y -= animalCardDescription.width * 0.8
         } else {
             position.y += animalCardDescription.height
         }

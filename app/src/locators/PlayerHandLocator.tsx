@@ -8,11 +8,7 @@ import orderBy from 'lodash/orderBy'
 
 class PlayerHandLocator extends HandLocator {
     getCoordinates(location: Location, context: ItemContext): Coordinates {
-        const coordinates = this.locationDescription.getHandCoordinates(location, context)
-        if (context.player && location.player === context.player) {
-            coordinates.y -= 1
-        }
-        return coordinates
+        return this.locationDescription.getHandCoordinates(location, context)
     }
 
     getMaxAngle(item: MaterialItem, context: ItemContext): number {

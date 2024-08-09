@@ -9,7 +9,7 @@ class PenaltyZoneLocator extends DeckLocator {
         const index = getRelativePlayerIndex(context, item.location.player)
         const position = getPlayerPosition(context.rules.players.length, index)
         if (context.player && index === 0) {
-            position.x -= animalCardDescription.width * 4.5
+            position.x -= animalCardDescription.width * 6.3
         } else {
             position.x -= animalCardDescription.width + 1.5
         }

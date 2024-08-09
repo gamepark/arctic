@@ -8,7 +8,7 @@ class TotemTileLocator extends ItemLocator {
     const index = getRelativePlayerIndex(context, item.location.player)
     const position = getPlayerPosition(context.rules.players.length, index)
     if (context.player && index === 0) {
-      position.x += animalCardDescription.width * 6
+      position.x += animalCardDescription.width * 3.2
     } else {
       position.x -= animalCardDescription.width * 2.2
     }

@@ -18,7 +18,7 @@ class PlayerHandDescription extends LocationDescription {
         const coordinates = this.getHandCoordinates(location, context)
         return {
             ...coordinates,
-            y: coordinates.y - 1,
+            y: coordinates.y,
             z: 5
         }
     }
@@ -27,7 +27,7 @@ class PlayerHandDescription extends LocationDescription {
         const index = getRelativePlayerIndex(context, location.player)
         const position = getPlayerPosition(context.rules.players.length, index)
         if (context.player && index === 0) {
-            position.x += 1.5
+            position.x -= 13
         }
 
         return position
@@ -35,9 +35,9 @@ class PlayerHandDescription extends LocationDescription {
 
     getSize(_location: Location<number, number>, context: MaterialContext<number, number, number>): ComponentSize {
         const { rules, player } = context
-        const count = rules.material(MaterialType.AnimalCard).location(LocationType.PlayerHand).player(player).length || 1
+        const count = rules.material(MaterialType.AnimalCard).location(LocationType.PlayerHand).player(player).length || 2
         return {
-            width: Math.min((animalCardDescription.width + 0.7) * count, (animalCardDescription.width + 0.2) * 6.6),
+            width: Math.max((animalCardDescription.width + 0.7) * count, (animalCardDescription.width + 0.2) * 6.6),
             height: (animalCardDescription.height) + (count * 0.5),
         }
     }

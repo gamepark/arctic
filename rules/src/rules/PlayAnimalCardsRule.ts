@@ -9,15 +9,7 @@ import { RuleId } from './RuleId'
 
 export class PlayAnimalCardsRule extends PlayerTurnRule {
   onRuleStart() {
-    const topPileCard = this.animalPile.sort(item => -item.location.x!).getItem()
-
-
-    if (!topPileCard || topPileCard.location.rotation) {
-      this.memorize(Memory.DepositValue, 1)
-    } else {
-      const depositValue = 6 - ((topPileCard.id % 10))
-      this.memorize(Memory.DepositValue, depositValue)
-    }
+    this.refreshDepositValue()
 
     return []
   }
@@ -92,33 +84,53 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
   }
 
   afterItemMove(move: ItemMove): MaterialMove[] {
-    if (!isMoveItemType(MaterialType.AnimalCard)(move) || move.location.type !== LocationType.AnimalPile) return []
-    this.memorize(Memory.DepositValue, value => value - 1)
-    const depositValue = this.depositValue
-    if (depositValue === 0) {
-      const animalId = Math.floor(this.material(MaterialType.AnimalCard).getItem(move.itemIndex)!.id / 100)
-      const powerCard = this.material(MaterialType.PowerCard).id<PowerCard>(id => Math.floor(id / 10) === animalId)
-      return [
-        powerCard.moveItem({ type: LocationType.PowerPile, player: this.player }),
-        this.rules().startRule(RuleId.MoveAnimalTokens)
-      ]
+    if (!isMoveItemType(MaterialType.AnimalCard)(move)) return []
+
+    if (move.location.type === LocationType.AnimalPile) {
+
+      this.memorize(Memory.DepositValue, value => value - 1)
+      const depositValue = this.depositValue
+      if (depositValue === 0) {
+        const animalId = Math.floor(this.material(MaterialType.AnimalCard).getItem(move.itemIndex)!.id / 100)
+        const powerCard = this.material(MaterialType.PowerCard).id<PowerCard>(id => Math.floor(id / 10) === animalId)
+        return [
+          powerCard.moveItem({ type: LocationType.PowerPile, player: this.player }),
+          this.rules().startRule(RuleId.MoveAnimalTokens)
+        ]
+      }
+      if (!this.hand.length) {
+        return [
+          ...this
+            .material(MaterialType.AnimalCard)
+            .location(LocationType.AnimalCardsDeck)
+            .deck()
+            .limit(depositValue)
+            .moveItems({
+              type: LocationType.PenaltyZone,
+              player: this.player
+            }),
+          this.rules().startRule(RuleId.MoveAnimalTokens)
+        ]
+      }
     }
-    if (!this.hand.length) {
-      return [
-        ...this
-          .material(MaterialType.AnimalCard)
-          .location(LocationType.AnimalCardsDeck)
-          .deck()
-          .limit(depositValue)
-          .moveItems({
-            type: LocationType.PenaltyZone,
-            player: this.player
-          }),
-        this.rules().startRule(RuleId.MoveAnimalTokens)
-      ]
+
+    if (move.location.type === LocationType.PlayerHand) {
+      this.refreshDepositValue()
     }
 
     return []
+  }
+
+  refreshDepositValue() {
+    const topPileCard = this.animalPile.sort(item => -item.location.x!).getItem()
+
+
+    if (!topPileCard || topPileCard.location.rotation) {
+      this.memorize(Memory.DepositValue, 1)
+    } else {
+      const depositValue = 6 - ((topPileCard.id % 10))
+      this.memorize(Memory.DepositValue, depositValue)
+    }
   }
 
   get canExchangeCardWithRiver() {
