@@ -1,8 +1,9 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { CustomMove, isCustomMoveType, isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import isEqual from 'lodash/isEqual'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PowerCard } from '../material/PowerCard'
+import { CustomMoveType } from './CustomMoveType'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
@@ -12,10 +13,10 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
 
 
     if (!topPileCard) {
-      this.memorize<number>(Memory.DepositValue, 1)
+      this.memorize(Memory.DepositValue, 1)
     } else {
       const depositValue = 6 - ((topPileCard.id % 10))
-      this.memorize<number>(Memory.DepositValue, depositValue)
+      this.memorize(Memory.DepositValue, depositValue)
     }
 
     return []
@@ -28,6 +29,13 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
     moves.push(
       ...hand.moveItems({ type: LocationType.AnimalPile, player: this.player })
     )
+
+    if (this.canModifyValue) {
+      moves.push(
+        this.customMove(CustomMoveType.ModifyValue, 1),
+        this.customMove(CustomMoveType.ModifyValue, -1),
+      )
+    }
 
     if (this.canGetVisibleCardInHand) {
       const topPileCard = this.animalPile.sort(item => -item.location.x!)
@@ -55,6 +63,14 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
     return moves
   }
 
+  onCustomMove(move: CustomMove) {
+    if (!isCustomMoveType(CustomMoveType.ModifyValue)(move)) return []
+    this.memorize(Memory.DepositValue, (depositValue: number) => depositValue + move.data)
+    this.memorize(Memory.Modifier, move.data)
+    if (!this.depositValue) return [this.rules().startRule(RuleId.MoveAnimalTokens)]
+    return []
+  }
+
   beforeItemMove(move: ItemMove): MaterialMove[] {
     if (!isMoveItemType(MaterialType.AnimalCard)(move)) return []
     const moves: MaterialMove[] = []
@@ -78,8 +94,8 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
   afterItemMove(move: ItemMove): MaterialMove[] {
     if (!isMoveItemType(MaterialType.AnimalCard)(move) || move.location.type !== LocationType.AnimalPile) return []
     this.memorize(Memory.DepositValue, value => value - 1)
-
-    if (this.remind(Memory.DepositValue) === 0) {
+    const depositValue = this.depositValue
+    if (depositValue === 0) {
       const animalId = Math.floor(this.material(MaterialType.AnimalCard).getItem(move.itemIndex)!.id / 100)
       const powerCard = this.material(MaterialType.PowerCard).id<PowerCard>(id => Math.floor(id / 10) === animalId)
       return [
@@ -93,7 +109,7 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
           .material(MaterialType.AnimalCard)
           .location(LocationType.AnimalCardsDeck)
           .deck()
-          .limit(this.remind(Memory.DepositValue))
+          .limit(depositValue)
           .moveItems({
             type: LocationType.PenaltyZone,
             player: this.player
@@ -111,7 +127,7 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
       .material(MaterialType.PowerCard)
       .location(LocationType.PowerPile)
       .player(this.player)
-      .id((id: PowerCard) => id === PowerCard.Puffin1)
+      .id((id: PowerCard) => id === PowerCard.Puffin1).length > 0
   }
 
   get canGetVisibleCardInHand() {
@@ -120,7 +136,7 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
       .material(MaterialType.PowerCard)
       .location(LocationType.PowerPile)
       .player(this.player)
-      .id((id: PowerCard) => id === PowerCard.Puffin2)
+      .id((id: PowerCard) => id === PowerCard.Puffin2).length > 0
   }
 
   get hasPlacedCard() {
@@ -141,15 +157,29 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
       .player(this.player)
   }
 
+  get depositValue() {
+    return this.remind(Memory.DepositValue)
+  }
+
   get river() {
     return this
       .material(MaterialType.AnimalCard)
       .location(LocationType.River)
   }
 
+  get canModifyValue() {
+    if (this.remind(Memory.Modifier) !== undefined) return false
+    return this
+      .material(MaterialType.PowerCard)
+      .location(LocationType.PowerPile)
+      .player(this.player)
+      .id((id: PowerCard) => id === PowerCard.Moose1).length > 0
+  }
+
   onRuleEnd() {
     this.forget(Memory.HasPlacedCard)
     this.forget(Memory.PuffinUsed)
+    this.forget(Memory.Modifier)
     return []
   }
 }

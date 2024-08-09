@@ -4,5 +4,6 @@ export enum Memory {
   TokensMoved,
   WalrusUsed,
   HasPlacedCard,
-  PuffinUsed
+  PuffinUsed,
+  Modifier
 }

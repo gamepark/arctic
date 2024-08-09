@@ -1,7 +1,8 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { CustomMove, isCustomMoveType, isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PowerCard } from '../material/PowerCard'
+import { CustomMoveType } from './CustomMoveType'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
@@ -15,6 +16,13 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
 
   getPlayerMoves() {
     const moves: MaterialMove[] = []
+
+    if (this.canModifyValue) {
+      moves.push(
+        this.customMove(CustomMoveType.ModifyValue, 1),
+        this.customMove(CustomMoveType.ModifyValue, -1),
+      )
+    }
 
     moves.push(
       ...this.river.moveItems({
@@ -33,6 +41,14 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
     }
 
     return moves
+  }
+
+  onCustomMove(move: CustomMove) {
+    if (!isCustomMoveType(CustomMoveType.ModifyValue)(move)) return []
+    this.memorize(Memory.DepositValue, (depositValue) => depositValue + move.data)
+    this.memorize(Memory.Modifier, move.data)
+    if (!this.depositValue) return [this.rules().startPlayerTurn(RuleId.PlayAnimalCards, this.nextPlayer)]
+    return []
   }
 
   afterItemMove(move: ItemMove): MaterialMove[] {
@@ -80,7 +96,7 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
       .material(MaterialType.PowerCard)
       .location(LocationType.PowerPile)
       .player(this.player)
-      .id((id: PowerCard) => id === PowerCard.Orca2)
+      .id((id: PowerCard) => id === PowerCard.Orca2).length > 0
   }
 
   get isRiverRefillDirectly() {
@@ -89,6 +105,24 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
       .material(MaterialType.PowerCard)
       .location(LocationType.PowerPile)
       .player(this.player)
-      .id((id: PowerCard) => id === PowerCard.Orca1)
+      .id((id: PowerCard) => id === PowerCard.Orca1).length > 0
+  }
+
+  get canModifyValue() {
+    if (this.remind(Memory.Modifier) !== undefined) return false
+    return this
+      .material(MaterialType.PowerCard)
+      .location(LocationType.PowerPile)
+      .player(this.player)
+      .id((id: PowerCard) => id === PowerCard.Moose2).length > 0
+  }
+
+  get depositValue() {
+    return this.remind(Memory.DepositValue)
+  }
+
+  onRuleEnd() {
+    this.forget(Memory.Modifier)
+    return []
   }
 }
