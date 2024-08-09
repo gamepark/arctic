@@ -1,24 +1,51 @@
-import { getRelativePlayerIndex, ItemContext, PileLocator } from '@gamepark/react-game'
+import { getRelativePlayerIndex, GridLocator, ItemContext } from '@gamepark/react-game'
 import { Coordinates, MaterialItem } from '@gamepark/rules-api'
-import { animalPileDescription } from './descriptions/AnimalPileDescription'
+import { animalCardDescription } from '../material/AnimalCardDescription'
+import { powerCardDescription } from '../material/PowerCardDescription'
+import { getPlayerPosition } from './PlayerPosition'
 
-class PowerPileLocator extends PileLocator {
-    getCoordinates(item: MaterialItem, context: ItemContext): Coordinates {
-        const index = getRelativePlayerIndex(context, item.location.player)
-        switch (index) {
-            case 0:
-                return { x: -20, y: 22, z: 0 }
-            case 1:
-                return { x: -25, y: -25, z: 0 }
-            case 2:
-                return { x: 10, y: -25, z: 0 }
-            default:
-                return { x: 25, y: -25, z: 0 }
+class PowerPileLocator extends GridLocator {
+    // TODO: remove when itemGap is a function
+    itemsGap = {}
+    linesGap = { y: animalCardDescription.width + 0.1}
+    itemsPerLine = 3
+    getPosition(item: MaterialItem, context: ItemContext): Coordinates {
+        const { x, y, z } = this.getCoordinates(item, context)
+        const index = this.getItemIndex(item, context)
+        const itemIndex = index % this.getItemPerLine(item, context)
+        const lineIndex = Math.floor(index / this.getItemPerLine(item, context))
+        const lineGap = this.getLinesGap(item, context)
+        const itemGap = this.getItemGap(item, context)
+        return {
+            x: x + itemIndex * (itemGap.x ?? 0) + lineIndex * (lineGap.x ?? 0),
+            y: y + itemIndex * (itemGap.y ?? 0) + lineIndex * (lineGap.y ?? 0),
+            z: z + itemIndex * (itemGap.z ?? 0) + lineIndex * (lineGap.z ?? 0)
         }
     }
 
-    locationDescription = animalPileDescription
-    maxAngle = 0
+    getItemPerLine(item: MaterialItem, context: ItemContext): number {
+        if (!context.player || item.location.player !== context.player) return 6
+        return 3
+    }
+
+    getItemGap(item: MaterialItem, context: ItemContext): Partial<Coordinates> {
+        if (!context.player || item.location.player !== context.player) return { x: powerCardDescription.height * 0.1, z: 0.5 }
+        return { x: powerCardDescription.height * 0.4, z: 0.05 }
+    }
+
+    getCoordinates(item: MaterialItem, context: ItemContext): Coordinates {
+        const index = getRelativePlayerIndex(context, item.location.player)
+        const position = getPlayerPosition(context.rules.players.length, index)
+        if (context.player && index === 0) {
+            position.x -= animalCardDescription.width * 6.7
+            position.y -= animalCardDescription.width * 0.5
+        } else {
+            position.y += animalCardDescription.height
+        }
+        return position
+    }
+
+    rotateZ = -90
 
 }
 

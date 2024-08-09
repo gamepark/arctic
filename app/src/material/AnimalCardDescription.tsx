@@ -1,5 +1,7 @@
 import { AnimalCard } from '@gamepark/arctic/material/AnimalCard'
-import { CardDescription } from '@gamepark/react-game'
+import { LocationType } from '@gamepark/arctic/material/LocationType'
+import { CardDescription, MaterialContext } from '@gamepark/react-game'
+import { MaterialItem } from '@gamepark/rules-api'
 import Back from '../images/cards/animals/AnimalBack1.jpg'
 
 // Import images for all animal cards
@@ -125,6 +127,8 @@ import WalrusPuffin4 from '../images/cards/animals/WalrusPuffin4.jpg'
 import WalrusPuffin5 from '../images/cards/animals/WalrusPuffin5.jpg'
 
 class AnimalCardDescription extends CardDescription {
+  height = 8.89
+  width = 6.35
   backImage = Back
 
   images = {
@@ -248,6 +252,10 @@ class AnimalCardDescription extends CardDescription {
     [AnimalCard.WalrusPuffin2]: WalrusPuffin2,
     [AnimalCard.WalrusPuffin4]: WalrusPuffin4,
     [AnimalCard.WalrusPuffin5]: WalrusPuffin5,
+  }
+
+  isFlipped(item: Partial<MaterialItem>, context: MaterialContext): boolean {
+    return super.isFlipped(item, context) || item.location?.type === LocationType.PenaltyZone
   }
 }
 

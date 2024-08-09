@@ -1,19 +1,36 @@
-import { LocationType } from "@gamepark/arctic/material/LocationType";
-import { LocationDescription, MaterialContext } from "@gamepark/react-game";
-import { Location } from "@gamepark/rules-api";
-import { animalCardDescription } from "../../material/AnimalCardDescription";
+import { LocationType } from '@gamepark/arctic/material/LocationType'
+import { getRelativePlayerIndex, LocationDescription, MaterialContext } from '@gamepark/react-game'
+import { Location } from '@gamepark/rules-api'
+import { animalCardDescription } from '../../material/AnimalCardDescription'
+import { getPlayerPosition } from '../PlayerPosition'
 
-class AnimalPileDescription extends LocationDescription {
+export class AnimalPileDescription extends LocationDescription {
     getLocations(context: MaterialContext): Location[] {
-        if (context.player === undefined)
-            return []
-        else
-            return [{ type: LocationType.AnimalPile, player: context.player }]
+        if (!context.player) return []
+        return [{ type: LocationType.AnimalPile, player: context.player }]
     }
-    coordinates = { x: 20, y: 20, z: 5 }
-    width = animalCardDescription.width
-    ratio = animalCardDescription.ratio
+
+    getCoordinates(location: Location, context: MaterialContext) {
+        const coordinates = this.getPileCoordinates(location, context)
+        return {
+            ...coordinates,
+            z: 5
+        }
+    }
+
+    getPileCoordinates(location: Location, context: MaterialContext) {
+        const index = getRelativePlayerIndex(context, location.player)
+        const position = getPlayerPosition(context.rules.players.length, index)
+        if (context.player && index === 0) {
+            position.x += animalCardDescription.width * 5
+        } else {
+            position.x += animalCardDescription.width + 1.5
+        }
+        return position
+    }
+
+
+    width = animalCardDescription.width * 1.2
+    height = animalCardDescription.height * 1.2
     borderRadius = animalCardDescription.borderRadius
 }
-
-export const animalPileDescription = new AnimalPileDescription()

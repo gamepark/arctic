@@ -25,9 +25,12 @@ export class ArcticRules extends SecretMaterialRules<PlayerId, MaterialType, Loc
       [LocationType.Reserve]: new PositiveSequenceStrategy(),
       [LocationType.PlayerHand]: new PositiveSequenceStrategy(),
       [LocationType.River]: new FillGapStrategy(),
+      [LocationType.AnimalPile]: new PositiveSequenceStrategy(),
+      [LocationType.PenaltyZone]: new PositiveSequenceStrategy()
     },
     [MaterialType.PowerCard]: {
-      [LocationType.Powers]: new FillGapStrategy()
+      [LocationType.Powers]: new FillGapStrategy(),
+      [LocationType.PowerPile]: new PositiveSequenceStrategy()
     },
     [MaterialType.TotemToken]: {
       [LocationType.LandscapeCard]: new FillGapStrategy()
@@ -38,10 +41,15 @@ export class ArcticRules extends SecretMaterialRules<PlayerId, MaterialType, Loc
     [MaterialType.AnimalCard]: {
       [LocationType.AnimalCardsDeck]: hideItemId,
       [LocationType.Reserve]: hideItemId,
-      [LocationType.PlayerHand]: hideItemIdToOthers
+      [LocationType.PlayerHand]: hideItemIdToOthers,
+      [LocationType.PenaltyZone]: hideItemIdToOthers
     },
     [MaterialType.TotemTile]: {
       [LocationType.PlayerTotem]: hideItemIdToOthers
     }
+  }
+
+  itemsCanMerge() {
+    return false
   }
 }

@@ -1,25 +1,20 @@
-import { getRelativePlayerIndex, ItemContext, PileLocator } from '@gamepark/react-game'
+import { DeckLocator, getRelativePlayerIndex, ItemContext } from '@gamepark/react-game'
 import { Coordinates, MaterialItem } from '@gamepark/rules-api'
-import { animalPileDescription } from './descriptions/AnimalPileDescription'
+import { animalCardDescription } from '../material/AnimalCardDescription'
+import { getPlayerPosition } from './PlayerPosition'
 
-class PenaltyZoneLocator extends PileLocator {
+class PenaltyZoneLocator extends DeckLocator {
+    delta = { x: 0.03, y: -0.03 }
     getCoordinates(item: MaterialItem, context: ItemContext): Coordinates {
         const index = getRelativePlayerIndex(context, item.location.player)
-        switch (index) {
-            case 0:
-                return { x: -30, y: 22, z: 0 }
-            case 1:
-                return { x: -25, y: -25, z: 0 }
-            case 2:
-                return { x: 10, y: -25, z: 0 }
-            default:
-                return { x: 25, y: -25, z: 0 }
+        const position = getPlayerPosition(context.rules.players.length, index)
+        if (context.player && index === 0) {
+            position.x -= animalCardDescription.width * 4.5
+        } else {
+            position.x -= animalCardDescription.width + 1.5
         }
+        return position
     }
-
-    locationDescription = animalPileDescription
-    maxAngle = 5
-
 }
 
 export const penaltyZoneLocator = new PenaltyZoneLocator()

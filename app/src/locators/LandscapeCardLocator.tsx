@@ -12,8 +12,9 @@ class LandscapeCardLocator extends GridLocator {
     }
 
     getPositionOnParent(location: Location) {
+
         if(location.x !== undefined) {
-            return { x: 25, y: 19 }
+            return { x: 25, y: 81 }
         } else {
             return { x: 50, y: 50 }
         }
@@ -21,7 +22,7 @@ class LandscapeCardLocator extends GridLocator {
 
     itemsGap = { x: totemTokenDescription.width + 0.7, y: 0 }
     itemsPerLine = 2
-    linesGap = { x: 0, y: totemTokenDescription.height + 0.05 }
+    linesGap = { x: 0, y: -(totemTokenDescription.height + 0.05) }
     locationDescription = new LandscapeCardDescription()
 }
 

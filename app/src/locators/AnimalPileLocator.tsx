@@ -1,23 +1,18 @@
-import { getRelativePlayerIndex, ItemContext, PileLocator } from '@gamepark/react-game'
+import { ItemContext, PileLocator } from '@gamepark/react-game'
 import { Coordinates, MaterialItem } from '@gamepark/rules-api'
-import { animalPileDescription } from './descriptions/AnimalPileDescription'
+import { AnimalPileDescription } from './descriptions/AnimalPileDescription'
 
 class AnimalPileLocator extends PileLocator {
     getCoordinates(item: MaterialItem, context: ItemContext): Coordinates {
-        const index = getRelativePlayerIndex(context, item.location.player)
-        switch (index) {
-            case 0:
-                return { x: 20, y: 22, z: 0 }
-            case 1:
-                return { x: -15, y: -25, z: 0 }
-            case 2:
-                return { x: 0, y: -25, z: 0 }
-            default:
-                return { x: 15, y: -25, z: 0 }
+        const { material, type } = context
+        const coordinates = this.locationDescription.getPileCoordinates(item.location, context)
+        return {
+            ...coordinates,
+            z: material[type]!.getThickness(item, context) * (item.location.x! + 1)
         }
     }
 
-    locationDescription = animalPileDescription
+    locationDescription = new AnimalPileDescription()
     maxAngle = 5
 
 }

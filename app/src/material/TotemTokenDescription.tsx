@@ -16,6 +16,7 @@ class TotemTokenDescription extends TokenDescription {
     getFrontExtraCss() {
         return css`
             border-radius: 80% / 60%;
+            filter: drop-shadow(0 0 0.05em black) drop-shadow(0 0 0.05em black);
         `
     }
 
