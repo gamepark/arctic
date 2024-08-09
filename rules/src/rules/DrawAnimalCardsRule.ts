@@ -1,6 +1,7 @@
 import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
+import { PowerCard } from '../material/PowerCard'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
@@ -13,22 +14,81 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
   }
 
   getPlayerMoves() {
-    return this.material(MaterialType.AnimalCard).location(LocationType.River)
-      .moveItems({ type: LocationType.PlayerHand, player: this.player })
+    const moves: MaterialMove[] = []
+
+    moves.push(
+      ...this.river.moveItems({
+        type: LocationType.PlayerHand,
+        player: this.player
+      })
+    )
+
+    if (this.canTakeCardsOnDeck) {
+      moves.push(
+        ...this.deck.moveItems({
+          type: LocationType.PlayerHand,
+          player: this.player
+        })
+      )
+    }
+
+    return moves
   }
 
   afterItemMove(move: ItemMove): MaterialMove[] {
-    if (isMoveItemType(MaterialType.AnimalCard)(move) && move.location.type === LocationType.PlayerHand) {
-      this.memorize<number>(Memory.DrawValue, value => value - 1)
-      if (this.remind<number>(Memory.DrawValue) == 0) {
-        const missingCards = 6 - this.material(MaterialType.AnimalCard).location(LocationType.River).length
+    if (!isMoveItemType(MaterialType.AnimalCard)(move) || move.location.type !== LocationType.PlayerHand) return []
+    const isRefillDirectly = this.isRiverRefillDirectly
 
-        return [
-          ...this.material(MaterialType.AnimalCard).location(LocationType.AnimalCardsDeck).deck().deal({ type: LocationType.River }, missingCards),
-          this.rules().startPlayerTurn(RuleId.PlayAnimalCards, this.nextPlayer)
-        ]
+    this.memorize<number>(Memory.DrawValue, value => value - 1)
+    if (this.remind<number>(Memory.DrawValue) == 0) {
+      const missingCards = 6 - this.material(MaterialType.AnimalCard).location(LocationType.River).length
+      return [
+        ...this.dealCards(missingCards),
+        this.rules().startPlayerTurn(RuleId.PlayAnimalCards, this.nextPlayer)
+      ]
+    } else {
+      if (isRefillDirectly) {
+        return this.dealCards()
       }
     }
+
     return []
+  }
+
+  dealCards(count: number = 1): MaterialMove[] {
+    return this
+      .deck
+      .deal({ type: LocationType.River }, count)
+  }
+
+  get deck() {
+    return this
+      .material(MaterialType.AnimalCard)
+      .location(LocationType.AnimalCardsDeck)
+      .deck()
+  }
+
+  get river() {
+    return this
+      .material(MaterialType.AnimalCard)
+      .location(LocationType.River)
+  }
+
+  get canTakeCardsOnDeck() {
+    if (!this.deck.length) return false
+    return this
+      .material(MaterialType.PowerCard)
+      .location(LocationType.PowerPile)
+      .player(this.player)
+      .id((id: PowerCard) => id === PowerCard.Orca2)
+  }
+
+  get isRiverRefillDirectly() {
+    if (!this.deck.length) return false
+    return this
+      .material(MaterialType.PowerCard)
+      .location(LocationType.PowerPile)
+      .player(this.player)
+      .id((id: PowerCard) => id === PowerCard.Orca1)
   }
 }
