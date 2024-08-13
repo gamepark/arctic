@@ -3,6 +3,7 @@ import { PlayerId } from './PlayerId'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayAnimalCardsRule } from './rules/PlayAnimalCardsRule'
+import { PuffinRule } from './rules/PuffinRule'
 import { RuleId } from './rules/RuleId'
 import { DrawAnimalCardsRule } from './rules/DrawAnimalCardsRule'
 import { MoveAnimalTokensRule } from './rules/MoveAnimalTokensRule'
@@ -17,6 +18,7 @@ export class ArcticRules extends SecretMaterialRules<PlayerId, MaterialType, Loc
     [RuleId.PlayAnimalCards]: PlayAnimalCardsRule,
     [RuleId.MoveAnimalTokens]: MoveAnimalTokensRule,
     [RuleId.DrawAnimalCards]: DrawAnimalCardsRule,
+    [RuleId.Puffin]: PuffinRule
   }
 
   locationsStrategies = {

@@ -3,6 +3,7 @@ import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PowerCard } from '../material/PowerCard'
 import { CustomMoveType } from './CustomMoveType'
+import { PlayerState } from './PlayerState'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
@@ -70,7 +71,7 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
     if (!isCustomMoveType(CustomMoveType.ModifyValue)(move)) return []
     this.memorize(Memory.DepositValue, (depositValue: number) => depositValue + move.data)
     this.memorize(Memory.Modifier, move.data)
-    if (!this.depositValue) return [this.rules().startPlayerTurn(RuleId.PlayAnimalCards, this.nextPlayer)]
+    if (!this.depositValue) return [this.goToNextPlayer()]
     return []
   }
 
@@ -86,13 +87,19 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
     if (this.remind<number>(Memory.DrawValue) == 0) {
       return [
         ...this.dealCards(missingCards),
-        this.rules().startPlayerTurn(RuleId.PlayAnimalCards, this.nextPlayer)
+        this.goToNextPlayer()
       ]
     } else if (this.isRiverRefillDirectly) {
       return this.dealCards(missingCards)
     }
 
     return []
+  }
+
+  goToNextPlayer() {
+    const nextPlayer = this.nextPlayer
+    const effectHelper = new PlayerState(this.game, nextPlayer)
+    return this.startPlayerTurn(effectHelper.hasPuffin? RuleId.Puffin: RuleId.PlayAnimalCards, this.nextPlayer)
   }
 
   dealCards(count: number = 1): MaterialMove[] {

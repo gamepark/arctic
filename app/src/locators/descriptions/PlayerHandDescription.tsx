@@ -38,7 +38,7 @@ class PlayerHandDescription extends LocationDescription {
         const count = rules.material(MaterialType.AnimalCard).location(LocationType.PlayerHand).player(player).length || 2
         return {
             width: Math.max((animalCardDescription.width + 0.7) * count, (animalCardDescription.width + 0.2) * 6.6),
-            height: (animalCardDescription.height) + (count * 0.5),
+            height: (animalCardDescription.height + 2) + (count * 0.5),
         }
     }
 }

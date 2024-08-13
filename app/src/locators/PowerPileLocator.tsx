@@ -1,4 +1,4 @@
-import { getRelativePlayerIndex, GridLocator, ItemContext } from '@gamepark/react-game'
+import { getRelativePlayerIndex, GridLocator, ItemContext, ZoomDirection } from '@gamepark/react-game'
 import { Coordinates, MaterialItem } from '@gamepark/rules-api'
 import { animalCardDescription } from '../material/AnimalCardDescription'
 import { powerCardDescription } from '../material/PowerCardDescription'
@@ -29,7 +29,7 @@ class PowerPileLocator extends GridLocator {
     }
 
     getItemGap(item: MaterialItem, context: ItemContext): Partial<Coordinates> {
-        if (!context.player || item.location.player !== context.player) return { x: powerCardDescription.height * 0.1, z: 0.5 }
+        if (!context.player || item.location.player !== context.player) return { x: powerCardDescription.height * 0.3, z: 0.5 }
         return { x: powerCardDescription.height + 0.2, z: 0.05 }
     }
 
@@ -41,11 +41,16 @@ class PowerPileLocator extends GridLocator {
             position.y -= animalCardDescription.width * 0.8
         } else {
             position.y += animalCardDescription.height
+            position.x -= animalCardDescription.width
         }
         return position
     }
 
     rotateZ = -90
+
+    getZoomDirection() {
+        return ZoomDirection.Center
+    }
 
 }
 

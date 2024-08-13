@@ -1,4 +1,6 @@
-import { ItemContext, PileLocator } from '@gamepark/react-game'
+import { LocationType } from '@gamepark/arctic/material/LocationType'
+import { MaterialType } from '@gamepark/arctic/material/MaterialType'
+import { ItemContext, PileLocator, ZoomDirection } from '@gamepark/react-game'
 import { Coordinates, MaterialItem } from '@gamepark/rules-api'
 import { AnimalPileDescription } from './descriptions/AnimalPileDescription'
 
@@ -15,6 +17,15 @@ class AnimalPileLocator extends PileLocator {
     locationDescription = new AnimalPileDescription()
     maxAngle = 5
     limit = 100
+
+    getZoomDirection(item: MaterialItem, context: ItemContext) {
+        const { rules } = context
+        if (item.location.x === rules.material(MaterialType.AnimalCard).location(LocationType.AnimalPile).player(item.location.player).length - 1) {
+            return context.player === item.location.player? ZoomDirection.Center: ZoomDirection.Bottom
+        }
+
+        return
+    }
 
 }
 

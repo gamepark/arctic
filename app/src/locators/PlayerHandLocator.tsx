@@ -1,7 +1,7 @@
 import { getAnimalFromCard } from '@gamepark/arctic/material/AnimalCard'
 import { LocationType } from '@gamepark/arctic/material/LocationType'
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
-import { getRelativePlayerIndex, HandLocator, ItemContext } from '@gamepark/react-game'
+import { getRelativePlayerIndex, HandLocator, ItemContext, ZoomDirection } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { playerHandDescription } from './descriptions/PlayerHandDescription'
 import orderBy from 'lodash/orderBy'
@@ -44,6 +44,10 @@ class PlayerHandLocator extends HandLocator {
     }
 
     locationDescription = playerHandDescription
+
+    getZoomDirection(item: MaterialItem, context: ItemContext) {
+        return item.location.player === context.player? ZoomDirection.Top: undefined
+    }
 
 }
 
