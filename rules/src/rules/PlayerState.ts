@@ -14,8 +14,29 @@ export class PlayerState extends MaterialRulesPart {
     return this.canExchangeCardWithRiver || this.canGetVisibleCardInHand
   }
 
+  get fox() {
+    return this
+      .material(MaterialType.PowerCard)
+      .location(LocationType.PowerPile)
+      .player(this.player)
+      .id((id: PowerCard) => id === PowerCard.Fox1 || id === PowerCard.Fox2)
+      .getItem()!
+  }
+
+  get depositValue() {
+    return this.remind(Memory.DepositValue)
+  }
+
+  get canPlaceCardUnderAnimalPile() {
+    return this.depositValue === 1 && this.fox?.id === PowerCard.Fox1
+  }
+
+  get canPlaceCardUnderLastAnimalInPile() {
+    return this.depositValue === 1 && this.fox?.id === PowerCard.Fox2
+  }
+
   get canExchangeCardWithRiver() {
-    if (!this.hand.length || this.remind(Memory.PuffinUsed)) return false
+    if (!this.hand.length) return false
     return this
       .material(MaterialType.PowerCard)
       .location(LocationType.PowerPile)
@@ -24,7 +45,7 @@ export class PlayerState extends MaterialRulesPart {
   }
 
   get canGetVisibleCardInHand() {
-    if (!this.animalPile.length || this.remind(Memory.PuffinUsed)) return false
+    if (!this.animalPile.length) return false
     return this
       .material(MaterialType.PowerCard)
       .location(LocationType.PowerPile)

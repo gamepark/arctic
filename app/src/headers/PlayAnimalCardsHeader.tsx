@@ -1,29 +1,37 @@
 /** @jsxImportSource @emotion/react */
 
-import { CustomMoveType } from '@gamepark/arctic/rules/CustomMoveType'
+import { Memory } from '@gamepark/arctic/rules/Memory'
 import { PlayAnimalCardsRule } from '@gamepark/arctic/rules/PlayAnimalCardsRule'
-import { PlayMoveButton, useLegalMoves, usePlayerId, useRules } from '@gamepark/react-game'
-import { isCustomMoveType } from '@gamepark/rules-api'
+import { PlayerState } from '@gamepark/arctic/rules/PlayerState'
+import { useGame, usePlayerId, usePlayerName } from '@gamepark/react-game'
+import { MaterialGame } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 
 export const PlayAnimalCardsHeader = () => {
-  const rules = useRules<PlayAnimalCardsRule>()!
-  const decreaseValue = useLegalMoves((move) => isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data < 0)
-  const increaseValue = useLegalMoves((move) => isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data > 0)
+  const game = useGame<MaterialGame>()!
+  const rules = new PlayAnimalCardsRule(game)
   const playerId = usePlayerId()
-  const activePlayer = rules.game.rule?.player
+  const activePlayer = rules.game.rule!.player!
+  const playerState = new PlayerState(game, activePlayer)
   const itsMe = playerId && playerId === activePlayer
-  const canModifyValue = rules.canModifyValue
+  const depositValue = rules.remind(Memory.DepositValue)
+  const name = usePlayerName(activePlayer)
 
   if (itsMe) {
-    if (canModifyValue) {
-      return <Trans
-        defaults="header.moose.play.you"
-      >
-        <PlayMoveButton move={increaseValue} />
-        <PlayMoveButton move={decreaseValue} />
-      </Trans>
+    if (depositValue === 1) {
+      if (playerState.canPlaceCardUnderAnimalPile) {
+        return <Trans defaults="header.fox.under-pile" />
+      }
+
+      if (playerState.canPlaceCardUnderLastAnimalInPile) {
+        return <Trans defaults="header.fox.under-animal" />
+      }
     }
+
+    return <Trans defaults="header.play-card.you" values={{ number: depositValue }} />
   }
-  return <>Hello world!</>
+
+
+  return <Trans defaults="header.play-card.player" values={{ number: depositValue, player: name }} />
+
 }

@@ -35,10 +35,10 @@ class PlayerHandDescription extends LocationDescription {
 
     getSize(_location: Location<number, number>, context: MaterialContext<number, number, number>): ComponentSize {
         const { rules, player } = context
-        const count = rules.material(MaterialType.AnimalCard).location(LocationType.PlayerHand).player(player).length || 2
+        const count = Math.min(rules.material(MaterialType.AnimalCard).location(LocationType.PlayerHand).player(player).length || 2, 6.6)
         return {
-            width: Math.max((animalCardDescription.width + 0.7) * count, (animalCardDescription.width + 0.2) * 6.6),
-            height: (animalCardDescription.height + 2) + (count * 0.5),
+            width: (animalCardDescription.width + 0.7) * count,
+            height: (animalCardDescription.height + 2) + (count * 0.5)
         }
     }
 }

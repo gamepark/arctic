@@ -1,6 +1,7 @@
 import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
+import { PowerCard } from '../material/PowerCard'
 import { Memory } from './Memory'
 import { PlayerState } from './PlayerState'
 import { RuleId } from './RuleId'
@@ -88,6 +89,14 @@ export class PuffinRule extends PlayerTurnRule {
     return this
       .material(MaterialType.AnimalCard)
       .location(LocationType.River)
+  }
+
+  get puffin() {
+    return this
+      .material(MaterialType.PowerCard)
+      .location(LocationType.PowerPile)
+      .id((id: PowerCard) => id === PowerCard.Puffin1 || id === PowerCard.Puffin2)
+      .getItem()!
   }
 
   get animalPile() {

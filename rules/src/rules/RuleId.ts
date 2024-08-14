@@ -3,4 +3,5 @@ export enum RuleId {
   MoveAnimalTokens,
   DrawAnimalCards,
   Puffin,
+  DiscardCards
 }

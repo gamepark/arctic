@@ -2,6 +2,7 @@ import { FillGapStrategy, PositiveSequenceStrategy, SecretMaterialRules, hideIte
 import { PlayerId } from './PlayerId'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
+import { DiscardCardsRule } from './rules/DiscardCardsRule'
 import { PlayAnimalCardsRule } from './rules/PlayAnimalCardsRule'
 import { PuffinRule } from './rules/PuffinRule'
 import { RuleId } from './rules/RuleId'
@@ -18,7 +19,8 @@ export class ArcticRules extends SecretMaterialRules<PlayerId, MaterialType, Loc
     [RuleId.PlayAnimalCards]: PlayAnimalCardsRule,
     [RuleId.MoveAnimalTokens]: MoveAnimalTokensRule,
     [RuleId.DrawAnimalCards]: DrawAnimalCardsRule,
-    [RuleId.Puffin]: PuffinRule
+    [RuleId.Puffin]: PuffinRule,
+    [RuleId.DiscardCards]: DiscardCardsRule
   }
 
   locationsStrategies = {
