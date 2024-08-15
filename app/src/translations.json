@@ -135,7 +135,7 @@
       "header.draw.pile-penalty.you": "Piochez {number, plural, one{# carte} other{# cartes}} de la Rivière, de vos Pénalités ou de la Pioche",
       "header.draw.player": "{player} doit piocher {number, plural, one{# carte} other{# cartes}}",
       "header.discard.you": "Défaussez {number, plural, one{# carte} other{# cartes}} de votre main",
-      "header.discard.player": "{player} défausse {number, plural, one{# carte} other{# cartes}} de sa main",
+      "header.discard.player": "{player} doit défausser {number, plural, one{# carte} other{# cartes}} de sa main",
       "header.puffin.trade.you": "Macareux : échangez une carte de votre Main ou <0>passez</0>",
       "header.puffin.trade.player": "Macareux : {player} peut échanger une carte de sa Main",
       "header.puffin.draw.you": "Macareux : reprenez votre carte Animal visible en main ou <0>passez</0>",
