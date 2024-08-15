@@ -1,6 +1,5 @@
 import { LocationType } from '@gamepark/arctic/material/LocationType'
-import { MaterialType } from '@gamepark/arctic/material/MaterialType'
-import { ComponentSize, getRelativePlayerIndex, LocationDescription, MaterialContext } from '@gamepark/react-game'
+import { getRelativePlayerIndex, LocationDescription, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location } from '@gamepark/rules-api'
 import { animalCardDescription } from '../../material/AnimalCardDescription'
 import { getPlayerPosition } from '../PlayerPosition'
@@ -33,14 +32,8 @@ class PlayerHandDescription extends LocationDescription {
         return position
     }
 
-    getSize(_location: Location<number, number>, context: MaterialContext<number, number, number>): ComponentSize {
-        const { rules, player } = context
-        const count = Math.min(rules.material(MaterialType.AnimalCard).location(LocationType.PlayerHand).player(player).length || 2, 6.6)
-        return {
-            width: (animalCardDescription.width + 0.7) * count,
-            height: (animalCardDescription.height + 2) + (count * 0.5)
-        }
-    }
+    width = (animalCardDescription.width + 0.7) * 6.6
+    height = (animalCardDescription.height + 2) + (6.6 * 0.5)
 }
 
 export const playerHandDescription = new PlayerHandDescription()

@@ -30,8 +30,6 @@ export class AnimalPileDescription extends LocationDescription {
       { type: LocationType.AnimalPile, player: context.player, x: animalPileLength }
     )
 
-    console.log(animalPileLength, locations)
-
     return locations
   }
 

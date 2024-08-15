@@ -1,8 +1,10 @@
 import { LineLocator, ZoomDirection } from '@gamepark/react-game'
 import { animalCardDescription } from '../material/AnimalCardDescription'
+import { RiverDescription } from './descriptions/RiverDescription'
 
 class RiverLocator extends LineLocator {
-    coordinates = { x: -20, y: 5, z: 0 }
+    locationDescription = new RiverDescription()
+    coordinates = this.locationDescription.originCoordinates
     delta = { x: animalCardDescription.width + 1, y: 0 }
     getZoomDirection() {
         return ZoomDirection.Center

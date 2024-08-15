@@ -1,13 +1,16 @@
-import { FillGapStrategy, PositiveSequenceStrategy, SecretMaterialRules, hideItemId, hideItemIdToOthers } from '@gamepark/rules-api'
-import { PlayerId } from './PlayerId'
+import { FillGapStrategy, hideItemId, hideItemIdToOthers, PositiveSequenceStrategy, SecretMaterialRules } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
+import { PlayerId } from './PlayerId'
+import { BearRule } from './rules/BearRule'
 import { DiscardCardsRule } from './rules/DiscardCardsRule'
+import { DrawAnimalCardsRule } from './rules/DrawAnimalCardsRule'
+import { MoveAnimalTokensRule } from './rules/MoveAnimalTokensRule'
 import { PlayAnimalCardsRule } from './rules/PlayAnimalCardsRule'
 import { PuffinRule } from './rules/PuffinRule'
 import { RuleId } from './rules/RuleId'
-import { DrawAnimalCardsRule } from './rules/DrawAnimalCardsRule'
-import { MoveAnimalTokensRule } from './rules/MoveAnimalTokensRule'
+import { ScoringRule } from './rules/ScoringRule'
+import { WalrusRule } from './rules/WalrusRule'
 
 
 /**
@@ -20,7 +23,10 @@ export class ArcticRules extends SecretMaterialRules<PlayerId, MaterialType, Loc
     [RuleId.MoveAnimalTokens]: MoveAnimalTokensRule,
     [RuleId.DrawAnimalCards]: DrawAnimalCardsRule,
     [RuleId.Puffin]: PuffinRule,
-    [RuleId.DiscardCards]: DiscardCardsRule
+    [RuleId.Bear]: BearRule,
+    [RuleId.Walrus]: WalrusRule,
+    [RuleId.DiscardCards]: DiscardCardsRule,
+    [RuleId.Scoring]: ScoringRule
   }
 
   locationsStrategies = {

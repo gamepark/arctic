@@ -2,15 +2,15 @@ import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepar
 import { landscapes } from '../material/Landscape'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { PowerCard } from '../material/PowerCard'
+import { AnimalTokensHelper } from './helper/AnimalTokensHelper'
 import { Memory } from './Memory'
+import { PlayerState } from './PlayerState'
 import { RuleId } from './RuleId'
 
 export class MoveAnimalTokensRule extends PlayerTurnRule {
   onRuleStart() {
-    const { mainLandscapeIndex, mainToken, associatedLandscapeIndex, associatedToken } = this.animals
+    const { mainLandscapeIndex, mainToken, associatedLandscapeIndex, associatedToken } = this.animalsTokens
 
-    console.log(mainLandscapeIndex, associatedLandscapeIndex)
     if (mainLandscapeIndex === 5 && associatedLandscapeIndex === 5) {
       return [
         mainToken.moveItem({
@@ -69,7 +69,7 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
 
   getPlayerMoves() {
 
-    const { mainLandscapeIndex, mainToken, associatedLandscapeIndex, associatedToken } = this.animals
+    const { mainLandscapeIndex, mainToken, associatedLandscapeIndex, associatedToken } = this.animalsTokens
     return [
       mainToken
         .moveItem({
@@ -86,9 +86,27 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
 
   beforeItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.TotemToken)(move)) return []
-    if (this.remind(Memory.TokensMoved)) return [this.rules().startRule(RuleId.DrawAnimalCards)]
+    const playerState = new PlayerState(this.game, this.player)
+    if (this.hasMovedToken) {
+      if (playerState.canMoveTokenOnceMore) {
+        return [this.startRule(RuleId.Walrus)]
+      }
+      if (this.remind(Memory.LastRound)) {
+        if (this.player === this.game.players[this.game.players.length - 1]) {
+          return [this.startRule(RuleId.Scoring)]
+        } else {
+          const nextPlayer = this.nextPlayer
+          return [this.startPlayerTurn(RuleId.PlayAnimalCards, nextPlayer)]
+        }
+      }
 
-    const { mainLandscapeIndex, mainToken, associatedLandscapeIndex, associatedToken } = this.animals
+      if (playerState.canGivePenaltyCard) {
+        return [this.startRule(RuleId.Bear)]
+      }
+      return [this.startRule(RuleId.DrawAnimalCards)]
+    }
+
+    const { mainLandscapeIndex, mainToken, associatedLandscapeIndex, associatedToken } = this.animalsTokens
     const moves: MaterialMove[] = this.associatedAnimalAutomaticMove
 
     if (!moves.length) {
@@ -113,28 +131,16 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
     return moves
   }
 
-  get animals() {
-    const topPileCard = this.material(MaterialType.AnimalCard).location(LocationType.AnimalPile).player(this.player).sort(item => -item.location.x!).getItem()
-    const animalsId = Math.floor(topPileCard!.id / 10)
-    const mainAnimalId = Math.floor(animalsId / 10)
-    const mainToken = this.material(MaterialType.TotemToken).id(mainAnimalId)
-    const mainLandscapeIndex = landscapes.indexOf(mainToken.getItem()?.location.id)
-    const associatedAnimalId = Math.floor(animalsId % 10)
-    const associatedToken = this.material(MaterialType.TotemToken).id(associatedAnimalId)
-    const associatedLandscapeIndex = landscapes.indexOf(associatedToken.getItem()?.location.id)
+  get hasMovedToken() {
+    return this.remind(Memory.TokensMoved)
+  }
 
-    return {
-      mainLandscapeIndex,
-      mainToken,
-      mainAnimalId,
-      associatedLandscapeIndex,
-      associatedToken,
-      associatedAnimalId
-    }
+  get animalsTokens() {
+    return new AnimalTokensHelper(this.game, this.player).animalTokens
   }
 
   get associatedAnimalAutomaticMove() {
-    const { mainLandscapeIndex, mainToken, associatedLandscapeIndex, associatedToken } = this.animals
+    const { mainLandscapeIndex, mainToken, associatedLandscapeIndex, associatedToken } = this.animalsTokens
     if (mainLandscapeIndex === 5 && associatedLandscapeIndex === 5) {
       return [
         associatedToken.moveItem({
@@ -195,28 +201,5 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
   onRuleEnd() {
     this.forget(Memory.TokensMoved)
     return []
-  }
-
-  get canMoveTokenOnceMore() {
-    return !this.remind(Memory.WalrusUsed)
-      && (this.canMoveAssociatedAnimalTokenOnceMore || this.canMoveMainAnimalTokenOnceMore)
-  }
-
-  get canMoveMainAnimalTokenOnceMore() {
-    return this
-      .material(MaterialType.PowerCard)
-      .location(LocationType.PowerPile)
-      .player(this.player)
-      .id((id: PowerCard) => id === PowerCard.Walrus1)
-      .length > 0
-  }
-
-  get canMoveAssociatedAnimalTokenOnceMore() {
-    return this
-      .material(MaterialType.PowerCard)
-      .location(LocationType.PowerPile)
-      .player(this.player)
-      .id((id: PowerCard) => id === PowerCard.Walrus1)
-      .length > 0
   }
 }

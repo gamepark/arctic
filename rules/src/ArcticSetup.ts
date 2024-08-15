@@ -1,15 +1,15 @@
 import { MaterialGameSetup } from '@gamepark/rules-api'
+import shuffle from 'lodash/shuffle'
 import { ArcticOptions } from './ArcticOptions'
 import { ArcticRules } from './ArcticRules'
+import { animals } from './material/Animal'
 import { animalCards } from './material/AnimalCard'
+import { Landscape } from './material/Landscape'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
+import { totemTiles } from './material/TotemTile'
 import { PlayerId } from './PlayerId'
 import { RuleId } from './rules/RuleId'
-import { animals } from './material/Animal'
-import { totemTiles } from './material/TotemTile'
-import shuffle from 'lodash/shuffle'
-import { Landscape } from './material/Landscape'
 
 /**
  * This class creates a new Game based on the game options

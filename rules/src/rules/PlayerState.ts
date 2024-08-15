@@ -53,11 +53,94 @@ export class PlayerState extends MaterialRulesPart {
       .id((id: PowerCard) => id === PowerCard.Puffin2).length > 0
   }
 
+  get canGivePenaltyCard() {
+    if (!this.penalties.length) return false
+    return this
+      .material(MaterialType.PowerCard)
+      .location(LocationType.PowerPile)
+      .player(this.player)
+      .id((id: PowerCard) => id === PowerCard.Bear1).length > 0
+  }
+
+  get canDrawFromPenaltyCards() {
+    if (!this.penalties.length) return false
+    return this
+      .material(MaterialType.PowerCard)
+      .location(LocationType.PowerPile)
+      .player(this.player)
+      .id((id: PowerCard) => id === PowerCard.Bear2).length > 0
+  }
+
+  get penalties() {
+    return this
+      .material(MaterialType.AnimalCard)
+      .location(LocationType.PenaltyZone)
+      .player(this.player)
+      .deck()
+  }
+
   get hand() {
     return this
       .material(MaterialType.AnimalCard)
       .location(LocationType.PlayerHand)
       .player(this.player)
+  }
+
+  get canModifyValue() {
+    if (this.remind(Memory.Modifier) !== undefined) return false
+    return this
+      .material(MaterialType.PowerCard)
+      .location(LocationType.PowerPile)
+      .player(this.player)
+      .id((id: PowerCard) => id === PowerCard.Moose2).length > 0
+  }
+
+  get canTakeCardsOnDeck() {
+    if (!this.deck.length) return false
+    return this
+      .material(MaterialType.PowerCard)
+      .location(LocationType.PowerPile)
+      .player(this.player)
+      .id((id: PowerCard) => id === PowerCard.Orca2).length > 0
+  }
+
+  get canMoveTokenOnceMore() {
+    return !this.remind(Memory.WalrusUsed)
+      && (this.canMoveAssociatedAnimalTokenOnceMore || this.canMoveMainAnimalTokenOnceMore)
+  }
+
+  get canMoveMainAnimalTokenOnceMore() {
+    return this
+      .material(MaterialType.PowerCard)
+      .location(LocationType.PowerPile)
+      .player(this.player)
+      .id((id: PowerCard) => id === PowerCard.Walrus1)
+      .length > 0
+  }
+
+  get canMoveAssociatedAnimalTokenOnceMore() {
+    return this
+      .material(MaterialType.PowerCard)
+      .location(LocationType.PowerPile)
+      .player(this.player)
+      .id((id: PowerCard) => id === PowerCard.Walrus2)
+      .length > 0
+  }
+
+  get deck() {
+    return this
+      .material(MaterialType.AnimalCard)
+      .location(LocationType.AnimalCardsDeck)
+      .deck()
+  }
+
+  get topPileCard() {
+    return this
+      .material(MaterialType.AnimalCard)
+      .location(LocationType.AnimalPile)
+      .player(this.player)
+      .maxBy(item => item.location.x!)
+      .getItem()
   }
 
   get animalPile() {

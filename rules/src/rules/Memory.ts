@@ -4,6 +4,6 @@ export enum Memory {
   TokensMoved,
   WalrusUsed,
   HasPlacedCard,
-  BearUsed,
-  Modifier
+  Modifier,
+  LastRound = 7
 }

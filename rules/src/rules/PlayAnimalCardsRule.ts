@@ -62,11 +62,8 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
       this.memorize(Memory.DepositValue, (value: number) => value - 1)
       const depositValue = playerState.depositValue
       if (depositValue === 0) {
-        const animalId = Math.floor(this.material(MaterialType.AnimalCard).getItem(move.itemIndex)!.id / 100)
-        const powerCard = this.material(MaterialType.PowerCard).id<PowerCard>(id => Math.floor(id / 10) === animalId)
-        console.log(this.movePowerCard(move))
         return [
-          powerCard.moveItem({ type: LocationType.PowerPile, player: this.player }),
+          ...this.movePowerCard(move),
           this.startRule(RuleId.MoveAnimalTokens)
         ]
       }
@@ -94,7 +91,6 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
   }
 
   movePowerCard(move: MoveItem) {
-    console.log(move.location.x)
     if (move.location.x === undefined) return []
     const animalId = Math.floor(this.material(MaterialType.AnimalCard).getItem(move.itemIndex)!.id / 100)
     const powerCard = this.material(MaterialType.PowerCard).id((id: PowerCard) => Math.floor(id / 10) === animalId)

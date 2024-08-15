@@ -22,7 +22,10 @@ class LandscapeCardDescription extends CardDescription {
   }
 
   getLocations(item: MaterialItem, context: ItemContext) {
-    if (!context.player || context.rules.game.rule?.id !== RuleId.MoveAnimalTokens || context.rules.game.rule?.player !== context.player) return []
+    if (!context.player
+      || (context.rules.game.rule?.id !== RuleId.MoveAnimalTokens
+      && context.rules.game.rule?.id !== RuleId.Walrus )
+      || context.rules.game.rule?.player !== context.player) return []
     return [{
       type: LocationType.LandscapeCard,
       id: item.id
