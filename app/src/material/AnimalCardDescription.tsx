@@ -1,7 +1,8 @@
 import { AnimalCard } from '@gamepark/arctic/material/AnimalCard'
 import { LocationType } from '@gamepark/arctic/material/LocationType'
-import { CardDescription, MaterialContext } from '@gamepark/react-game'
-import { MaterialItem } from '@gamepark/rules-api'
+import { MaterialType } from '@gamepark/arctic/material/MaterialType'
+import { CardDescription, ItemContext, MaterialContext } from '@gamepark/react-game'
+import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import Back from '../images/cards/animals/AnimalBack1.jpg'
 
 // Import images for all animal cards
@@ -255,7 +256,15 @@ class AnimalCardDescription extends CardDescription {
   }
 
   isFlipped(item: Partial<MaterialItem>, context: MaterialContext): boolean {
-    return super.isFlipped(item, context) || item.location?.type === LocationType.PenaltyZone
+    return super.isFlipped(item, context) || item.location?.type === LocationType.PenaltyZone || item.location?.rotation
+  }
+
+  canShortClick(move: MaterialMove, context: ItemContext): boolean {
+    if (!isMoveItemType(MaterialType.AnimalCard)(move) || move.itemIndex !== context.index) return false
+    if (move.location.type === LocationType.PenaltyZone) return true
+    if (move.location.type === LocationType.AnimalPile) return true
+    if (move.location.type === LocationType.PlayerHand && context.rules.material(MaterialType.AnimalCard).getItem(move.itemIndex)?.location.type !== LocationType.AnimalPile) return true
+    return false
   }
 }
 

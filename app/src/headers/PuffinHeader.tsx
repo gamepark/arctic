@@ -25,7 +25,11 @@ export const PuffinHeader = () => {
         </Trans>
       )
     } else {
-      return <Trans defaults="header.puffin.draw.you" />
+      return (
+        <Trans defaults="header.puffin.draw.you">
+          <PlayMoveButton move={pass} />
+        </Trans>
+      )
     }
   }
 

@@ -1,11 +1,10 @@
 import { css } from '@emotion/react'
-import { LocationDescription } from '@gamepark/react-game'
+import { DropAreaDescription } from '@gamepark/react-game'
 import { landscapeCardDescription } from '../../material/LandscapeCardDescription'
 
-export class LandscapeCardDescription extends LocationDescription {
+export class LandscapeCardDescription extends DropAreaDescription {
   width = landscapeCardDescription.width
-  ratio = landscapeCardDescription.ratio
-  alwaysVisible = false
+  height = landscapeCardDescription.height
 
   extraCss = css`
     border-radius: inherit;

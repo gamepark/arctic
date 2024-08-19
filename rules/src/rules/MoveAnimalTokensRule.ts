@@ -51,7 +51,7 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
       return [
         associatedToken.moveItem({
           type: LocationType.LandscapeCard,
-          id: landscapes[mainLandscapeIndex - 1]
+          id: landscapes[4]
         })
       ]
     }
@@ -60,7 +60,7 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
       return [
         associatedToken.moveItem({
           type: LocationType.LandscapeCard,
-          id: landscapes[associatedLandscapeIndex + 1]
+          id: landscapes[1]
         })
       ]
     }

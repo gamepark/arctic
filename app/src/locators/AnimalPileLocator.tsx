@@ -1,32 +1,54 @@
-import { LocationType } from '@gamepark/arctic/material/LocationType'
-import { MaterialType } from '@gamepark/arctic/material/MaterialType'
-import { ItemContext, PileLocator, ZoomDirection } from '@gamepark/react-game'
-import { Coordinates, MaterialItem } from '@gamepark/rules-api'
+import { PlayerState } from '@gamepark/arctic/rules/PlayerState'
+import { getRelativePlayerIndex, isItemContext, MaterialContext, PileLocator } from '@gamepark/react-game'
+import { Coordinates, Location } from '@gamepark/rules-api'
+import { animalCardDescription } from '../material/AnimalCardDescription'
 import { AnimalPileDescription } from './descriptions/AnimalPileDescription'
+import { getPlayerPosition } from './PlayerPosition'
 
 class AnimalPileLocator extends PileLocator {
-    getCoordinates(item: MaterialItem, context: ItemContext): Coordinates {
-        const { material, type } = context
-        const coordinates = this.locationDescription.getPileCoordinates(item.location, context)
-        return {
-            ...coordinates,
-            z: material[type]!.getThickness(item, context) * (item.location.x! + 1)
+    getCoordinates(location: Location, context: MaterialContext): Coordinates {
+        const { rules } = context
+        const coordinates = this.getInnerPileCoordinates(location, context)
+        if (isItemContext(context)) return coordinates
+        const playerState = new PlayerState(rules.game, location.player!)
+        const animalPileLength = playerState.animalPile.length
+        if ((playerState.canPlaceCardUnderAnimalPile || playerState.canPlaceCardUnderLastAnimalInPile)) {
+            if (location.x === animalPileLength) {
+                return {
+                    ...coordinates,
+                    y: coordinates.y - (animalCardDescription.height / 2 + 1),
+                }
+            } else {
+                return {
+                    ...coordinates,
+                    y: coordinates.y + (animalCardDescription.height / 2 + 1),
+                }
+            }
         }
+
+
+        return coordinates
     }
 
     locationDescription = new AnimalPileDescription()
     maxAngle = 5
     limit = 100
 
-    getZoomDirection(item: MaterialItem, context: ItemContext) {
-        const { rules } = context
-        if (item.location.x === rules.material(MaterialType.AnimalCard).location(LocationType.AnimalPile).player(item.location.player).length - 1) {
-            return context.player === item.location.player? ZoomDirection.Center: ZoomDirection.Bottom
-        }
-
-        return
+    getMaxAngle(location: Location, context: MaterialContext) {
+        if (isItemContext(context)) return super.getMaxAngle(location, context)
+        return 0
     }
 
+    getInnerPileCoordinates(location: Location, context: MaterialContext) {
+        const index = getRelativePlayerIndex(context, location.player)
+        const position = getPlayerPosition(context.rules.players.length, index)
+        if (context.player && index === 0) {
+            position.x += animalCardDescription.width * 2.2
+        } else {
+            position.x += animalCardDescription.width + 1.5
+        }
+        return position
+    }
 }
 
 export const animalPileLocator = new AnimalPileLocator()

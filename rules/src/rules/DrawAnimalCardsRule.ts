@@ -12,7 +12,7 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
     const playerState = new PlayerState(this.game, this.player)
     const topPileCard = playerState.topPileCard
     const drawValue = (topPileCard!.id % 10)
-    this.memorize<number>(Memory.DrawValue, drawValue)
+    this.memorize<number>(Memory.DrawValue, topPileCard?.location.rotation? 1: drawValue)
     return []
   }
 

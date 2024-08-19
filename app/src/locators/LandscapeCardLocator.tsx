@@ -1,18 +1,19 @@
-import { Location } from '@gamepark/rules-api'
-import { GridLocator } from '@gamepark/react-game'
-import { totemTokenDescription } from '../material/TotemTokenDescription'
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
+import { FlexLocator, ItemContext } from '@gamepark/react-game'
+import { Location } from '@gamepark/rules-api'
+import { totemTokenDescription } from '../material/TotemTokenDescription'
 import { LandscapeCardDescription } from './descriptions/LandscapeCardDescription'
 
-class LandscapeCardLocator extends GridLocator {
+class LandscapeCardLocator extends FlexLocator {
     parentItemType = MaterialType.LandscapeCard
 
-    getParentItemId(location: Location) {
-        return location.id
+    getParentItem(location: Location, { material }: ItemContext) {
+        return material[this.parentItemType]!
+          .staticItems
+          .find((i) => location.id === i.id)!
     }
 
     getPositionOnParent(location: Location) {
-
         if(location.x !== undefined) {
             return { x: 25, y: 81 }
         } else {
@@ -20,9 +21,17 @@ class LandscapeCardLocator extends GridLocator {
         }
     }
 
-    itemsGap = { x: totemTokenDescription.width + 0.7, y: 0 }
-    itemsPerLine = 2
-    linesGap = { x: 0, y: -(totemTokenDescription.height + 0.05) }
+    getGap(location: Location) {
+        if (location.x === undefined) return {}
+        return { x: totemTokenDescription.width + 0.7, y: 0 }
+    }
+
+    getLineGap(location: Location) {
+        if (location.x === undefined) return {}
+        return { x: 0, y: -(totemTokenDescription.height + 0.05) }
+    }
+
+    lineSize = 2
     locationDescription = new LandscapeCardDescription()
 }
 

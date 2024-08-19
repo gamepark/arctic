@@ -26,7 +26,7 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
       )
     } else if (animalPile && playerState.canPlaceCardUnderLastAnimalInPile) {
       moves.push(
-        ...hand.moveItems({ type: LocationType.AnimalPile, player: this.player, x: animalPile - 1 })
+        ...hand.moveItems({ type: LocationType.AnimalPile, player: this.player, x: animalPile - 1, rotation: true })
       )
     }
 
