@@ -3,6 +3,6 @@ import { animalCardDescription } from '../../material/AnimalCardDescription'
 
 export class PlayerHandDescription extends DropAreaDescription {
     borderRadius = animalCardDescription.borderRadius
-    width = (animalCardDescription.width + 0.7) * 6.6
+    width = (animalCardDescription.width + 0.7) * 7.6
     height = (animalCardDescription.height + 2) + (6.6 * 0.5)
 }

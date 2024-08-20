@@ -9,11 +9,17 @@ import { getPlayerPosition } from './PlayerPosition'
 
 class PlayerHandLocator extends HandLocator {
   getMaxAngle(location: Location, context: MaterialContext): number {
-    if (location.player === context.player) {
-      return 20
+    if (location.player === context.player || context.rules.players.length === 2) {
+      return 25
     } else {
       return 1
     }
+  }
+
+  getBaseAngle(location: Location, context: MaterialContext): number {
+    if (context.rules.players.length !== 2) return 0
+    if (location.player !== (context.player ?? context.rules.players[0])) return 180
+    return 0
   }
 
   getLocationCoordinates(location: Location, context: MaterialContext, index: number = 0) {
@@ -43,9 +49,9 @@ class PlayerHandLocator extends HandLocator {
 
   getCoordinates(location: Location, context: MaterialContext): Coordinates {
     const index = getRelativePlayerIndex(context, location.player)
-    const position = getPlayerPosition(context.rules.players.length, index)
-    if (context.player && index === 0) {
-      position.x -= 13
+    const position = getPlayerPosition(context.rules.players.length, index, !context.player)
+    if ((context.player && index === 0) || context.rules.players.length === 2) {
+      position.x -= 12
     }
 
     return position
