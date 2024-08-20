@@ -1,4 +1,5 @@
 import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { getDepositValue } from '../material/AnimalCard'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PowerCard } from '../material/PowerCard'
@@ -80,7 +81,7 @@ export class PuffinRule extends PlayerTurnRule {
     if (!topPileCard || topPileCard.location.rotation) {
       this.memorize(Memory.DepositValue, 1)
     } else {
-      const depositValue = 6 - ((topPileCard.id % 10))
+      const depositValue = getDepositValue(topPileCard.id)
       this.memorize(Memory.DepositValue, depositValue)
     }
   }

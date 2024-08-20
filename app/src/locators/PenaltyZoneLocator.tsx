@@ -45,6 +45,8 @@ class PenaltyZoneLocator extends PileLocator {
 
     return position
   }
+
+
 }
 
 export const penaltyZoneLocator = new PenaltyZoneLocator()

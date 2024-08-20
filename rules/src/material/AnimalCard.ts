@@ -1,4 +1,4 @@
-import { isEnumValue } from '@gamepark/rules-api'
+import { getEnumValues } from '@gamepark/rules-api'
 
 export enum AnimalCard {
   BearFox1 = 121,
@@ -123,8 +123,21 @@ export enum AnimalCard {
   WalrusPuffin5 = 655,
 }
 
-export const animalCards = Object.values(AnimalCard).filter(isEnumValue)
+export const animalCards = getEnumValues(AnimalCard)
 
-export function getAnimalFromCard(card: AnimalCard) {
+export const getAnimalFromCard = (card: AnimalCard) => {
   return Math.floor(card / 100)
 }
+
+export const getAssociatedAnimalFromCard = (card: AnimalCard) => {
+  return Math.floor(card / 10 % 10)
+}
+
+export const getDrawValue = (card: AnimalCard) => {
+  return (card % 10)
+}
+
+export const getDepositValue = (card: AnimalCard) => {
+  return  6 - (card % 10)
+}
+

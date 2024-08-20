@@ -1,4 +1,5 @@
 import { CustomMove, isCustomMoveType, isMoveItemType, ItemMove, MaterialMove, MoveItem, PlayerTurnRule } from '@gamepark/rules-api'
+import { getAnimalFromCard, getDepositValue } from '../material/AnimalCard'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PowerCard } from '../material/PowerCard'
@@ -31,7 +32,7 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
     }
 
     moves.push(
-      ...hand.moveItems({ type: LocationType.AnimalPile, player: this.player, x: animalPile })
+      ...hand.moveItems({ type: LocationType.AnimalPile, player: this.player, x: animalPile, rotation: true })
     )
 
     if (this.canModifyValue) {
@@ -92,7 +93,7 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
 
   movePowerCard(move: MoveItem) {
     if (move.location.x === undefined) return []
-    const animalId = Math.floor(this.material(MaterialType.AnimalCard).getItem(move.itemIndex)!.id / 100)
+    const animalId = getAnimalFromCard(this.material(MaterialType.AnimalCard).getItem(move.itemIndex)!.id)
     const powerCard = this.material(MaterialType.PowerCard).id((id: PowerCard) => Math.floor(id / 10) === animalId)
     if (powerCard.getItem()?.location.player === this.player) return []
     return powerCard.moveItems({ type: LocationType.PowerPile, player: this.player })
@@ -104,7 +105,7 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
     if (!topPileCard || topPileCard.location.rotation) {
       this.memorize(Memory.DepositValue, 1)
     } else {
-      const depositValue = 6 - ((topPileCard.id % 10))
+      const depositValue = getDepositValue(topPileCard.id)
       this.memorize(Memory.DepositValue, depositValue)
     }
   }

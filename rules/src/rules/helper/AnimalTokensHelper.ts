@@ -1,4 +1,5 @@
 import { MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
+import { getAnimalFromCard, getAssociatedAnimalFromCard } from '../../material/AnimalCard'
 import { landscapes } from '../../material/Landscape'
 import { MaterialType } from '../../material/MaterialType'
 import { PlayerId } from '../../PlayerId'
@@ -11,11 +12,10 @@ export class AnimalTokensHelper extends MaterialRulesPart {
 
   get animalTokens() {
     const topPileCard = new PlayerState(this.game, this.player).topPileCard
-    const animalsId = Math.floor(topPileCard!.id / 10)
-    const mainAnimalId = Math.floor(animalsId / 10)
+    const mainAnimalId = getAnimalFromCard(topPileCard!.id)
     const mainToken = this.material(MaterialType.TotemToken).id(mainAnimalId)
     const mainLandscapeIndex = landscapes.indexOf(mainToken.getItem()?.location.id)
-    const associatedAnimalId = Math.floor(animalsId % 10)
+    const associatedAnimalId = getAssociatedAnimalFromCard(topPileCard!.id)
     const associatedToken = this.material(MaterialType.TotemToken).id(associatedAnimalId)
     const associatedLandscapeIndex = landscapes.indexOf(associatedToken.getItem()?.location.id)
 

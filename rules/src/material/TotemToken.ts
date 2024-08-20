@@ -1,4 +1,4 @@
-import { isEnumValue } from '@gamepark/rules-api'
+import { getEnumValues } from '@gamepark/rules-api'
 
 export enum TotemToken {
     Bear = 1,
@@ -9,4 +9,4 @@ export enum TotemToken {
     Walrus = 6,
 }
 
-export const totemToken = Object.values(TotemToken).filter(isEnumValue)
+export const totemToken = getEnumValues(TotemToken)

@@ -8,6 +8,7 @@ import Moose from '../images/tokens/MooseToken.png'
 import Orca from '../images/tokens/OrcaToken.png'
 import Puffin from '../images/tokens/PuffinToken.png'
 import Walrus from '../images/tokens/WalrusToken.png'
+import { TotemTokenHelp } from './help/TotemTokenHelp'
 
 class TotemTokenDescription extends TokenDescription {
     width = 2.55
@@ -28,6 +29,8 @@ class TotemTokenDescription extends TokenDescription {
         [TotemToken.Puffin]: Puffin,
         [TotemToken.Walrus]: Walrus,
     }
+
+    help = TotemTokenHelp
 }
 
 export const totemTokenDescription = new TotemTokenDescription()

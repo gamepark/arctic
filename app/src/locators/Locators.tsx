@@ -12,6 +12,7 @@ import { powerLocator } from './PowerLocator'
 import { powerPileLocator } from './PowerPileLocator'
 import { reserveLocator } from './ReserveLocator'
 import { riverLocator } from './RiverLocator'
+import { scoringLocator } from './ScoringLocator'
 import { tableCenterLocator } from './TableCenterLocator'
 
 export const Locators: Partial<Record<LocationType, Locator<PlayerId, MaterialType, LocationType>>> = {
@@ -26,4 +27,5 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerId, MaterialTy
   [LocationType.AnimalPile]: animalPileLocator,
   [LocationType.PowerPile]: powerPileLocator,
   [LocationType.PenaltyZone]: penaltyZoneLocator,
+  [LocationType.Scoring]: scoringLocator,
 }

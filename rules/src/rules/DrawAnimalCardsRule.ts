@@ -1,4 +1,5 @@
 import { CustomMove, isCustomMoveType, isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { getDrawValue } from '../material/AnimalCard'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PowerCard } from '../material/PowerCard'
@@ -11,7 +12,7 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
   onRuleStart() {
     const playerState = new PlayerState(this.game, this.player)
     const topPileCard = playerState.topPileCard
-    const drawValue = (topPileCard!.id % 10)
+    const drawValue = getDrawValue(topPileCard!.id)
     this.memorize<number>(Memory.DrawValue, topPileCard?.location.rotation? 1: drawValue)
     return []
   }

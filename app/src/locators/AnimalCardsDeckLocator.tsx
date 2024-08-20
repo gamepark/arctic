@@ -1,5 +1,6 @@
-import { DeckLocator, MaterialContext } from '@gamepark/react-game'
+import { DeckLocator, LocationDescription, MaterialContext } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
+import { DeckHelp } from './help/DeckHelp'
 
 class AnimalCardsDeckLocator extends DeckLocator {
   coordinates = { x: -30, y: 4, z: 0 }
@@ -13,6 +14,14 @@ class AnimalCardsDeckLocator extends DeckLocator {
     }
 
   }
+
+  locationDescription = new AnimalDeckDescription()
+}
+
+class AnimalDeckDescription extends LocationDescription {
+  height = 1
+  width = 1
+  help = DeckHelp
 }
 
 export const animalCardsDeckLocator = new AnimalCardsDeckLocator()

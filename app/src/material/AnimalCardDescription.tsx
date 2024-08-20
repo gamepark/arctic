@@ -2,7 +2,7 @@ import { AnimalCard } from '@gamepark/arctic/material/AnimalCard'
 import { LocationType } from '@gamepark/arctic/material/LocationType'
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
 import { CardDescription, ItemContext, MaterialContext } from '@gamepark/react-game'
-import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { isMoveItemType, MaterialItem, MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
 import Back from '../images/cards/animals/AnimalBack1.jpg'
 
 // Import images for all animal cards
@@ -126,11 +126,20 @@ import WalrusPuffin1 from '../images/cards/animals/WalrusPuffin1.jpg'
 import WalrusPuffin2 from '../images/cards/animals/WalrusPuffin2.jpg'
 import WalrusPuffin4 from '../images/cards/animals/WalrusPuffin4.jpg'
 import WalrusPuffin5 from '../images/cards/animals/WalrusPuffin5.jpg'
+import Draw from '../images/icons/draw.jpg'
+import Play from '../images/icons/play.jpg'
+import InPile from '../images/icons/in-pile.png'
+import OnPile from '../images/icons/on-pile.png'
+import UnderPile from '../images/icons/under-pile.png'
+import { AnimalCardHelp } from './help/AnimalCardHelp'
+import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
 
 class AnimalCardDescription extends CardDescription {
   height = 8.89
   width = 6.35
   backImage = Back
+
+  help = AnimalCardHelp
 
   images = {
     [AnimalCard.BearFox1]: BearFox1,
@@ -255,6 +264,17 @@ class AnimalCardDescription extends CardDescription {
     [AnimalCard.WalrusPuffin5]: WalrusPuffin5,
   }
 
+  getImages() {
+    return [
+      ...super.getImages(),
+      Draw,
+      Play,
+      InPile,
+      OnPile,
+      UnderPile
+    ]
+  }
+
   isFlipped(item: Partial<MaterialItem>, context: MaterialContext): boolean {
     return super.isFlipped(item, context) || item.location?.type === LocationType.PenaltyZone || item.location?.rotation
   }
@@ -265,6 +285,13 @@ class AnimalCardDescription extends CardDescription {
     if (move.location.type === LocationType.AnimalPile) return true
     if (move.location.type === LocationType.PlayerHand && context.rules.material(MaterialType.AnimalCard).getItem(move.itemIndex)?.location.type !== LocationType.AnimalPile) return true
     return false
+  }
+
+  displayHelp(item: MaterialItem<number, number>, context: ItemContext) {
+    if (item.location.type == LocationType.AnimalCardsDeck || item.location.type === LocationType.Reserve) return displayLocationHelp(item.location)
+      return super.displayHelp(item, context)
+
+
   }
 }
 

@@ -27,7 +27,7 @@ const getSpectatorPlayerPosition = (players: number, index: number) => {
     case 0:
       return { x: -30, y: 16, z: 0 }
     case 1:
-      return { x: -30, y: -18, z: 0 }
+      return { x: players === 3? 9: -30, y: -18, z: 0 }
     case 2:
       return { x: 30, y: -18, z: 0 }
     default:
@@ -35,7 +35,7 @@ const getSpectatorPlayerPosition = (players: number, index: number) => {
   }
 }
 
-const computeRealIndex = (players: number, index: number, isSpectator: boolean) => {
-  if (!isSpectator && players === 3 && index === 2) return 3
-  return index
+const computeRealIndex = (players: number, index: number, _isSpectator: boolean) => {
+  if (players === 3 && index === 2) return 3
+   return index
 }

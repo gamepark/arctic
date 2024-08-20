@@ -15,8 +15,8 @@ import Walrus1 from '../images/cards/powers/PowerWalrus1.jpg'
 import Walrus2 from '../images/cards/powers/PowerWalrus2.jpg'
 
 class PowerCardDescription extends CardDescription {
-  height = 8.89
-  width = 6.35
+  width = 8.89
+  height = 6.35
 
   images = {
     [PowerCard.Bear1]: Bear1,

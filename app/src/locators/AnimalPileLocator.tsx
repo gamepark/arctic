@@ -1,3 +1,5 @@
+import { LocationType } from '@gamepark/arctic/material/LocationType'
+import { MaterialType } from '@gamepark/arctic/material/MaterialType'
 import { PlayerState } from '@gamepark/arctic/rules/PlayerState'
 import { getRelativePlayerIndex, isItemContext, MaterialContext, PileLocator } from '@gamepark/react-game'
 import { Coordinates, Location } from '@gamepark/rules-api'
@@ -45,9 +47,21 @@ class AnimalPileLocator extends PileLocator {
         if (context.player && index === 0) {
             position.x += animalCardDescription.width * 3.2
         } else {
-            position.x += animalCardDescription.width + 1.5
+            position.x += animalCardDescription.width + 1.8
         }
         return position
+    }
+
+    getLocations(context: MaterialContext): Location[] {
+        return context.rules.players.flatMap((player) => {
+            const cards = context.rules
+              .material(MaterialType.AnimalCard)
+              .location(LocationType.AnimalPile)
+              .player(player).length
+
+            if (cards) return []
+            return [{ type: LocationType.AnimalPile, player }]
+        })
     }
 }
 

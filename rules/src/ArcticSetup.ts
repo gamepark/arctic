@@ -7,7 +7,6 @@ import { animalCards } from './material/AnimalCard'
 import { Landscape } from './material/Landscape'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
-import { totemTiles } from './material/TotemTile'
 import { PlayerId } from './PlayerId'
 import { RuleId } from './rules/RuleId'
 
@@ -55,7 +54,7 @@ export class ArcticSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
   }
 
   setupTotem() {
-    const shuffledTotemTiles = shuffle(totemTiles)
+    const shuffledTotemTiles = shuffle(animals)
     for (const player of this.game.players) {
       this.material(MaterialType.TotemTile).createItem({
         id: shuffledTotemTiles.pop(), location: { type: LocationType.PlayerTotem, player }

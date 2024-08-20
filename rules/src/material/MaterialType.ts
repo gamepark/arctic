@@ -4,4 +4,5 @@ export enum MaterialType {
   PowerCard,
   TotemTile,
   TotemToken,
+  ScoringToken
 }

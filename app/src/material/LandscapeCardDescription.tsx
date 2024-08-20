@@ -7,6 +7,7 @@ import Landscape10 from '../images/cards/landscapes/Landscape10.jpg'
 import Landscape15 from '../images/cards/landscapes/Landscape15.jpg'
 import Landscape3 from '../images/cards/landscapes/Landscape3.jpg'
 import Landscape6 from '../images/cards/landscapes/Landscape6.jpg'
+import { LandscapeCardHelp } from './help/LandscapeCardHelp'
 
 class LandscapeCardDescription extends CardDescription {
 
@@ -20,6 +21,8 @@ class LandscapeCardDescription extends CardDescription {
   }
 
   staticItems = landscapes.map((landscape, index) => ({ id: landscape, location: { type: LocationType.TableCenter, x: index } }))
+
+  help = LandscapeCardHelp
 }
 
 export const landscapeCardDescription = new LandscapeCardDescription()

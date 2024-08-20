@@ -22,7 +22,7 @@ export const ArcticPlayerPanel: FC<ArcticPlayerPanelProps> = (props) => {
   return (
     <StyledPlayerPanel
       player={player}
-      css={longPanel(!gameOver && playerTime !== null)}
+      css={longPanel(!gameOver && !!playerTime)}
       timerOnRight
       backgroundImage={getBackground(player.id)}
       activeRing
@@ -50,7 +50,7 @@ const longPanel = (hasTimer: boolean) => css`
     top: -0.7em;
   }
   > h2 {
-    right: ${hasTimer? 3.7: 0.2}em;
+    right: ${hasTimer? 3.7: 0.2}em !important;
     top: unset;
     bottom: 0.2em;
     height: auto;

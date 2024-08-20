@@ -15,8 +15,8 @@ class PowerPileLocator extends FlexLocator {
   }
 
   getGap(location: Location, context: ItemContext): Partial<Coordinates> {
-    if (!context.player || location.player !== context.player) return { x: powerCardDescription.height * 0.3, z: 0.05 }
-    return { x: powerCardDescription.height + 0.2, z: 0.05 }
+    if (!context.player || location.player !== context.player) return { x: powerCardDescription.width * 0.3, z: 0.05 }
+    return { x: powerCardDescription.width + 0.2, z: 0.05 }
   }
 
   getCoordinates(location: Location, context: ItemContext): Coordinates {
@@ -35,9 +35,6 @@ class PowerPileLocator extends FlexLocator {
     }
     return position
   }
-
-  rotateZ = -90
-
 }
 
 export const powerPileLocator = new PowerPileLocator()

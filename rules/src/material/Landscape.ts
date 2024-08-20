@@ -1,4 +1,4 @@
-import { isEnumValue } from '@gamepark/rules-api'
+import { getEnumValues } from '@gamepark/rules-api'
 
 export enum Landscape {
   Landscape0 = 0,
@@ -9,4 +9,4 @@ export enum Landscape {
   Landscape15 = 15
 }
 
-export const landscapes = Object.values(Landscape).filter(isEnumValue)
+export const landscapes = getEnumValues(Landscape)

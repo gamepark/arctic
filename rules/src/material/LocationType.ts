@@ -10,4 +10,5 @@ export enum LocationType {
   AnimalPile,
   PowerPile,
   PenaltyZone,
+  Scoring
 }

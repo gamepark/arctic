@@ -1,18 +1,10 @@
 import { css } from '@emotion/react'
-import { PlayerState } from '@gamepark/arctic/rules/PlayerState'
-import { RuleId } from '@gamepark/arctic/rules/RuleId'
-import { DropAreaDescription, MaterialContext } from '@gamepark/react-game'
-import { Location } from '@gamepark/rules-api'
+import { DropAreaDescription } from '@gamepark/react-game'
 import Back from '../../images/cards/animals/AnimalBack1.jpg'
 import { animalCardDescription } from '../../material/AnimalCardDescription'
+import { PenaltyZoneHelp } from '../help/PenaltyZoneHelp'
 
 export class PenaltyZoneDescription extends DropAreaDescription {
-  isAlwaysVisible(location: Location, context: MaterialContext): boolean {
-    const playerState = new PlayerState(context.rules.game, location.player!)
-    if (context.rules.game.rule?.id === RuleId.DrawAnimalCards  && playerState.canDrawFromPenaltyCards) return true
-    return playerState.penalties.length === 0
-  }
-
   extraCss = css`
     &:before {
       content: '';
@@ -29,6 +21,8 @@ export class PenaltyZoneDescription extends DropAreaDescription {
       background-position: center;
     }
   `
+
+  help = PenaltyZoneHelp
 
   width = animalCardDescription.width * 1.2
   height = animalCardDescription.height * 1.2

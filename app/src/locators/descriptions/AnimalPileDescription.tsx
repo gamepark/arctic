@@ -6,6 +6,7 @@ import InPile from '../../images/icons/in-pile.png'
 import OnPile from '../../images/icons/on-pile.png'
 import UnderPile from '../../images/icons/under-pile.png'
 import { animalCardDescription } from '../../material/AnimalCardDescription'
+import { AnimalPileHelp } from '../help/AnimalPileHelp'
 
 export class AnimalPileDescription extends DropAreaDescription {
   getExtraCss(location: Location, context: LocationContext) {
@@ -48,6 +49,8 @@ export class AnimalPileDescription extends DropAreaDescription {
       background-repeat: no-repeat;
     `
   }
+
+  help = AnimalPileHelp
 
   width = animalCardDescription.width * 1.2
   height = animalCardDescription.height * 1.2

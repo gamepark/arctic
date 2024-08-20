@@ -38,8 +38,8 @@ const getPositionByPlayerCount = (players: number, index: number, isSpectator: b
 const getThreePlayerPanelPosition = (index: number, isSpectator: boolean) => {
   switch (index) {
     case 0: return isSpectator? css`left: 50%; bottom: 2em; transform: translateX(-50%) translateX(-68em)`: css`left: 50%; bottom: 1em; transform: translateX(-50%) translateX(-18em)`
-    case 1: return css`left: 50%; top: 8em; transform: translateX(-50%) translateX(${isSpectator? -68: -60.5}em)`
-    case 2: return css`left: 50%; top: 8em; transform: translateX(-50%) translateX(${isSpectator? 34.5: 60.5}em)`
+    case 1: return css`left: 50%; top: 8em; transform: translateX(-50%) translateX(${isSpectator? 0: -60.5}em)`
+    case 2: return isSpectator? css`left: 50%; bottom: 2em; transform: translateX(-50%) translateX(34.5em)`: css`left: 50%; top: 8em; transform: translateX(-50%) translateX(${isSpectator? 34.5: 60.5}em)`
   }
 
   return
@@ -59,7 +59,7 @@ const getFourPlayerPanelPosition = (index: number, isSpectator: boolean) => {
     case 0: return isSpectator? css`left: 50%; bottom: 2em; transform: translateX(-50%) translateX(-68em)`: css`left: 50%; bottom: 1em; transform: translateX(-50%) translateX(-18em)`
     case 1: return css`left: 50%; top: 8em; transform: translateX(-50%) translateX(${isSpectator? -68: -60.5}em)`
     case 2: return isSpectator? css`left: 50%; top: 8em; transform: translateX(-50%) translateX(34.5em)`: css`left: 50%; top: 8em; transform: translateX(-50%)`
-    case 3: return isSpectator? css`left: 50%; bottom: 2em; transform: translateX(-50%) translateX(${isSpectator? 34.5: 40.5}em)`: css`left: 50%; top: 8em; transform: translateX(-50%) translateX(60.5em)`
+    case 3: return isSpectator? css`left: 50%; bottom: 2em; transform: translateX(-50%) translateX(34.5em)`: css`left: 50%; top: 8em; transform: translateX(-50%) translateX(60.5em)`
   }
 
   return
