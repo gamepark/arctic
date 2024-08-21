@@ -44,7 +44,7 @@ class AnimalPileLocator extends PileLocator {
     getInnerPileCoordinates(location: Location, context: MaterialContext) {
         const index = getRelativePlayerIndex(context, location.player)
         const position = getPlayerPosition(context.rules.players.length, index, !context.player)
-        if (context.player && index === 0) {
+        if ((context.player && index === 0) || context.rules.players.length === 2) {
             position.x += animalCardDescription.width * 3.2
         } else {
             position.x += animalCardDescription.width + 1.8
@@ -63,6 +63,8 @@ class AnimalPileLocator extends PileLocator {
             return [{ type: LocationType.AnimalPile, player }]
         })
     }
+
+
 }
 
 export const animalPileLocator = new AnimalPileLocator()

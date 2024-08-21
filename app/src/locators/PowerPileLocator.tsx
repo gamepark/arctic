@@ -5,17 +5,17 @@ import { powerCardDescription } from '../material/PowerCardDescription'
 import { getPlayerPosition } from './PlayerPosition'
 
 class PowerPileLocator extends FlexLocator {
-  lineGap = { y: animalCardDescription.width - 0.4, z: 0.05 }
+  lineGap = { y: powerCardDescription.height - 0.4, z: 0.05 }
   lineSize = 2
 
 
   getLineSize(location: Location, context: ItemContext): number {
-    if (!context.player || location.player !== context.player) return 6
+    if (context.rules.players.length !== 2 && (!context.player || location.player !== context.player)) return 6
     return 2
   }
 
   getGap(location: Location, context: ItemContext): Partial<Coordinates> {
-    if (!context.player || location.player !== context.player) return { x: powerCardDescription.width * 0.3, z: 0.05 }
+    if (context.rules.players.length !== 2 && (!context.player || location.player !== context.player)) return { x: powerCardDescription.width * 0.3, z: 0.05 }
     return { x: powerCardDescription.width + 0.2, z: 0.05 }
   }
 
@@ -24,7 +24,10 @@ class PowerPileLocator extends FlexLocator {
     const position = getPlayerPosition(context.rules.players.length, index, !context.player)
     if ((context.player && index === 0) || context.rules.players.length === 2) {
       position.x += animalCardDescription.width * 5.5
-      position.y -= animalCardDescription.width * 0.7
+      position.y -= powerCardDescription.height * 0.7
+      if (context.rules.players.length === 2 && index === 1) {
+        position.y -= powerCardDescription.height * 0.3
+      }
     } else {
       if (context.player) {
         position.y += animalCardDescription.height

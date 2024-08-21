@@ -1,4 +1,4 @@
-import { CustomMove, isCustomMoveType, isMoveItemType, ItemMove, MaterialMove, MoveItem, PlayerTurnRule } from '@gamepark/rules-api'
+import { CustomMove, isCustomMoveType, isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { getAnimalFromCard, getDepositValue } from '../material/AnimalCard'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
@@ -23,7 +23,7 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
     const playerState = new PlayerState(this.game, this.player)
     if (animalPile && playerState.canPlaceCardUnderAnimalPile) {
       moves.push(
-        ...hand.moveItems({ type: LocationType.AnimalPile, player: this.player,  x: 0 })
+        ...hand.moveItems({ type: LocationType.AnimalPile, player: this.player, x: 0 })
       )
     } else if (animalPile && playerState.canPlaceCardUnderLastAnimalInPile) {
       moves.push(
@@ -32,7 +32,7 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
     }
 
     moves.push(
-      ...hand.moveItems({ type: LocationType.AnimalPile, player: this.player, x: animalPile, rotation: true })
+      ...hand.moveItems({ type: LocationType.AnimalPile, player: this.player, x: animalPile })
     )
 
     if (this.canModifyValue) {
@@ -57,30 +57,32 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
   afterItemMove(move: ItemMove): MaterialMove[] {
     if (!isMoveItemType(MaterialType.AnimalCard)(move)) return []
 
-    if (move.location.type === LocationType.AnimalPile) {
+    const moves: MaterialMove[] = []
+    if (move.location.type === LocationType.AnimalPile || move.location.type === LocationType.PenaltyZone) {
       const playerState = new PlayerState(this.game, this.player)
 
       this.memorize(Memory.DepositValue, (value: number) => value - 1)
       const depositValue = playerState.depositValue
       if (depositValue === 0) {
-        return [
-          ...this.movePowerCard(move),
-          this.startRule(RuleId.MoveAnimalTokens)
-        ]
+        moves.push(...this.movePowerCard())
+        moves.push(this.startRule(RuleId.MoveAnimalTokens))
+        return moves
       }
-      if (!this.hand.length) {
-        return [
-          ...this
-            .material(MaterialType.AnimalCard)
-            .location(LocationType.AnimalCardsDeck)
-            .deck()
-            .limit(depositValue)
-            .moveItems({
-              type: LocationType.PenaltyZone,
-              player: this.player
-            }),
-          this.startRule(RuleId.MoveAnimalTokens)
-        ]
+
+      if (move.location.type === LocationType.AnimalPile) {
+        if (!this.hand.length) {
+          moves.push(
+            ...this
+              .material(MaterialType.AnimalCard)
+              .location(LocationType.AnimalCardsDeck)
+              .deck()
+              .limit(depositValue)
+              .moveItems({
+                type: LocationType.PenaltyZone,
+                player: this.player
+              })
+          )
+        }
       }
     }
 
@@ -88,12 +90,14 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
       this.refreshDepositValue()
     }
 
-    return []
+    return moves
   }
 
-  movePowerCard(move: MoveItem) {
-    if (move.location.x === undefined) return []
-    const animalId = getAnimalFromCard(this.material(MaterialType.AnimalCard).getItem(move.itemIndex)!.id)
+  movePowerCard(): MaterialMove[] {
+    //if (move.location.x === undefined) return []
+    const playerState = new PlayerState(this.game, this.player)
+    const topCard = playerState.topPileCard!
+    const animalId = getAnimalFromCard(topCard.id)
     const powerCard = this.material(MaterialType.PowerCard).id((id: PowerCard) => Math.floor(id / 10) === animalId)
     if (powerCard.getItem()?.location.player === this.player) return []
     return powerCard.moveItems({ type: LocationType.PowerPile, player: this.player })
