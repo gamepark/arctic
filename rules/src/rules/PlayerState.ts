@@ -86,7 +86,16 @@ export class PlayerState extends MaterialRulesPart {
       .player(this.player)
   }
 
-  get canModifyValue() {
+  get canModifyDrawValue() {
+    if (this.remind(Memory.Modifier) !== undefined) return false
+    return this
+      .material(MaterialType.PowerCard)
+      .location(LocationType.PowerPile)
+      .player(this.player)
+      .id((id: PowerCard) => id === PowerCard.Moose1).length > 0
+  }
+
+  get canModifyPlayValue() {
     if (this.remind(Memory.Modifier) !== undefined) return false
     return this
       .material(MaterialType.PowerCard)
@@ -105,6 +114,10 @@ export class PlayerState extends MaterialRulesPart {
   }
 
   get canMoveTokenOnceMore() {
+    console.log(this.player, this
+      .material(MaterialType.PowerCard)
+      .location(LocationType.PowerPile)
+      .player(this.player))
     return !this.remind(Memory.WalrusUsed)
       && (this.canMoveAssociatedAnimalTokenOnceMore || this.canMoveMainAnimalTokenOnceMore)
   }

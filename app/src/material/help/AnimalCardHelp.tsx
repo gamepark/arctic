@@ -5,7 +5,8 @@ import { Animal } from '@gamepark/arctic/material/Animal'
 import { getAnimalFromCard, getAssociatedAnimalFromCard, getDepositValue, getDrawValue } from '@gamepark/arctic/material/AnimalCard'
 import { LocationType } from '@gamepark/arctic/material/LocationType'
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
-import { MaterialHelpProps, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { MaterialHelpProps, PlayMoveButton, useLegalMove, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { isMoveItemType } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import Draw from '../../images/icons/draw.jpg'
@@ -19,7 +20,18 @@ import Walrus from '../../images/tokens/WalrusToken.png'
 
 export const AnimalCardHelp: FC<MaterialHelpProps> = (props) => {
   const { t } = useTranslation()
-  const { item } = props
+  const { item, itemIndex, closeDialog } = props
+  const placeOnTop = useLegalMove((move) =>
+    isMoveItemType(MaterialType.AnimalCard)(move)
+    && move.location.type === LocationType.AnimalPile && move.location.x === undefined
+    && move.itemIndex === itemIndex
+  )
+
+  const discard = useLegalMove((move) =>
+    isMoveItemType(MaterialType.AnimalCard)(move)
+    && move.location.type === LocationType.PenaltyZone
+    && move.itemIndex === itemIndex
+  )
 
   return (
     <>
@@ -33,6 +45,20 @@ export const AnimalCardHelp: FC<MaterialHelpProps> = (props) => {
       {item.location?.type === LocationType.PenaltyZone && (
         <PenaltyZoneLocation {...props} />
       )}
+      {placeOnTop && (
+        <p>
+          <PlayMoveButton move={placeOnTop} onPlay={closeDialog}>
+            <Trans defaults="animal.play" />
+          </PlayMoveButton>
+        </p>
+      )}
+      {discard && (
+        <p>
+          <PlayMoveButton move={discard} onPlay={closeDialog}>
+            <Trans defaults="animal.discard" />
+          </PlayMoveButton>
+        </p>
+      )}
     </>
   )
 }
@@ -45,6 +71,7 @@ const VisibleAnimalCardHelp: FC<MaterialHelpProps> = (props) => {
   const name = usePlayerName(item.location?.player)
   const playerId = usePlayerId()
   const mine = item.location?.player && item.location.player === playerId
+
 
   if (item.location?.rotation && item.location.type === LocationType.AnimalPile) {
     return (

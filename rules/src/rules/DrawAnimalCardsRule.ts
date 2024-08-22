@@ -20,7 +20,7 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
   getPlayerMoves() {
     const moves: MaterialMove[] = []
     const playerState = new PlayerState(this.game, this.player)
-    if (playerState.canModifyValue) {
+    if (playerState.canModifyDrawValue) {
       moves.push(
         this.customMove(CustomMoveType.ModifyValue, 1),
         this.customMove(CustomMoveType.ModifyValue, -1)

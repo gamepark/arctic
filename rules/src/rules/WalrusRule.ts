@@ -10,6 +10,7 @@ import { RuleId } from './RuleId'
 export class WalrusRule extends PlayerTurnRule {
 
   getPlayerMoves() {
+    console.log("???")
     const { mainLandscapeIndex, mainToken, associatedLandscapeIndex, associatedToken } = this.animalsTokens
     const playerState = new PlayerState(this.game, this.player)
     const canMoveMainAnimalTokenOnceMore = playerState.canMoveMainAnimalTokenOnceMore

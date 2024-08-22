@@ -32,10 +32,10 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
     }
 
     moves.push(
-      ...hand.moveItems({ type: LocationType.AnimalPile, player: this.player, x: animalPile })
+      ...hand.moveItems({ type: LocationType.AnimalPile, player: this.player })
     )
 
-    if (this.canModifyValue) {
+    if (playerState.canModifyPlayValue) {
       moves.push(
         this.customMove(CustomMoveType.ModifyValue, 1),
         this.customMove(CustomMoveType.ModifyValue, -1)
@@ -126,15 +126,6 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
       .material(MaterialType.AnimalCard)
       .location(LocationType.AnimalPile)
       .player(this.player)
-  }
-
-  get canModifyValue() {
-    if (this.remind(Memory.Modifier) !== undefined) return false
-    return this
-      .material(MaterialType.PowerCard)
-      .location(LocationType.PowerPile)
-      .player(this.player)
-      .id((id: PowerCard) => id === PowerCard.Moose1).length > 0
   }
 
   onRuleEnd() {

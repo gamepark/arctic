@@ -13,6 +13,7 @@ import Puffin1 from '../images/cards/powers/PowerPuffin1.jpg'
 import Puffin2 from '../images/cards/powers/PowerPuffin2.jpg'
 import Walrus1 from '../images/cards/powers/PowerWalrus1.jpg'
 import Walrus2 from '../images/cards/powers/PowerWalrus2.jpg'
+import { PowerCardHelp } from './help/PowerCardHelp'
 
 class PowerCardDescription extends CardDescription {
   width = 8.89
@@ -32,6 +33,8 @@ class PowerCardDescription extends CardDescription {
     [PowerCard.Walrus1]: Walrus1,
     [PowerCard.Walrus2]: Walrus2
   }
+
+  help = PowerCardHelp
 }
 
 export const powerCardDescription = new PowerCardDescription()
