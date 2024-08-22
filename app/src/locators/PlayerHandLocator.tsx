@@ -16,6 +16,12 @@ class PlayerHandLocator extends HandLocator {
     }
   }
 
+  getHoverTransform(item: MaterialItem, context: ItemContext): string[] {
+    const transform = super.getHoverTransform(item, context)
+    transform.push('translateY(-25%)')
+    return transform
+  }
+
   getBaseAngle(location: Location, context: MaterialContext): number {
     if (context.rules.players.length !== 2) return 0
     if (location.player !== (context.player ?? context.rules.players[0])) return 180
