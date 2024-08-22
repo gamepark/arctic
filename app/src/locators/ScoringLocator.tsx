@@ -13,6 +13,11 @@ class ScoringLocator extends DeckLocator {
     }
 
   }
+
+  getHoverTransform() {
+    return ['scale(3)', `rotateZ(${-this.rotateZ}${this.rotationUnit})`]
+  }
+
   rotateZ = 10
 }
 
