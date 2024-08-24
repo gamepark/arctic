@@ -5,7 +5,7 @@ import { powerCardDescription } from '../material/PowerCardDescription'
 import { getPlayerPosition } from './PlayerPosition'
 
 class PowerPileLocator extends FlexLocator {
-  lineGap = { y: powerCardDescription.height - 0.4, z: 0.05 }
+  lineGap = { y: powerCardDescription.height - 0.8, z: 0.05 }
   lineSize = 2
 
 
