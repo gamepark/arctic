@@ -114,10 +114,6 @@ export class PlayerState extends MaterialRulesPart {
   }
 
   get canMoveTokenOnceMore() {
-    console.log(this.player, this
-      .material(MaterialType.PowerCard)
-      .location(LocationType.PowerPile)
-      .player(this.player))
     return !this.remind(Memory.WalrusUsed)
       && (this.canMoveAssociatedAnimalTokenOnceMore || this.canMoveMainAnimalTokenOnceMore)
   }
