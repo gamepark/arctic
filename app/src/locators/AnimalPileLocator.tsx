@@ -1,5 +1,6 @@
 import { LocationType } from '@gamepark/arctic/material/LocationType'
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
+import { ScoringHelper } from '@gamepark/arctic/rules/helper/ScoringHelper'
 import { PlayerState } from '@gamepark/arctic/rules/PlayerState'
 import { getRelativePlayerIndex, isItemContext, MaterialContext, PileLocator } from '@gamepark/react-game'
 import { Coordinates, Location } from '@gamepark/rules-api'
@@ -10,6 +11,7 @@ import { getPlayerPosition } from './PlayerPosition'
 class AnimalPileLocator extends PileLocator {
     getCoordinates(location: Location, context: MaterialContext): Coordinates {
         const { rules } = context
+        if (!rules.game.rule) return this.getEndOfGamePosition(location, context)
         const coordinates = this.getInnerPileCoordinates(location, context)
         if (isItemContext(context)) return coordinates
         const playerState = new PlayerState(rules.game, location.player!)
@@ -32,11 +34,30 @@ class AnimalPileLocator extends PileLocator {
         return coordinates
     }
 
+    getEndOfGamePosition(location: Location, context: MaterialContext): Coordinates {
+        const coordinates = { x: -30, y: -20, z: 30 }
+
+        coordinates.y += (location.player! - 1) * animalCardDescription.height * 1.5
+        const group = new ScoringHelper(context.rules.game, location.player!).getGroup(location)
+        if (group.length > 1) {
+            coordinates.y += 1
+        } else {
+            coordinates.y -= 0.5
+            coordinates.z = 5
+        }
+        const count = context.rules.material(MaterialType.AnimalCard).location(LocationType.AnimalPile).player(location.player).length
+        coordinates.x += location.x! * (90 / count)
+
+        return coordinates
+    }
+
     locationDescription = new AnimalPileDescription()
     maxAngle = 5
     limit = 100
 
     getMaxAngle(location: Location, context: MaterialContext) {
+        const { rules } = context
+        if (!rules.game.rule) return 0
         if (isItemContext(context)) return super.getMaxAngle(location, context)
         return 0
     }

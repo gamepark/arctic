@@ -6,9 +6,6 @@ import { getPlayerPosition } from './PlayerPosition'
 
 class PowerPileLocator extends FlexLocator {
   lineGap = { y: powerCardDescription.height - 0.8, z: 0.05 }
-  lineSize = 2
-
-
   getLineSize(location: Location, context: ItemContext): number {
     if (context.rules.players.length !== 2 && (!context.player || location.player !== context.player)) return 6
     return 2

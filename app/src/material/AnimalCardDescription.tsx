@@ -1,6 +1,8 @@
+import { css } from '@emotion/react'
 import { AnimalCard } from '@gamepark/arctic/material/AnimalCard'
 import { LocationType } from '@gamepark/arctic/material/LocationType'
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
+import { ScoringHelper } from '@gamepark/arctic/rules/helper/ScoringHelper'
 import { CardDescription, ItemContext, MaterialContext } from '@gamepark/react-game'
 import { isMoveItemType, MaterialItem, MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
 import Back from '../images/cards/animals/AnimalBack1.jpg'
@@ -127,9 +129,9 @@ import WalrusPuffin2 from '../images/cards/animals/WalrusPuffin2.jpg'
 import WalrusPuffin4 from '../images/cards/animals/WalrusPuffin4.jpg'
 import WalrusPuffin5 from '../images/cards/animals/WalrusPuffin5.jpg'
 import Draw from '../images/icons/draw.jpg'
-import Play from '../images/icons/play.jpg'
 import InPile from '../images/icons/in-pile.png'
 import OnPile from '../images/icons/on-pile.png'
+import Play from '../images/icons/play.jpg'
 import UnderPile from '../images/icons/under-pile.png'
 import { AnimalCardHelp } from './help/AnimalCardHelp'
 import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
@@ -275,6 +277,14 @@ class AnimalCardDescription extends CardDescription {
     ]
   }
 
+  getItemExtraCss(item: MaterialItem, context: ItemContext) {
+    const { rules } = context
+    if (rules.game.rule || item.location.type !== LocationType.AnimalPile) return super.getItemExtraCss(item, context)
+    const helper = new ScoringHelper(rules.game, item.location.player!)
+    if (helper.getGroup(item.location)?.length === 1) return transparentCss
+    return super.getItemExtraCss(item, context)
+  }
+
   isFlipped(item: Partial<MaterialItem>, context: MaterialContext): boolean {
     return super.isFlipped(item, context) || item.location?.type === LocationType.PenaltyZone || item.location?.rotation
   }
@@ -294,5 +304,9 @@ class AnimalCardDescription extends CardDescription {
 
   }
 }
+
+const transparentCss = css`
+  filter: grayscale(1);
+`
 
 export const animalCardDescription = new AnimalCardDescription()
