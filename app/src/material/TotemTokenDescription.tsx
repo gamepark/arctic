@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { TotemToken } from '@gamepark/arctic/material/TotemToken'
+import { Animal } from '@gamepark/arctic/material/Animal'
 import { TokenDescription } from '@gamepark/react-game'
 
 import Bear from '../images/tokens/BearToken.png'
@@ -22,12 +22,12 @@ class TotemTokenDescription extends TokenDescription {
     }
 
     images = {
-        [TotemToken.Bear]: Bear,
-        [TotemToken.Fox]: Fox,
-        [TotemToken.Moose]: Moose,
-        [TotemToken.Orca]: Orca,
-        [TotemToken.Puffin]: Puffin,
-        [TotemToken.Walrus]: Walrus,
+        [Animal.Bear]: Bear,
+        [Animal.Fox]: Fox,
+        [Animal.Moose]: Moose,
+        [Animal.Orca]: Orca,
+        [Animal.Puffin]: Puffin,
+        [Animal.Walrus]: Walrus,
     }
 
     help = TotemTokenHelp

@@ -1,4 +1,5 @@
 import {
+  CompetitiveScore,
   FillGapStrategy,
   hideItemId,
   hideItemIdToOthers,
@@ -14,6 +15,7 @@ import { PlayerId } from './PlayerId'
 import { BearRule } from './rules/BearRule'
 import { DiscardCardsRule } from './rules/DiscardCardsRule'
 import { DrawAnimalCardsRule } from './rules/DrawAnimalCardsRule'
+import { ScoringHelper } from './rules/helper/ScoringHelper'
 import { MoveAnimalTokensRule } from './rules/MoveAnimalTokensRule'
 import { PlayAnimalCardsRule } from './rules/PlayAnimalCardsRule'
 import { PuffinRule } from './rules/PuffinRule'
@@ -27,7 +29,8 @@ import { WalrusRule } from './rules/WalrusRule'
  * It must follow Game Park "Rules" API so that the Game Park server can enforce the rules.
  */
 export class ArcticRules extends SecretMaterialRules<PlayerId, MaterialType, LocationType>
-  implements TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId> {
+  implements TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId>,
+    CompetitiveScore<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId>{
   rules = {
     [RuleId.PlayAnimalCards]: PlayAnimalCardsRule,
     [RuleId.MoveAnimalTokens]: MoveAnimalTokensRule,
@@ -76,4 +79,9 @@ export class ArcticRules extends SecretMaterialRules<PlayerId, MaterialType, Loc
   giveTime(): number {
     return 60
   }
+
+  getScore(playerId: PlayerId): number {
+    return new ScoringHelper(this.game, playerId).score
+  }
+
 }

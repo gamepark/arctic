@@ -1,6 +1,8 @@
 import { MaterialGame, MaterialItem, MaterialRulesPart, Location } from '@gamepark/rules-api'
 import { Animal } from '../../material/Animal'
 import { getAnimalFromCard } from '../../material/AnimalCard'
+import { LocationType } from '../../material/LocationType'
+import { MaterialType } from '../../material/MaterialType'
 import { PlayerId } from '../../PlayerId'
 import { PlayerState } from '../PlayerState'
 import last from 'lodash/last'
@@ -14,7 +16,16 @@ export class ScoringHelper extends MaterialRulesPart {
   }
 
   get score() {
+    return this.pileScore - this.penalties + this.forestScore + this.differentAnimals
+  }
+
+  get pileScore() {
     return sum(this.groups.map((group, groupIndex) => this.getGroupScore(groupIndex, getAnimalFromCard(group[0].id), group.length))) ?? 0
+  }
+
+  get differentAnimals() {
+    const validGroups = this.groups.filter((group, groupIndex) => this.getGroupScore(groupIndex, getAnimalFromCard(group[0].id), group.length) > 0)
+    return [0, 0, 1, 3, 6, 10, 15][validGroups.length]
   }
 
   getGroup(location: Location) {
@@ -59,5 +70,29 @@ export class ScoringHelper extends MaterialRulesPart {
 
   get animalPile() {
     return this.playerState.animalPile.sort((item) => item.location.x!)
+  }
+
+  get penalties() {
+    return this.material(MaterialType.AnimalCard)
+      .location(LocationType.PenaltyZone)
+      .player(this.player)
+      .length
+  }
+
+  get forestScore() {
+    const myAnimalTokenId = this.myAnimalTokenId
+    return this
+      .material(MaterialType.TotemToken)
+      .id((id) => id === myAnimalTokenId)
+      .getItem()!.location.id
+
+  }
+
+  get myAnimalTokenId() {
+    return this
+      .material(MaterialType.TotemTile)
+      .player(this.player)
+      .getItem()!.id
+
   }
 }
