@@ -4,6 +4,7 @@ import { PlayerId } from '@gamepark/arctic/PlayerId'
 import { Locator } from '@gamepark/react-game'
 import { animalCardsDeckLocator } from './AnimalCardsDeckLocator'
 import { animalPileLocator } from './AnimalPileLocator'
+import { animalPileScoringLocator } from './AnimalPileScoringLocator'
 import { landscapeCardLocator } from './LandscapeCardLocator'
 import { penaltyZoneLocator } from './PenaltyZoneLocator'
 import { playerHandLocator } from './PlayerHandLocator'
@@ -28,4 +29,5 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerId, MaterialTy
   [LocationType.PowerPile]: powerPileLocator,
   [LocationType.PenaltyZone]: penaltyZoneLocator,
   [LocationType.Scoring]: scoringLocator,
+  [LocationType.AnimalPileScoring]: animalPileScoringLocator,
 }

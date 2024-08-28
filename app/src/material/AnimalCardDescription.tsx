@@ -4,7 +4,7 @@ import { LocationType } from '@gamepark/arctic/material/LocationType'
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
 import { ScoringHelper } from '@gamepark/arctic/rules/helper/ScoringHelper'
 import { CardDescription, ItemContext, MaterialContext } from '@gamepark/react-game'
-import { isMoveItemType, MaterialItem, MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
+import { MaterialMoveBuilder, isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import Back from '../images/cards/animals/AnimalBack1.jpg'
 
 // Import images for all animal cards
@@ -134,7 +134,6 @@ import OnPile from '../images/icons/on-pile.png'
 import Play from '../images/icons/play.jpg'
 import UnderPile from '../images/icons/under-pile.png'
 import { AnimalCardHelp } from './help/AnimalCardHelp'
-import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
 
 class AnimalCardDescription extends CardDescription {
   height = 8.89
@@ -281,7 +280,7 @@ class AnimalCardDescription extends CardDescription {
     const { rules } = context
     if (rules.game.rule || item.location.type !== LocationType.AnimalPile) return super.getItemExtraCss(item, context)
     const helper = new ScoringHelper(rules.game, item.location.player!)
-    if (helper.getGroup(item.location)?.length === 1) return transparentCss
+    if (helper.getGroup(item.location)?.length === 12000) return transparentCss
     return super.getItemExtraCss(item, context)
   }
 
@@ -298,11 +297,10 @@ class AnimalCardDescription extends CardDescription {
   }
 
   displayHelp(item: MaterialItem<number, number>, context: ItemContext) {
-    if (item.location.type == LocationType.AnimalCardsDeck || item.location.type === LocationType.Reserve) return displayLocationHelp(item.location)
-      return super.displayHelp(item, context)
-
-
-  }
+    if (!context.rules.game.rule && item.location.type === LocationType.AnimalPile) return MaterialMoveBuilder.displayLocationHelp({ type: LocationType.AnimalPileScoring, player: item.location.player })
+    if (item.location.type === LocationType.AnimalCardsDeck || item.location.type === LocationType.Reserve) return MaterialMoveBuilder.displayLocationHelp(item.location)
+    return super.displayHelp(item, context)
+}
 }
 
 const transparentCss = css`

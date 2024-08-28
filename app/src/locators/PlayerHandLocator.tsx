@@ -16,7 +16,9 @@ class PlayerHandLocator extends HandLocator {
     }
   }
 
+
   getHoverTransform(item: MaterialItem, context: ItemContext): string[] {
+    if (item.location.type === LocationType.PlayerHand && context.player !== item.location.player) return []
     const transform = super.getHoverTransform(item, context)
     transform.push('translateY(-25%)')
     return transform

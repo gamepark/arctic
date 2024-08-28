@@ -1,8 +1,10 @@
 import { MaterialGame, MaterialItem, MaterialRulesPart, Location } from '@gamepark/rules-api'
+import { Animal } from '../../material/Animal'
 import { getAnimalFromCard } from '../../material/AnimalCard'
 import { PlayerId } from '../../PlayerId'
 import { PlayerState } from '../PlayerState'
 import last from 'lodash/last'
+import sum from 'lodash/sum'
 
 export class ScoringHelper extends MaterialRulesPart {
   private playerState: PlayerState
@@ -12,21 +14,20 @@ export class ScoringHelper extends MaterialRulesPart {
   }
 
   get score() {
-    return 0
+    return sum(this.groups.map((group, groupIndex) => this.getGroupScore(groupIndex, getAnimalFromCard(group[0].id), group.length))) ?? 0
   }
 
   getGroup(location: Location) {
     const index = this.getGroupIndex(location)
-    return this.getGroups()[index]
+    return this.groups[index]
   }
 
   getGroupIndex(location: Location) {
-    console.log(this.getGroups())
-    return this.getGroups().findIndex((items) => items.some((item) => item.location.x === location.x))
+    return this.groups.findIndex((items) => items.some((item) => item.location.x === location.x))
 
   }
 
-  getGroups() {
+  get groups() {
     const cards: MaterialItem[][] = []
     for (const card of this.animalPile.getItems()) {
       if (!cards.length) {
@@ -42,6 +43,18 @@ export class ScoringHelper extends MaterialRulesPart {
     }
 
     return cards
+  }
+
+  getGroupScore(groupIndex: number, animalId: Animal, size: number) {
+    const otherPreviousGroupOrGreaterThan = this.groups.find(
+      (group, index) => (
+        ((index < groupIndex && group.length >= size) || group.length > size) &&
+        (group.some((item) => getAnimalFromCard(item.id) === animalId))
+      )
+    )
+    if (otherPreviousGroupOrGreaterThan) return 0
+    if (size >= 6) return 15
+    return [0, 0, 1, 3, 6, 10][size]
   }
 
   get animalPile() {

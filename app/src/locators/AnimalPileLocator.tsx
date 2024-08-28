@@ -11,7 +11,7 @@ import { getPlayerPosition } from './PlayerPosition'
 class AnimalPileLocator extends PileLocator {
     getCoordinates(location: Location, context: MaterialContext): Coordinates {
         const { rules } = context
-        if (!rules.game.rule) return this.getEndOfGamePosition(location, context)
+          //if (!rules.game.rule) return this.getEndOfGamePosition(location, context)
         const coordinates = this.getInnerPileCoordinates(location, context)
         if (isItemContext(context)) return coordinates
         const playerState = new PlayerState(rules.game, location.player!)
@@ -56,8 +56,6 @@ class AnimalPileLocator extends PileLocator {
     limit = 100
 
     getMaxAngle(location: Location, context: MaterialContext) {
-        const { rules } = context
-        if (!rules.game.rule) return 0
         if (isItemContext(context)) return super.getMaxAngle(location, context)
         return 0
     }
@@ -84,8 +82,6 @@ class AnimalPileLocator extends PileLocator {
             return [{ type: LocationType.AnimalPile, player }]
         })
     }
-
-
 }
 
 export const animalPileLocator = new AnimalPileLocator()
