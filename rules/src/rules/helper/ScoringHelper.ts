@@ -1,5 +1,5 @@
 import { MaterialGame, MaterialItem, MaterialRulesPart, Location } from '@gamepark/rules-api'
-import { Animal } from '../../material/Animal'
+import { Animal, animals } from '../../material/Animal'
 import { getAnimalFromCard } from '../../material/AnimalCard'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
@@ -7,6 +7,7 @@ import { PlayerId } from '../../PlayerId'
 import { PlayerState } from '../PlayerState'
 import last from 'lodash/last'
 import sum from 'lodash/sum'
+import max from 'lodash/max'
 
 export class ScoringHelper extends MaterialRulesPart {
   private playerState: PlayerState
@@ -20,7 +21,15 @@ export class ScoringHelper extends MaterialRulesPart {
   }
 
   get pileScore() {
-    return sum(this.groups.map((group, groupIndex) => this.getGroupScore(groupIndex, getAnimalFromCard(group[0].id), group.length))) ?? 0
+    return sum(animals.map((animal) => this.getAnimalScore(animal))) ?? 0
+  }
+
+  getAnimalScore(animal: Animal) {
+    return max(
+      this
+        .getAnimalGroups(animal)
+        .map((group, groupIndex) => this.getGroupScore(groupIndex, animal, group.length))
+    ) ?? 0
   }
 
   get differentAnimals() {
@@ -35,7 +44,6 @@ export class ScoringHelper extends MaterialRulesPart {
 
   getGroupIndex(location: Location) {
     return this.groups.findIndex((items) => items.some((item) => item.location.x === location.x))
-
   }
 
   get groups() {
@@ -54,6 +62,12 @@ export class ScoringHelper extends MaterialRulesPart {
     }
 
     return cards
+  }
+
+  getAnimalGroups(animal: Animal) {
+    return this
+      .groups
+      .filter((group) => group.some((item) => getAnimalFromCard(item.id) === animal))
   }
 
   getGroupScore(groupIndex: number, animalId: Animal, size: number) {
