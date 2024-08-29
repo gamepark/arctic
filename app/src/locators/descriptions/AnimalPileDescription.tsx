@@ -14,7 +14,7 @@ export class AnimalPileDescription extends DropAreaDescription {
     const playerState = new PlayerState(rules.game, location.player!)
     const animalPileLength = playerState.animalPile.length
     const canPlaceCardUnderAnimalPile = playerState.canPlaceCardUnderAnimalPile
-    if (canPlaceCardUnderAnimalPile && location.x !== animalPileLength) {
+    if (canPlaceCardUnderAnimalPile && location.x !== undefined) {
       return css`
         background-size: 4em 4em;
         background-image: url(${UnderPile});
@@ -22,6 +22,7 @@ export class AnimalPileDescription extends DropAreaDescription {
         background-repeat: no-repeat;
       `
     }
+
 
     const canPlaceCardUnderLastAnimalInPile = playerState.canPlaceCardUnderLastAnimalInPile
     if (canPlaceCardUnderLastAnimalInPile && location.x === (animalPileLength - 1)) {
