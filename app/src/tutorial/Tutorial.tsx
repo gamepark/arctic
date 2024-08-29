@@ -17,7 +17,7 @@ const me = 1
 const opponent = 2
 
 export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationType> {
-  version = 1
+  version = 2
   options = { players: 2 }
   setup = new TutorialSetup()
 
@@ -470,7 +470,8 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           left: 1,
           right: 1
         }
-      })
+      }),
+      move: {}
     }, {
       popup: {
         text: () => (
@@ -496,8 +497,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           left: 1,
           right: 1
         }
-      }),
-      move: {}
+      })
     }, {
       popup: {
         text: () => (
@@ -512,10 +512,18 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <Trans defaults="tuto.moose.draw-more">
             <strong/>
           </Trans>
-        )
-      }
-    },
-    {
+        ),
+        position: { y: -20 }
+      },
+      focus: (game) => ({
+        materials: [
+          this.material(game, MaterialType.PowerCard).id(PowerCard.Moose1)
+        ],
+        margin: {
+          top: 5,
+          right: 15
+        }
+      }),
       move: {
         filter: (move) => isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data === 1
       }

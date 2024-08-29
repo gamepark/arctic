@@ -19,6 +19,10 @@ export const DrawAnimalCardsHeader = () => {
   const canTakeCardsOnDeck = playerState.canTakeCardsOnDeck
   const canDrawFromPenaltyCards = playerState.canDrawFromPenaltyCards
 
+  if (game.tutorial?.step === 30) {
+    return <Trans defaults="header.draw.tutorial.moose" values={{ number: depositValue }}/>
+  }
+
   if (itsMe) {
     if (canTakeCardsOnDeck && canDrawFromPenaltyCards) {
       return <Trans defaults="header.draw.pile-penalty.you" values={{ number: depositValue }}/>
