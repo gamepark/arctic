@@ -3,7 +3,7 @@ import { css } from '@emotion/react'
 import { LocationType } from '@gamepark/arctic/material/LocationType'
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
 import { MaterialHelpProps, PlayMoveButton, useLegalMove } from '@gamepark/react-game'
-import { isMoveItemType } from '@gamepark/rules-api/dist/material/moves/items/MoveItem'
+import { isMoveItemType } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 

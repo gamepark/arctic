@@ -5,7 +5,7 @@ import { PowerCard } from '@gamepark/arctic/material/PowerCard'
 import { CustomMoveType } from '@gamepark/arctic/rules/CustomMoveType'
 import { RuleId } from '@gamepark/arctic/rules/RuleId'
 import { MaterialHelpProps, PlayMoveButton, useLegalMove, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
-import { isCustomMoveType } from '@gamepark/rules-api/dist/material/moves/CustomMove'
+import { isCustomMoveType } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 
