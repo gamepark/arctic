@@ -95,6 +95,8 @@ export class ScoringHelper extends MaterialRulesPart {
 
   get forestScore() {
     const myAnimalTokenId = this.myAnimalTokenId
+    console.log(myAnimalTokenId, this
+      .material(MaterialType.TotemToken).getItems())
     return this
       .material(MaterialType.TotemToken)
       .id((id) => id === myAnimalTokenId)

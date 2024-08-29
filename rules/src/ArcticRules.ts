@@ -3,7 +3,7 @@ import {
   FillGapStrategy,
   hideItemId,
   hideItemIdToOthers,
-  MaterialGame,
+  MaterialGame, MaterialItem,
   MaterialMove,
   PositiveSequenceStrategy,
   SecretMaterialRules,
@@ -68,7 +68,7 @@ export class ArcticRules extends SecretMaterialRules<PlayerId, MaterialType, Loc
       [LocationType.PenaltyZone]: hideItemIdToOthers
     },
     [MaterialType.TotemTile]: {
-      [LocationType.PlayerTotem]: hideItemIdToOthers
+      [LocationType.PlayerTotem]: hideItemWhileNotRotated
     }
   }
 
@@ -84,4 +84,11 @@ export class ArcticRules extends SecretMaterialRules<PlayerId, MaterialType, Loc
     return new ScoringHelper(this.game, playerId).score
   }
 
+}
+
+export const hideItemWhileNotRotated = <P extends number = number, L extends number = number>(
+  item: MaterialItem<P, L>, player?: P
+): string[] => {
+  if (!item.location.rotation) return hideItemIdToOthers(item, player)
+  return []
 }
