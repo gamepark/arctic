@@ -119,7 +119,28 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       ),
       position: {
         y: -20
+      },
+      size: { width: 120 }
+    },
+    focus: (game) => ({
+      materials: [
+        this.material(game, MaterialType.PowerCard).id(PowerCard.Orca1)
+      ],
+      margin: {
+        top: 6
       }
+    })
+  }, {
+    popup: {
+      text: () => (
+        <Trans defaults="tuto.power.orca">
+          <strong/>
+        </Trans>
+      ),
+      position: {
+        y: -20
+      },
+      size: { width: 120 }
     },
     focus: (game) => ({
       materials: [
