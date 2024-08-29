@@ -274,25 +274,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         right: 3,
         left: 3
       }
-    })
+    }),
+    move: {}
   },
-    {
-      focus: (game) => ({
-        materials: [
-          this.material(game, MaterialType.AnimalCard).location(LocationType.River),
-          this.material(game, MaterialType.AnimalCard).location(LocationType.PlayerHand).player(me)
-        ],
-        locations: [
-          this.location(LocationType.PlayerHand).player(me).location
-        ],
-        margin: {
-          top: 5,
-          left: 2,
-          right: 2
-        }
-      }),
-      move: {}
-    },
     {
       move: {}
     },
