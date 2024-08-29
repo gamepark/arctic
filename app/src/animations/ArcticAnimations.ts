@@ -1,5 +1,6 @@
 import { LocationType } from '@gamepark/arctic/material/LocationType'
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
+import { RuleId } from '@gamepark/arctic/rules/RuleId'
 import { MaterialGameAnimations } from '@gamepark/react-game'
 import { isMoveItemType } from '@gamepark/rules-api'
 
@@ -20,3 +21,8 @@ arcticAnimations
   .when()
   .move((move) =>  isMoveItemType(MaterialType.AnimalCard)(move) && move.location.type === LocationType.AnimalPile)
   .duration(0.6)
+
+arcticAnimations
+  .when()
+  .rule(RuleId.Scoring)
+  .duration(0)

@@ -1,16 +1,17 @@
-import { MaterialGame, MaterialItem, MaterialRulesPart, Location } from '@gamepark/rules-api'
+import { Location, MaterialGame, MaterialItem, MaterialRulesPart } from '@gamepark/rules-api'
+import last from 'lodash/last'
+import max from 'lodash/max'
+import sum from 'lodash/sum'
 import { Animal, animals } from '../../material/Animal'
 import { getAnimalFromCard } from '../../material/AnimalCard'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { PlayerId } from '../../PlayerId'
 import { PlayerState } from '../PlayerState'
-import last from 'lodash/last'
-import sum from 'lodash/sum'
-import max from 'lodash/max'
 
 export class ScoringHelper extends MaterialRulesPart {
   private playerState: PlayerState
+
   constructor(game: MaterialGame, readonly player: PlayerId) {
     super(game)
     this.playerState = new PlayerState(game, player)
@@ -95,12 +96,12 @@ export class ScoringHelper extends MaterialRulesPart {
 
   get forestScore() {
     const myAnimalTokenId = this.myAnimalTokenId
-    console.log(myAnimalTokenId, this
-      .material(MaterialType.TotemToken).getItems())
-    return this
+    const token = this
       .material(MaterialType.TotemToken)
       .id((id) => id === myAnimalTokenId)
-      .getItem()!.location.id
+
+    if (!token.length) return 0
+    return token.getItem()!.location.id
 
   }
 
