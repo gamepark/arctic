@@ -11,7 +11,7 @@ export const ScoringTokenHelp: FC<MaterialHelpProps> = () => {
       <h2 css={titleCss}>{t('scoring')}</h2>
       <p>{t('scoring.help1')}</p>
       <p>{t('scoring.help2')}</p>
-      <p>
+      <div>
         <table css={tableCss} cellPadding={0} cellSpacing={0}>
           <tbody>
           <tr>
@@ -32,7 +32,7 @@ export const ScoringTokenHelp: FC<MaterialHelpProps> = () => {
           </tr>
           </tbody>
         </table>
-      </p>
+      </div>
       <p>{t('scoring.help5')}</p>
       <p>{t('scoring.help6')}</p>
       <p>{t('scoring.help7')}</p>

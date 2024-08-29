@@ -74,6 +74,7 @@ export class ArcticSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
     }
   }
 
+
   setupRiver() {
     this.material(MaterialType.AnimalCard)
       .location(LocationType.AnimalCardsDeck)

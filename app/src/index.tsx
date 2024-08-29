@@ -11,6 +11,7 @@ import { Material } from './material/Material'
 import { ArcticScoringDescription } from './scoring/ArcticScoringDescription'
 import translations from './translations.json'
 import Forest from './images/background.jpg'
+import { Tutorial } from './tutorial/Tutorial'
 setupTranslation(translations, { debug: false })
 
 ReactDOM.render(
@@ -24,6 +25,7 @@ ReactDOM.render(
       locators={Locators}
       animations={new MaterialGameAnimations()}
       scoring={new ArcticScoringDescription()}
+      tutorial={new Tutorial()}
       theme={{
         root: {
           background: {

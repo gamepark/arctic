@@ -11,5 +11,8 @@ export enum LocationType {
   PowerPile,
   PenaltyZone,
   Scoring,
-  AnimalPileScoring
+  AnimalPileScoring,
+  AnimalIcon,
+  DrawIcon,
+  DepositIcon,
 }
