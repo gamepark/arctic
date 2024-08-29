@@ -46,7 +46,9 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
 
     if (playerState.canTakeCardsOnDeck) {
       moves.push(
-        ...this.deck.moveItems({
+        this
+          .deck
+          .moveItem({
           type: LocationType.PlayerHand,
           player: this.player
         })
