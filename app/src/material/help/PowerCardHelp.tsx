@@ -19,7 +19,6 @@ export const PowerCardHelp: FC<MaterialHelpProps> = (props) => {
   const notMine = !playerId || item.location?.player !== playerId
   const name = usePlayerName(item.location?.player)
   const isMoose = item.id === PowerCard.Moose1 || item.id === PowerCard.Moose2
-
   const increaseValue = useLegalMove((move) => isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data === 1)
   const decreaseValue = useLegalMove((move) => isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data === -1)
 
@@ -35,14 +34,14 @@ export const PowerCardHelp: FC<MaterialHelpProps> = (props) => {
         </Trans>
       </p>
       {isMoose && <p>{t('power.moose.help')}</p>}
-      {increaseValue && (
+      {isMoose && increaseValue && (
         <p>
           <PlayMoveButton move={increaseValue} onPlay={closeDialog}>
             <Trans defaults={rules.game.rule?.id === RuleId.PlayAnimalCards? 'power.place.more': 'power.draw.more'} />
           </PlayMoveButton>
         </p>
       )}
-      {decreaseValue && (
+      {isMoose &&decreaseValue && (
         <p>
           <PlayMoveButton move={decreaseValue} onPlay={closeDialog}>
             <Trans defaults={rules.game.rule?.id === RuleId.PlayAnimalCards? 'power.place.less': 'power.draw.less'} />

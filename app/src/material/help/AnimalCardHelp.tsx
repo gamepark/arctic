@@ -52,6 +52,9 @@ export const AnimalCardHelp: FC<MaterialHelpProps> = (props) => {
           </PlayMoveButton>
         </p>
       )}
+      {item.location?.type === LocationType.PlayerHand && (
+        <HandLocation {...props} />
+      )}
       {discard && (
         <p>
           <PlayMoveButton move={discard} onPlay={closeDialog}>
@@ -161,6 +164,42 @@ const PileLocation: FC<MaterialHelpProps> = (props) => {
     <>
       {!isTopCard && <Trans defaults={mine ? 'animal.pile.you' : 'animal.pile.player'} values={{ player: name }}/>}
       {isTopCard && <Trans defaults={mine ? 'animal.pile.top.you' : 'animal.pile.top.player'} values={{ player: name }}/>}
+    </>
+  )
+}
+
+const HandLocation: FC<MaterialHelpProps> = (props) => {
+  const { closeDialog, itemIndex } = props
+
+  const placeUnderTop = useLegalMove((move) =>
+    isMoveItemType(MaterialType.AnimalCard)(move)
+    && move.location.type === LocationType.AnimalPile && move.location.rotation
+    && move.itemIndex === itemIndex
+  )
+
+  const placeUnderPile = useLegalMove((move) =>
+    isMoveItemType(MaterialType.AnimalCard)(move)
+    && move.location.type === LocationType.AnimalPile
+    && move.location.x === 0 && !move.location.rotation
+    && move.itemIndex === itemIndex
+  )
+
+  return (
+    <>
+      {placeUnderTop && (
+        <p>
+          <PlayMoveButton move={placeUnderTop} onPlay={closeDialog}>
+            <Trans defaults="power.fox.under-last"/>
+          </PlayMoveButton>
+        </p>
+      )}
+      {placeUnderPile && (
+        <p>
+          <PlayMoveButton move={placeUnderPile} onPlay={closeDialog}>
+            <Trans defaults="power.fox.under-pile"/>
+          </PlayMoveButton>
+        </p>
+      )}
     </>
   )
 }

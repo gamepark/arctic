@@ -15,11 +15,18 @@ arcticAnimations
 arcticAnimations
   .when()
   .move((move) =>  isMoveItemType(MaterialType.AnimalCard)(move) && move.location.type === LocationType.PlayerHand)
+  .mine()
   .duration(0.6)
 
 arcticAnimations
   .when()
   .move((move) =>  isMoveItemType(MaterialType.AnimalCard)(move) && move.location.type === LocationType.AnimalPile)
+  .mine()
+  .duration(0.6)
+
+arcticAnimations
+  .when()
+  .move((move) =>  isMoveItemType(MaterialType.AnimalCard)(move) && move.location.type === LocationType.PenaltyZone)
   .duration(0.6)
 
 arcticAnimations
