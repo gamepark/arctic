@@ -1,6 +1,7 @@
+/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { PlayerState } from '@gamepark/arctic/rules/PlayerState'
-import { DropAreaDescription, LocationContext } from '@gamepark/react-game'
+import { DropAreaDescription, LocationContext, shineEffect } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 import InPile from '../../images/icons/in-pile.png'
 import OnPile from '../../images/icons/on-pile.png'
@@ -11,6 +12,10 @@ import { AnimalPileHelp } from '../help/AnimalPileHelp'
 export class AnimalPileDescription extends DropAreaDescription {
   getExtraCss(location: Location, context: LocationContext) {
     const { rules } = context
+
+    if (rules.game.tutorial?.step === 2 && location.player === context.player) {
+      return [shineEffect, pileCss]
+    }
     const playerState = new PlayerState(rules.game, location.player!)
     const animalPileLength = playerState.animalPile.length
     const canPlaceCardUnderAnimalPile = playerState.canPlaceCardUnderAnimalPile
@@ -35,12 +40,7 @@ export class AnimalPileDescription extends DropAreaDescription {
     }
 
     if (!canPlaceCardUnderLastAnimalInPile && !canPlaceCardUnderAnimalPile) {
-      return css`
-        background-size: 4em 4em;
-        background-image: url(${OnPile});
-        background-position: center center;
-        background-repeat: no-repeat;
-    `
+      return pileCss
     }
 
     return css`
@@ -57,3 +57,11 @@ export class AnimalPileDescription extends DropAreaDescription {
   height = animalCardDescription.height * 1.2
   borderRadius = animalCardDescription.borderRadius
 }
+
+const pileCss = css`
+  background-size: 4em 4em;
+  background-image: url(${OnPile});
+  background-position: center center;
+  background-repeat: no-repeat;
+`
+

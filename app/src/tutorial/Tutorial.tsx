@@ -5,13 +5,14 @@ import { MaterialType } from '@gamepark/arctic/material/MaterialType'
 import { PowerCard } from '@gamepark/arctic/material/PowerCard'
 import { PlayerId } from '@gamepark/arctic/PlayerId'
 import { CustomMoveType } from '@gamepark/arctic/rules/CustomMoveType'
-import { MaterialTutorial, TutorialStep } from '@gamepark/react-game'
-import { isCustomMoveType, isMoveItemType } from '@gamepark/rules-api'
+import { linkButtonCss, MaterialTutorial, PlayMoveButton, TutorialStep } from '@gamepark/react-game'
+import { isCustomMoveType, isMoveItemType, MaterialMoveBuilder } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 import { AnimalIcon } from '../locators/AnimalIconLocator'
 import { landscapeCardDescription } from '../material/LandscapeCardDescription'
 import { scoringTokenDescription } from '../material/ScoringTokenDescription'
 import { TutorialSetup } from './TutorialSetup'
+const displayMaterialHelp = MaterialMoveBuilder.displayMaterialHelp
 
 const me = 1
 const opponent = 2
@@ -94,8 +95,8 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       ],
       margin: {
         top: 4,
-        left: 4,
-        right: 2
+        left: 1,
+        right: 1,
       }
     }),
     move: {
@@ -113,21 +114,44 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
   }, {
     popup: {
       text: () => (
+        <Trans defaults="tuto.powers">
+          <strong/>
+        </Trans>
+      ),
+      position: { x: -30}
+    },
+    focus: (game) => ({
+      materials: [
+        this.material(game, MaterialType.PowerCard)
+      ],
+      margin: {
+        left: 34,
+        top: 1,
+        bottom: 1
+      }
+    })
+  }, {
+    popup: {
+      text: () => (
         <Trans defaults="tuto.power">
           <strong/>
         </Trans>
       ),
       position: {
+        x: -10,
         y: -20
       },
-      size: { width: 120 }
+      size: { width: 80 }
     },
     focus: (game) => ({
       materials: [
-        this.material(game, MaterialType.PowerCard).id(PowerCard.Orca1)
+        this.material(game, MaterialType.PowerCard).id(PowerCard.Orca1),
+        this.material(game, MaterialType.AnimalCard).id(AnimalCard.OrcaMoose4)
       ],
       margin: {
-        top: 6
+        top: 6,
+        bottom: 2,
+        left: 10,
       }
     })
   }, {
@@ -371,7 +395,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         ],
         margin: {
           top: 10,
-          bottom: 2
+          bottom: 2,
+          left: 1,
+          right: 1,
         }
       }),
       move: {
@@ -413,7 +439,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         ],
         margin: {
           top: 10,
-          bottom: 2
+          bottom: 2,
+          left: 1,
+          right: 1,
         }
       }),
       move: {
@@ -548,15 +576,6 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       move: {
         filter: (move) => isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data === 1
       }
-    },
-    {
-      popup: {
-        text: () => (
-          <Trans defaults="tuto.power.variant">
-            <strong/>
-          </Trans>
-        )
-      }
     }, {
       popup: {
         text: () => (
@@ -564,9 +583,22 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
             <strong/>
           </Trans>
         )
-      }
+      },
+      focus: (game) => ({
+        materials: [
+          this.material(game, MaterialType.AnimalCard).location(LocationType.River),
+          this.material(game, MaterialType.AnimalCard).location(LocationType.PlayerHand).player(me)
+        ],
+        locations: [
+          this.location(LocationType.PlayerHand).player(me).location
+        ],
+        margin: {
+          left: 1,
+          right: 1
+        }
+      }),
+      move: {}
     },
-    { move: {} },
     { move: {} },
     { move: {} },
     {
@@ -575,8 +607,22 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <Trans defaults="tuto.hand.limit">
             <strong/>
           </Trans>
-        )
-      }
+        ),
+        position: { y: -20},
+        size: { width: 100}
+      },
+      focus: (game) => ({
+        materials: [
+          this.material(game, MaterialType.AnimalCard).location(LocationType.PlayerHand).player(me)
+        ],
+        locations: [
+          this.location(LocationType.PenaltyZone).player(me).location
+        ],
+        margin: {
+          left: 1,
+          right: 1
+        }
+      })
     }, {
       popup: {
         text: () => (
@@ -598,6 +644,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         text: () => (
           <Trans defaults="tuto.scoring">
             <strong/>
+            <PlayMoveButton css={linkButtonCss} move={displayMaterialHelp(MaterialType.ScoringToken, scoringTokenDescription.staticItem)} />
           </Trans>
         ),
         position: { x: 10 }

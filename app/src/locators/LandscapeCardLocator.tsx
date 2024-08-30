@@ -13,6 +13,8 @@ class LandscapeCardLocator extends FlexLocator {
           .find((i) => location.id === i.id)!
     }
 
+    coordinates = { z: 1}
+
     getPositionOnParent(location: Location) {
         if(location.x !== undefined) {
             return { x: 25, y: 81 }

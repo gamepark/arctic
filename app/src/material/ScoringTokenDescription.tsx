@@ -1,4 +1,4 @@
-import { LocationType } from '@gamepark/arctic/material/LocationType'
+  import { LocationType } from '@gamepark/arctic/material/LocationType'
 import { TokenDescription } from '@gamepark/react-game'
 
 import ScoringToken from '../images/tiles/ScoringToken.jpg'
