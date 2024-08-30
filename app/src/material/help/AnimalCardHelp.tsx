@@ -33,6 +33,12 @@ export const AnimalCardHelp: FC<MaterialHelpProps> = (props) => {
     && move.itemIndex === itemIndex
   )
 
+  const draw = useLegalMove((move) =>
+    isMoveItemType(MaterialType.AnimalCard)(move)
+    && move.location.type === LocationType.PlayerHand
+    && move.itemIndex === itemIndex
+  )
+
   return (
     <>
       {item.location?.type !== LocationType.PenaltyZone && (
@@ -59,6 +65,13 @@ export const AnimalCardHelp: FC<MaterialHelpProps> = (props) => {
         <p>
           <PlayMoveButton move={discard} onPlay={closeDialog}>
             <Trans defaults="animal.discard" />
+          </PlayMoveButton>
+        </p>
+      )}
+      {draw && (
+        <p>
+          <PlayMoveButton move={draw} onPlay={closeDialog}>
+            <Trans defaults="animal.draw" />
           </PlayMoveButton>
         </p>
       )}

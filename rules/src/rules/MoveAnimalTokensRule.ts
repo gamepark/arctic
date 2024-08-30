@@ -76,10 +76,20 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
           type: LocationType.LandscapeCard,
           id: landscapes[mainLandscapeIndex + 1]
         }),
+      mainToken
+        .moveItem({
+          type: LocationType.LandscapeCard,
+          id: landscapes[mainLandscapeIndex - 1]
+        }),
       associatedToken
         .moveItem({
           type: LocationType.LandscapeCard,
           id: landscapes[associatedLandscapeIndex + 1]
+        }),
+      associatedToken
+        .moveItem({
+          type: LocationType.LandscapeCard,
+          id: landscapes[associatedLandscapeIndex - 1]
         })
     ]
   }
@@ -111,17 +121,19 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
 
     if (!moves.length) {
       if (move.itemIndex === mainToken.getIndex()) {
+        const isMovingLeft = move.location.id < mainToken.getItem()!.location.id
         moves.push(
           associatedToken.moveItem({
             type: LocationType.LandscapeCard,
-            id: landscapes[associatedLandscapeIndex - 1]
+            id: landscapes[associatedLandscapeIndex + (isMovingLeft? 1: -1)]
           })
         )
       } else {
+        const isMovingLeft = move.location.id < associatedToken.getItem()!.location.id
         moves.push(
           mainToken.moveItem({
             type: LocationType.LandscapeCard,
-            id: landscapes[mainLandscapeIndex - 1]
+            id: landscapes[mainLandscapeIndex + (isMovingLeft? 1: -1)]
           })
         )
       }
