@@ -5,36 +5,34 @@ import { totemTokenDescription } from '../material/TotemTokenDescription'
 import { LandscapeCardDescription } from './descriptions/LandscapeCardDescription'
 
 class LandscapeCardLocator extends FlexLocator {
-    parentItemType = MaterialType.LandscapeCard
+  parentItemType = MaterialType.LandscapeCard
 
-    getParentItem(location: Location, { material }: ItemContext) {
-        return material[this.parentItemType]!
-          .staticItems
-          .find((i) => location.id === i.id)!
+  getParentItem(location: Location, { material }: ItemContext) {
+    return material[this.parentItemType]!
+      .staticItems
+      .find((i) => location.id === i.id)!
+  }
+
+  getPositionOnParent(location: Location) {
+    if (location.x !== undefined) {
+      return { x: 25, y: 81 }
     }
 
-    coordinates = { z: 1}
+    return this.positionOnParent
+  }
 
-    getPositionOnParent(location: Location) {
-        if(location.x !== undefined) {
-            return { x: 25, y: 81 }
-        } else {
-            return { x: 50, y: 50 }
-        }
-    }
+  getGap(location: Location) {
+    if (location.x === undefined) return {}
+    return { x: totemTokenDescription.width + 0.7 }
+  }
 
-    getGap(location: Location) {
-        if (location.x === undefined) return {}
-        return { x: totemTokenDescription.width + 0.7, y: 0 }
-    }
+  getLineGap(location: Location) {
+    if (location.x === undefined) return {}
+    return { y: -(totemTokenDescription.height + 0.05) }
+  }
 
-    getLineGap(location: Location) {
-        if (location.x === undefined) return {}
-        return { x: 0, y: -(totemTokenDescription.height + 0.05) }
-    }
-
-    lineSize = 2
-    locationDescription = new LandscapeCardDescription()
+  lineSize = 2
+  locationDescription = new LandscapeCardDescription()
 }
 
 export const landscapeCardLocator = new LandscapeCardLocator()

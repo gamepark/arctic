@@ -1,4 +1,4 @@
-/** @jsxImportSource @emotion/react */
+
 import { css } from '@emotion/react'
 import { PlayerState } from '@gamepark/arctic/rules/PlayerState'
 import { DropAreaDescription, LocationContext, shineEffect } from '@gamepark/react-game'
@@ -27,7 +27,6 @@ export class AnimalPileDescription extends DropAreaDescription {
         background-repeat: no-repeat;
       `
     }
-
 
     const canPlaceCardUnderLastAnimalInPile = playerState.canPlaceCardUnderLastAnimalInPile
     if (canPlaceCardUnderLastAnimalInPile && location.x === (animalPileLength - 1)) {
