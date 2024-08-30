@@ -13,25 +13,12 @@ class LandscapeCardLocator extends FlexLocator {
       .find((i) => location.id === i.id)!
   }
 
-  getPositionOnParent(location: Location) {
-    if (location.x !== undefined) {
-      return { x: 25, y: 81 }
-    }
-
-    return this.positionOnParent
-  }
-
-  getGap(location: Location) {
-    if (location.x === undefined) return {}
-    return { x: totemTokenDescription.width + 0.7 }
-  }
-
-  getLineGap(location: Location) {
-    if (location.x === undefined) return {}
-    return { y: -(totemTokenDescription.height + 0.05) }
-  }
-
+  positionOnParent = { x: 24.5, y: 81.5 }
+  gap = { x: totemTokenDescription.width + 0.7 }
+  lineGap = { y: -(totemTokenDescription.height + 0.05) }
   lineSize = 2
+  maxLines = 3
+
   locationDescription = new LandscapeCardDescription()
 }
 
