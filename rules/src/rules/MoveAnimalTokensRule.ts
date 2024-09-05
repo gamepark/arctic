@@ -1,4 +1,4 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove, MoveItem, PlayerTurnRule } from '@gamepark/rules-api'
 import { landscapes } from '../material/Landscape'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
@@ -8,7 +8,9 @@ import { PlayerState } from './PlayerState'
 import { RuleId } from './RuleId'
 
 export class MoveAnimalTokensRule extends PlayerTurnRule {
-  onRuleStart() {
+
+  getPlayerMoves() {
+
     const { mainLandscapeIndex, mainToken, associatedLandscapeIndex, associatedToken } = this.animalsTokens
 
     if (mainLandscapeIndex === 5 && associatedLandscapeIndex === 5) {
@@ -16,7 +18,11 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
         mainToken.moveItem({
           type: LocationType.LandscapeCard,
           id: landscapes[4]
-        })
+        }),
+        associatedToken.moveItem({
+          type: LocationType.LandscapeCard,
+          id: landscapes[4]
+        }),
       ]
     }
 
@@ -25,7 +31,37 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
         mainToken.moveItem({
           type: LocationType.LandscapeCard,
           id: landscapes[1]
-        })
+        }),
+        associatedToken.moveItem({
+          type: LocationType.LandscapeCard,
+          id: landscapes[1]
+        }),
+      ]
+    }
+
+    if (mainLandscapeIndex === 0 && associatedLandscapeIndex === 5) {
+      return [
+        mainToken.moveItem({
+          type: LocationType.LandscapeCard,
+          id: landscapes[1]
+        }),
+        associatedToken.moveItem({
+          type: LocationType.LandscapeCard,
+          id: landscapes[4]
+        }),
+      ]
+    }
+
+    if (mainLandscapeIndex === 5 && associatedLandscapeIndex === 0) {
+      return [
+        mainToken.moveItem({
+          type: LocationType.LandscapeCard,
+          id: landscapes[4]
+        }),
+        associatedToken.moveItem({
+          type: LocationType.LandscapeCard,
+          id: landscapes[1]
+        }),
       ]
     }
 
@@ -64,12 +100,7 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
         })
       ]
     }
-    return []
-  }
 
-  getPlayerMoves() {
-
-    const { mainLandscapeIndex, mainToken, associatedLandscapeIndex, associatedToken } = this.animalsTokens
     return [
       mainToken
         .moveItem({
@@ -117,7 +148,7 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
     }
 
     const { mainLandscapeIndex, mainToken, associatedLandscapeIndex, associatedToken } = this.animalsTokens
-    const moves: MaterialMove[] = this.associatedAnimalAutomaticMove
+    const moves: MaterialMove[] = this.getOtherAnimalMoves(move)
 
     if (!moves.length) {
       if (move.itemIndex === mainToken.getIndex()) {
@@ -151,7 +182,7 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
     return new AnimalTokensHelper(this.game, this.player).animalTokens
   }
 
-  get associatedAnimalAutomaticMove() {
+  getOtherAnimalMoves(move: MoveItem) {
     const { mainLandscapeIndex, mainToken, associatedLandscapeIndex, associatedToken } = this.animalsTokens
     if (mainLandscapeIndex === 5 && associatedLandscapeIndex === 5) {
       return [
@@ -169,6 +200,42 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
           id: landscapes[1]
         })
       ]
+    }
+
+    if (mainLandscapeIndex === 0 && associatedLandscapeIndex === 5) {
+      if (move.itemIndex === mainToken.getIndex()) {
+        return [
+          associatedToken.moveItem({
+            type: LocationType.LandscapeCard,
+            id: landscapes[4]
+          })
+        ]
+      } else {
+        return [
+          mainToken.moveItem({
+            type: LocationType.LandscapeCard,
+            id: landscapes[1]
+          })
+        ]
+      }
+    }
+
+    if (mainLandscapeIndex === 5 && associatedLandscapeIndex === 0) {
+      if (move.itemIndex === mainToken.getIndex()) {
+        return [
+          associatedToken.moveItem({
+            type: LocationType.LandscapeCard,
+            id: landscapes[1]
+          }),
+        ]
+      } else {
+        return [
+          mainToken.moveItem({
+            type: LocationType.LandscapeCard,
+            id: landscapes[4]
+          })
+        ]
+      }
     }
 
     if (mainLandscapeIndex === 5) {
