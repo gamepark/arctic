@@ -2,7 +2,7 @@
 import { css, keyframes } from '@emotion/react'
 import { DropAreaDescription, LocationContext, shineEffect } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api/dist/material/location/Location'
-import Back from '../../images/cards/animals/AnimalBack1.jpg'
+import Penalty from '../../images/icons/penalty.png'
 import { animalCardDescription } from '../../material/AnimalCardDescription'
 import { PenaltyZoneHelp } from '../help/PenaltyZoneHelp'
 
@@ -29,13 +29,12 @@ const emptyPenaltyZone =  css`
     position: absolute;
     left: ${animalCardDescription.width * 0.1}em;
     top: ${animalCardDescription.height * 0.1}em;
-    opacity: 0.5;
     border-radius: ${animalCardDescription.borderRadius}em;
     height: ${animalCardDescription.height}em;
     width: ${animalCardDescription.width}em;
-    background: url(${Back}) center center no-repeat;
+    background: url(${Penalty}) center center no-repeat;
     align-self: center;
-    background-size: contain;
+    background-size: 4em 4em;
     background-position: center;
   }
 `

@@ -133,6 +133,7 @@ import InPile from '../images/icons/in-pile.png'
 import OnPile from '../images/icons/on-pile.png'
 import Play from '../images/icons/play.jpg'
 import UnderPile from '../images/icons/under-pile.png'
+import Penalty from '../images/icons/penalty.png'
 import { AnimalCardHelp } from './help/AnimalCardHelp'
 
 class AnimalCardDescription extends CardDescription {
@@ -272,7 +273,8 @@ class AnimalCardDescription extends CardDescription {
       Play,
       InPile,
       OnPile,
-      UnderPile
+      UnderPile,
+      Penalty,
     ]
   }
 
