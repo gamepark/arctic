@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css, keyframes } from '@emotion/react'
 import { DropAreaDescription, LocationContext, shineEffect } from '@gamepark/react-game'
-import { Location } from '@gamepark/rules-api/dist/material/location/Location'
+import { Location } from '@gamepark/rules-api'
 import Penalty from '../../images/icons/penalty.png'
 import { animalCardDescription } from '../../material/AnimalCardDescription'
 import { PenaltyZoneHelp } from '../help/PenaltyZoneHelp'
