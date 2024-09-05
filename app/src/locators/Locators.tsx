@@ -8,6 +8,7 @@ import { animalPileLocator } from './AnimalPileLocator'
 import { animalPileScoringLocator } from './AnimalPileScoringLocator'
 import { depositIconLocator } from './DepositIconLocator'
 import { drawIconLocator } from './DrawIconLocator'
+import { pawPrintTokenLocator } from './PawPrintTokenLocator'
 import { landscapeCardLocator } from './LandscapeCardLocator'
 import { penaltyZoneLocator } from './PenaltyZoneLocator'
 import { playerHandLocator } from './PlayerHandLocator'
@@ -36,4 +37,5 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerId, MaterialTy
   [LocationType.AnimalIcon]: animalIconLocator,
   [LocationType.DrawIcon]: drawIconLocator,
   [LocationType.DepositIcon]: depositIconLocator,
+  [LocationType.PawPrint]: pawPrintTokenLocator,
 }

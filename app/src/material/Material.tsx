@@ -1,6 +1,7 @@
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
 import { MaterialDescription } from '@gamepark/react-game'
 import { animalCardDescription } from './AnimalCardDescription'
+import { pawPrintTokenDescription } from './PawPrintTokenDescription'
 import { landscapeCardDescription } from './LandscapeCardDescription'
 import { powerCardDescription } from './PowerCardDescription'
 import { scoringTokenDescription } from './ScoringTokenDescription'
@@ -14,4 +15,5 @@ export const Material: Partial<Record<MaterialType, MaterialDescription>> = {
   [MaterialType.TotemTile]: totemTileDescription,
   [MaterialType.TotemToken]: totemTokenDescription,
   [MaterialType.ScoringToken]: scoringTokenDescription,
+  [MaterialType.PawPrint]: pawPrintTokenDescription
 }
