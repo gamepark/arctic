@@ -5,8 +5,10 @@ import { Animal } from '@gamepark/arctic/material/Animal'
 import { getAnimalFromCard, getAssociatedAnimalFromCard, getDepositValue, getDrawValue } from '@gamepark/arctic/material/AnimalCard'
 import { LocationType } from '@gamepark/arctic/material/LocationType'
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
-import { MaterialHelpProps, PlayMoveButton, useLegalMove, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
-import { isMoveItemType } from '@gamepark/rules-api'
+import { MaterialHelpProps, PlayMoveButton, useLegalMove, usePlayerId, usePlayerName, useRules, useUndo } from '@gamepark/react-game'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { isMoveItemType, LocalMoveType, MaterialMove, MoveKind } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import Draw from '../../images/icons/draw.jpg'
@@ -21,6 +23,11 @@ import Walrus from '../../images/tokens/WalrusToken.png'
 export const AnimalCardHelp: FC<MaterialHelpProps> = (props) => {
   const { t } = useTranslation()
   const { item, itemIndex, closeDialog } = props
+  const [undo, canUndo] = useUndo()
+  const undoModalPredicate = (move: MaterialMove) => move.kind === MoveKind.LocalMove && move.type === LocalMoveType.DisplayHelp
+  const canUndoDialog = canUndo(undoModalPredicate)
+
+
   const placeOnTop = useLegalMove((move) =>
     isMoveItemType(MaterialType.AnimalCard)(move)
     && move.location.type === LocationType.AnimalPile && move.location.x === undefined
@@ -41,6 +48,7 @@ export const AnimalCardHelp: FC<MaterialHelpProps> = (props) => {
 
   return (
     <>
+      {canUndoDialog && <FontAwesomeIcon icon={faArrowLeft} css={dialogCloseIcon} onClick={() => undo(undoModalPredicate)} />}
       {item.location?.type !== LocationType.PenaltyZone && (
         <>
           <h2 css={titleCss}>{t('animal.card')}</h2>
@@ -281,4 +289,14 @@ const titleCss = css`
 
 const locationCss = css`
   margin-top: 1em;
+`
+
+const dialogCloseIcon = css`
+  position: absolute;
+  right: 2em;
+  top: 0.4em;
+  cursor: pointer;
+  font-size: 1.2em;
+  cursor: pointer;
+  z-index: 100;
 `
