@@ -27,11 +27,15 @@ export const PlayAnimalCardsHeader = () => {
       const min = depositValue - 1
       const max = depositValue + 1
 
+      const Decrease = () => <PlayMoveButton move={minValue}>{min}</PlayMoveButton>
+      const Increase = () => <PlayMoveButton move={maxValue}>{max}</PlayMoveButton>
+      const NoChange = () => <PlayMoveButton move={noValue}>{depositValue}</PlayMoveButton>
+
       return (
         <Trans defaults="header.moose.play.you">
-          <PlayMoveButton move={minValue}>{min}</PlayMoveButton>
-          <PlayMoveButton move={noValue}>{depositValue}</PlayMoveButton>
-          <PlayMoveButton move={maxValue}>{max}</PlayMoveButton>
+          <Decrease />
+          <NoChange />
+          <Increase />
         </Trans>
       )
     }
