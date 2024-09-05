@@ -3,7 +3,9 @@ import {
   FillGapStrategy,
   hideItemId,
   hideItemIdToOthers,
-  MaterialGame, MaterialItem,
+  isMoveItemType,
+  MaterialGame,
+  MaterialItem,
   MaterialMove,
   PositiveSequenceStrategy,
   SecretMaterialRules,
@@ -82,6 +84,11 @@ export class ArcticRules extends SecretMaterialRules<PlayerId, MaterialType, Loc
 
   getScore(playerId: PlayerId): number {
     return new ScoringHelper(this.game, playerId).score
+  }
+
+  protected moveRevealsSomething(move: MaterialMove): boolean {
+    if (isMoveItemType(MaterialType.AnimalCard)(move) && move.location.type === LocationType.AnimalPile) return false
+    return super.moveRevealsSomething(move)
   }
 
 }
