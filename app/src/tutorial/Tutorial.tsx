@@ -574,10 +574,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         }
       }),
       move: {
-        filter: (move) => {
-          console.log(move)
-          return isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data === -1
-        }
+        filter: (move) => isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data === -1
       }
     }, {
       popup: {

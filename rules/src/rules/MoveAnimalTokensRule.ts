@@ -22,7 +22,7 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
         associatedToken.moveItem({
           type: LocationType.LandscapeCard,
           id: landscapes[4]
-        }),
+        })
       ]
     }
 
@@ -35,7 +35,7 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
         associatedToken.moveItem({
           type: LocationType.LandscapeCard,
           id: landscapes[1]
-        }),
+        })
       ]
     }
 
@@ -48,7 +48,7 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
         associatedToken.moveItem({
           type: LocationType.LandscapeCard,
           id: landscapes[4]
-        }),
+        })
       ]
     }
 
@@ -61,7 +61,7 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
         associatedToken.moveItem({
           type: LocationType.LandscapeCard,
           id: landscapes[1]
-        }),
+        })
       ]
     }
 
@@ -70,6 +70,10 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
         mainToken.moveItem({
           type: LocationType.LandscapeCard,
           id: landscapes[4]
+        }),
+        associatedToken.moveItem({
+          type: LocationType.LandscapeCard,
+          id: landscapes[associatedLandscapeIndex + 1]
         })
       ]
     }
@@ -79,6 +83,10 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
         mainToken.moveItem({
           type: LocationType.LandscapeCard,
           id: landscapes[1]
+        }),
+        associatedToken.moveItem({
+          type: LocationType.LandscapeCard,
+          id: landscapes[associatedLandscapeIndex - 1]
         })
       ]
     }
@@ -88,6 +96,10 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
         associatedToken.moveItem({
           type: LocationType.LandscapeCard,
           id: landscapes[4]
+        }),
+        mainToken.moveItem({
+          type: LocationType.LandscapeCard,
+          id: landscapes[mainLandscapeIndex + 1]
         })
       ]
     }
@@ -97,6 +109,10 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
         associatedToken.moveItem({
           type: LocationType.LandscapeCard,
           id: landscapes[1]
+        }),
+        mainToken.moveItem({
+          type: LocationType.LandscapeCard,
+          id: landscapes[mainLandscapeIndex - 1]
         })
       ]
     }
@@ -156,7 +172,7 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
         moves.push(
           associatedToken.moveItem({
             type: LocationType.LandscapeCard,
-            id: landscapes[associatedLandscapeIndex + (isMovingLeft? 1: -1)]
+            id: landscapes[associatedLandscapeIndex + (isMovingLeft ? 1 : -1)]
           })
         )
       } else {
@@ -164,7 +180,7 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
         moves.push(
           mainToken.moveItem({
             type: LocationType.LandscapeCard,
-            id: landscapes[mainLandscapeIndex + (isMovingLeft? 1: -1)]
+            id: landscapes[mainLandscapeIndex + (isMovingLeft ? 1 : -1)]
           })
         )
       }
@@ -244,7 +260,7 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
           associatedToken.moveItem({
             type: LocationType.LandscapeCard,
             id: landscapes[1]
-          }),
+          })
         ]
       } else {
         return [
@@ -257,39 +273,75 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
     }
 
     if (mainLandscapeIndex === 5) {
-      return [
-        associatedToken.moveItem({
-          type: LocationType.LandscapeCard,
-          id: landscapes[associatedLandscapeIndex + 1]
-        })
-      ]
+      if (move.itemIndex === mainToken.getIndex()) {
+        return [
+          associatedToken.moveItem({
+            type: LocationType.LandscapeCard,
+            id: landscapes[associatedLandscapeIndex + 1]
+          })
+        ]
+      } else {
+        return [
+          mainToken.moveItem({
+            type: LocationType.LandscapeCard,
+            id: landscapes[4]
+          })
+        ]
+      }
     }
 
     if (mainLandscapeIndex === 0) {
-      return [
-        associatedToken.moveItem({
-          type: LocationType.LandscapeCard,
-          id: landscapes[associatedLandscapeIndex - 1]
-        })
-      ]
+      if (move.itemIndex === mainToken.getIndex()) {
+        return [
+          associatedToken.moveItem({
+            type: LocationType.LandscapeCard,
+            id: landscapes[associatedLandscapeIndex - 1]
+          })
+        ]
+      } else {
+        return [
+          mainToken.moveItem({
+            type: LocationType.LandscapeCard,
+            id: landscapes[1]
+          })
+        ]
+      }
     }
 
     if (associatedLandscapeIndex === 5) {
-      return [
-        mainToken.moveItem({
-          type: LocationType.LandscapeCard,
-          id: landscapes[mainLandscapeIndex + 1]
-        })
-      ]
+      if (move.itemIndex === associatedToken.getIndex()) {
+        return [
+          mainToken.moveItem({
+            type: LocationType.LandscapeCard,
+            id: landscapes[mainLandscapeIndex + 1]
+          })
+        ]
+      } else {
+        return [
+          associatedToken.moveItem({
+            type: LocationType.LandscapeCard,
+            id: landscapes[4]
+          })
+        ]
+      }
     }
 
     if (associatedLandscapeIndex === 0) {
-      return [
-        mainToken.moveItem({
-          type: LocationType.LandscapeCard,
-          id: landscapes[mainLandscapeIndex - 1]
-        })
-      ]
+      if (move.itemIndex === associatedToken.getIndex()) {
+        return [
+          mainToken.moveItem({
+            type: LocationType.LandscapeCard,
+            id: landscapes[mainLandscapeIndex - 1]
+          })
+        ]
+      } else {
+        return [
+          associatedToken.moveItem({
+            type: LocationType.LandscapeCard,
+            id: landscapes[1]
+          })
+        ]
+      }
     }
 
     return []

@@ -1,6 +1,7 @@
 import { Location, MaterialGame, MaterialItem, MaterialRulesPart } from '@gamepark/rules-api'
 import last from 'lodash/last'
 import max from 'lodash/max'
+import maxBy from 'lodash/maxBy'
 import sum from 'lodash/sum'
 import { Animal, animals } from '../../material/Animal'
 import { getAnimalFromCard } from '../../material/AnimalCard'
@@ -9,12 +10,16 @@ import { MaterialType } from '../../material/MaterialType'
 import { PlayerId } from '../../PlayerId'
 import { PlayerState } from '../PlayerState'
 
+type Groups = { item: MaterialItem, index: number }[][]
+type GroupWithScore = { score: number, groups: Groups}
 export class ScoringHelper extends MaterialRulesPart {
   private playerState: PlayerState
+  public optimalGroupAndScore: GroupWithScore
 
   constructor(game: MaterialGame, readonly player: PlayerId) {
     super(game)
     this.playerState = new PlayerState(game, player)
+    this.optimalGroupAndScore = this.computeGroupWithScore()
   }
 
   get score() {
@@ -22,32 +27,29 @@ export class ScoringHelper extends MaterialRulesPart {
   }
 
   get pileScore() {
-    return sum(animals.map((animal) => this.getAnimalScore(animal))) ?? 0
+    return this.optimalGroupAndScore.score
   }
 
   getAnimalScore(animal: Animal) {
-    return max(
-      this
-        .getAnimalGroups(animal)
-        .map((group, groupIndex) => this.getGroupScore(groupIndex, animal, group.length))
-    ) ?? 0
+    return getAnimalScore(animal, this.optimalGroupAndScore.groups)
   }
 
   get differentAnimals() {
-    const validGroups = this.groups.filter((group, groupIndex) => this.getGroupScore(groupIndex, getAnimalFromCard(group[0].item.id), group.length) > 0)
+    const validGroups = this.optimalGroupAndScore.groups.filter((group, groupIndex) => this.getGroupScore(groupIndex, getAnimalFromCard(group[0].item.id), group.length) > 0)
     return [0, 0, 1, 3, 6, 10, 15][validGroups.length]
   }
 
   getGroup(location: Location) {
-    const index = this.getGroupIndex(location)
-    return this.groups[index]
+    const groups = this.optimalGroupAndScore.groups
+    const index = this.getGroupIndex(groups, location)
+    return groups[index]
   }
 
-  getGroupIndex(location: Location) {
-    return this.groups.findIndex((items) => items.some((item) => item.item.location.x === location.x))
+  getGroupIndex(groups: Groups, location: Location) {
+    return groups.findIndex((items) => items.some((item) => item.item.location.x === location.x))
   }
 
-  get groups() {
+  computeGroupWithScore(): GroupWithScore {
     const cards: { item: MaterialItem, index: number }[][] = []
     for (const index of this.animalPile.getIndexes()) {
       const card = this.animalPile.getItem(index)!
@@ -55,33 +57,65 @@ export class ScoringHelper extends MaterialRulesPart {
         cards.push([{ item: card, index }])
       } else {
         const lastGroup = last(cards) ?? []
-        if (getAnimalFromCard(card.id) === getAnimalFromCard(last(lastGroup)!.item.id)) {
-          lastGroup.push({ item: card, index })
+        if (card.id === undefined) {
+          if (last(lastGroup)!.item.id === undefined) {
+            lastGroup.push({ item: card, index })
+          } else {
+            cards.push([{ item: card, index }])
+          }
         } else {
-          cards.push([{ item: card, index }])
+          if (getAnimalFromCard(card.id) === getAnimalFromCard(last(lastGroup)!.item.id)) {
+            lastGroup.push({ item: card, index })
+          } else {
+            cards.push([{ item: card, index }])
+          }
         }
       }
     }
 
-    return cards
+    return this.getOptimalGroups(cards)
   }
 
-  getAnimalGroups(animal: Animal) {
-    return this
-      .groups
+  getOptimalGroups(groups: Groups): GroupWithScore {
+    for (let index= 0; index < groups.length; index++) {
+      const items = groups[index]
+      if (items.every((item) => item.item.location.rotation)) {
+        let leftOptimalGroup = undefined
+        let rightOptimalGroup = undefined
+
+        if (index > 0) {
+          const leftBranch = groups.slice(0, index).concat(groups.slice(index + 1))
+          leftBranch[index - 1] = [...leftBranch[index - 1], ...items]
+          leftOptimalGroup = this.getOptimalGroups(leftBranch)
+        }
+
+        if (index < (groups.length - 1)) {
+          const rightBranch = groups.slice(0, index).concat(groups.slice(index + 1))
+          rightBranch[index] = [...items, ...rightBranch[index]]
+          rightOptimalGroup = this.getOptimalGroups(rightBranch)
+        }
+
+        if (leftOptimalGroup && rightOptimalGroup) {
+          return maxBy([leftOptimalGroup, rightOptimalGroup], group => group.score)!
+        }
+
+        if (leftOptimalGroup) return leftOptimalGroup
+        if (rightOptimalGroup) return rightOptimalGroup
+      }
+    }
+    return {
+      score: sum(animals.map((animal) => getAnimalScore(animal, groups))) ?? 0,
+      groups
+    }
+  }
+
+  getAnimalGroups(groups: Groups, animal: Animal) {
+    return groups
       .filter((group) => group.some((item) => getAnimalFromCard(item.item.id) === animal))
   }
 
   getGroupScore(groupIndex: number, animalId: Animal, size: number) {
-    const otherPreviousGroupOrGreaterThan = this.groups.find(
-      (group, index) => (
-        ((index < groupIndex && group.length >= size) || group.length > size) &&
-        (group.some((item) => getAnimalFromCard(item.item.id) === animalId))
-      )
-    )
-    if (otherPreviousGroupOrGreaterThan) return 0
-    if (size >= 6) return 15
-    return [0, 0, 1, 3, 6, 10][size]
+    return getGroupScore(groupIndex, animalId, size, this.optimalGroupAndScore.groups)
   }
 
   get animalPile() {
@@ -113,4 +147,28 @@ export class ScoringHelper extends MaterialRulesPart {
       .getItem()!.id
 
   }
+}
+
+const getGroupScore = (groupIndex: number, animalId: Animal, size: number, groups: Groups) => {
+  const otherPreviousGroupOrGreaterThan = groups.find(
+    (group, index) => (
+      ((index < groupIndex && group.length >= size) || group.length > size) &&
+      (group.some((item) => getAnimalFromCard(item.item.id) === animalId))
+    )
+  )
+  if (otherPreviousGroupOrGreaterThan) return 0
+  if (size >= 6) return 15
+  return [0, 0, 1, 3, 6, 10][size]
+}
+
+const getAnimalScore = (animal: Animal, groups: Groups) => {
+  return max(
+    getAnimalGroups(groups, animal)
+      .map((group, groupIndex) => getGroupScore(groupIndex, animal, group.length, groups))
+  ) ?? 0
+}
+
+const getAnimalGroups = (groups: Groups, animal: Animal) => {
+  return groups
+    .filter((group) => group.some((item) => getAnimalFromCard(item.item.id) === animal))
 }

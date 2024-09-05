@@ -4,7 +4,7 @@ import { ArcticRules } from '@gamepark/arctic/ArcticRules'
 import { getAnimalFromCard } from '@gamepark/arctic/material/AnimalCard'
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
 import { ScoringHelper } from '@gamepark/arctic/rules/helper/ScoringHelper'
-import { LocationHelpProps, MaterialComponent, usePlay, useRules } from '@gamepark/react-game'
+import { LocationHelpProps, MaterialComponent, transformCss, usePlay, useRules } from '@gamepark/react-game'
 import { MaterialMoveBuilder } from '@gamepark/rules-api'
 import { FC, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -18,29 +18,33 @@ export const AnimalPileScoringHelp: FC<LocationHelpProps> = (props) => {
   const play = usePlay()
   const { location } = props
   const helper = useMemo(() => new ScoringHelper(rules.game, location.player!), [location.player, rules.game])
-  const isEnd = !rules.game.rule
+  const isEnded = !rules.game.rule
   const groupWithScore = useMemo(() => {
-    return helper.groups.map((group, index) => ({
+    const groups = helper.optimalGroupAndScore.groups
+    return groups.map((group, index) => ({
       group: group,
-      score: helper.getGroupScore(index, getAnimalFromCard(group[0].item.id), group.length)
+      score: !isEnded ? 0 : helper.getGroupScore(index, getAnimalFromCard(group[0].item.id), group.length)
     }))
   }, [helper])
 
   return (
     <>
-    <h2 css={titleCss}>{t('animal.pile.scoring')}</h2>
-    <div css={gridCss}>
-      {groupWithScore.flatMap((group, groupIndex) => (
-        <div key={groupIndex} css={groupCss}>
-          {group.group.map((item, i) => (
-            <div key={i}>
-              <MaterialComponent type={MaterialType.AnimalCard} itemId={item.item.id} css={itemCss(isEnd, group, i)} onClick={() => play(displayMaterialHelp(MaterialType.AnimalCard, item.item, item.index), { local: true })}/>
-            </div>
-          ))}
-          { isEnd && <div css={scoreCss}>{group.score}</div>}
-        </div>
-      ))}
-    </div>
+      <h2 css={titleCss}>{t('animal.pile.scoring')}</h2>
+      <div css={gridCss}>
+        {groupWithScore.flatMap((group, groupIndex) => (
+          <div key={groupIndex} css={groupCss}>
+            {group.group.map((item, i) =>
+              (
+                <div key={i}>
+                  <MaterialComponent type={MaterialType.AnimalCard} itemId={item.item.id}
+                                     css={[itemCss(isEnded, group, i), item.item.location.rotation && transformCss('rotateY(180deg)')]}
+                                     onClick={() => play(displayMaterialHelp(MaterialType.AnimalCard, item.item, item.index), { local: true })}/>
+                </div>
+              ))}
+            {isEnded && <div css={scoreCss}>{group.score}</div>}
+          </div>
+        ))}
+      </div>
     </>
   )
 }
@@ -64,16 +68,20 @@ const groupCss = css`
 `
 
 const itemCss = (isEnded: boolean, groupWithScore: any, index: number) => {
-  const validArea = 49/3 - 2 - animalCardDescription.width
+  const validArea = 49 / 3 - 2 - animalCardDescription.width
   const count = groupWithScore.group.length
   const score = groupWithScore.score
-  const left = count === 1? 0: (Math.min(validArea / (count - 1), 1.5) * index)
+  const left = count === 1 ? 0 : (Math.min(validArea / (count - 1), 1.5) * index)
   return css`
     position: absolute;
     top: 1em;
     bottom: 1em;
     left: ${1 + left}em;
-    filter: grayscale(${isEnded && !score ? 1 : 0});
+
+    > div > div {
+      filter: grayscale(${isEnded && !score ? 1 : 0});
+    }
+
     cursor: pointer;
   `
 }

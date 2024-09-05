@@ -287,10 +287,14 @@ class AnimalCardDescription extends CardDescription {
   }
 
   isFlippedInDialog(item: Partial<MaterialItem>, context: MaterialContext) {
-    console.log(item)
     if (item.location?.type === LocationType.PenaltyZone && item.location.type === context.player) return false
     return super.isFlippedInDialog(item, context)
   }
+
+  isFlipped(item: Partial<MaterialItem>, context: MaterialContext): boolean {
+    return super.isFlipped(item, context) || item.location?.rotation
+  }
+
 
   isFlippedOnTable(item: Partial<MaterialItem>, context: MaterialContext): boolean {
     if (item.location?.type === LocationType.PenaltyZone || item.location?.rotation) return true
@@ -303,7 +307,6 @@ class AnimalCardDescription extends CardDescription {
     if (move.location.type === LocationType.AnimalPile) return true
     if (move.location.type === LocationType.PlayerHand) {
       const actualLocationType =  context.rules.material(MaterialType.AnimalCard).getItem(move.itemIndex)?.location.type
-      console.log("???", actualLocationType, LocationType.PenaltyZone, actualLocationType !== LocationType.PenaltyZone && actualLocationType !== LocationType.AnimalPile)
       return actualLocationType !== LocationType.PenaltyZone && actualLocationType !== LocationType.AnimalPile
     }
     return false
