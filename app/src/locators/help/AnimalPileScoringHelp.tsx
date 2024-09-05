@@ -9,6 +9,7 @@ import { MaterialMoveBuilder } from '@gamepark/rules-api'
 import { FC, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { animalCardDescription } from '../../material/AnimalCardDescription'
+
 const displayMaterialHelp = MaterialMoveBuilder.displayMaterialHelp
 
 export const AnimalPileScoringHelp: FC<LocationHelpProps> = (props) => {
@@ -19,11 +20,10 @@ export const AnimalPileScoringHelp: FC<LocationHelpProps> = (props) => {
   const helper = useMemo(() => new ScoringHelper(rules.game, location.player!), [location.player, rules.game])
   const isEnd = !rules.game.rule
   const groupWithScore = useMemo(() => {
-    const scoredGroup = helper.groups.map((group, index) => ({
+    return helper.groups.map((group, index) => ({
       group: group,
       score: helper.getGroupScore(index, getAnimalFromCard(group[0].item.id), group.length)
     }))
-    return scoredGroup.reverse()
   }, [helper])
 
   return (
