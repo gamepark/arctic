@@ -86,9 +86,9 @@ export class ArcticRules extends SecretMaterialRules<PlayerId, MaterialType, Loc
     return new ScoringHelper(this.game, playerId).score
   }
 
-  protected moveRevealsSomething(move: MaterialMove): boolean {
+  protected moveRevealedSomething(move: MaterialMove): boolean {
     if (isMoveItemType(MaterialType.AnimalCard)(move) && move.location.type === LocationType.AnimalPile) return false
-    return super.moveRevealsSomething(move)
+    return super.moveRevealedSomething(move)
   }
 
 }
