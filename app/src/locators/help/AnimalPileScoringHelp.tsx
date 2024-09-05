@@ -4,26 +4,28 @@ import { ArcticRules } from '@gamepark/arctic/ArcticRules'
 import { getAnimalFromCard } from '@gamepark/arctic/material/AnimalCard'
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
 import { ScoringHelper } from '@gamepark/arctic/rules/helper/ScoringHelper'
-import { LocationHelpProps, MaterialComponent, useRules } from '@gamepark/react-game'
-import orderBy from 'lodash/orderBy'
+import { LocationHelpProps, MaterialComponent, usePlay, useRules } from '@gamepark/react-game'
+import { MaterialMoveBuilder } from '@gamepark/rules-api'
 import { FC, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { animalCardDescription } from '../../material/AnimalCardDescription'
+const displayMaterialHelp = MaterialMoveBuilder.displayMaterialHelp
 
 export const AnimalPileScoringHelp: FC<LocationHelpProps> = (props) => {
   const { t } = useTranslation()
   const rules = useRules<ArcticRules>()!
+  const play = usePlay()
   const { location } = props
   const helper = useMemo(() => new ScoringHelper(rules.game, location.player!), [location.player, rules.game])
+  const isEnd = !rules.game.rule
   const groupWithScore = useMemo(() => {
     const scoredGroup = helper.groups.map((group, index) => ({
       group: group,
       score: helper.getGroupScore(index, getAnimalFromCard(group[0].id), group.length)
     }))
-
-
-    return orderBy(scoredGroup, (group) => group.score).reverse()
+    return scoredGroup.reverse()
   }, [helper])
+
   return (
     <>
     <h2 css={titleCss}>{t('animal.pile.scoring')}</h2>
@@ -32,10 +34,10 @@ export const AnimalPileScoringHelp: FC<LocationHelpProps> = (props) => {
         <div key={groupIndex} css={groupCss}>
           {group.group.map((item, i) => (
             <div key={i}>
-              <MaterialComponent type={MaterialType.AnimalCard} itemId={item.id} css={itemCss(group, i)}/>
+              <MaterialComponent type={MaterialType.AnimalCard} itemId={item.id} css={itemCss(isEnd, group, i)} onClick={() => play(displayMaterialHelp(MaterialType.AnimalCard, item), { local: true })}/>
             </div>
           ))}
-          <div css={scoreCss}>{group.score}</div>
+          { isEnd && <div css={scoreCss}>{group.score}</div>}
         </div>
       ))}
     </div>
@@ -61,7 +63,7 @@ const groupCss = css`
   height: ${animalCardDescription.height + 2}em;
 `
 
-const itemCss = (groupWithScore: any, index: number) => {
+const itemCss = (isEnded: boolean, groupWithScore: any, index: number) => {
   const validArea = 49/3 - 2 - animalCardDescription.width
   const count = groupWithScore.group.length
   const score = groupWithScore.score
@@ -71,7 +73,8 @@ const itemCss = (groupWithScore: any, index: number) => {
     top: 1em;
     bottom: 1em;
     left: ${1 + left}em;
-    filter: grayscale(${!score ? 1 : 0});
+    filter: grayscale(${isEnded && !score ? 1 : 0});
+    cursor: pointer;
   `
 }
 

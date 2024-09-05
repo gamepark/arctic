@@ -299,7 +299,7 @@ class AnimalCardDescription extends CardDescription {
   }
 
   displayHelp(item: MaterialItem<number, number>, context: ItemContext) {
-    if (!context.rules.game.rule && item.location.type === LocationType.AnimalPile) return MaterialMoveBuilder.displayLocationHelp({ type: LocationType.AnimalPileScoring, player: item.location.player })
+    if (item.location.type === LocationType.AnimalPile) return MaterialMoveBuilder.displayLocationHelp({ type: LocationType.AnimalPileScoring, player: item.location.player })
     if (item.location.type === LocationType.AnimalCardsDeck || item.location.type === LocationType.Reserve) return MaterialMoveBuilder.displayLocationHelp(item.location)
     return super.displayHelp(item, context)
 }
