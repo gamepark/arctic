@@ -51,6 +51,10 @@ const cardGridCss = css`
   grid-gap: 1em;
   grid-template-columns: repeat(5, 1fr);
   margin: 1em;
+  
+  > div {
+    cursor: pointer;
+  }
 `
 
 const titleCss = css`
