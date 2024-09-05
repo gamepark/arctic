@@ -185,21 +185,39 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
   getOtherAnimalMoves(move: MoveItem) {
     const { mainLandscapeIndex, mainToken, associatedLandscapeIndex, associatedToken } = this.animalsTokens
     if (mainLandscapeIndex === 5 && associatedLandscapeIndex === 5) {
-      return [
-        associatedToken.moveItem({
-          type: LocationType.LandscapeCard,
-          id: landscapes[4]
-        })
-      ]
+      if (move.itemIndex === mainToken.getIndex()) {
+        return [
+          associatedToken.moveItem({
+            type: LocationType.LandscapeCard,
+            id: landscapes[4]
+          })
+        ]
+      } else {
+        return [
+          mainToken.moveItem({
+            type: LocationType.LandscapeCard,
+            id: landscapes[4]
+          })
+        ]
+      }
     }
 
     if (mainLandscapeIndex === 0 && associatedLandscapeIndex === 0) {
-      return [
-        associatedToken.moveItem({
-          type: LocationType.LandscapeCard,
-          id: landscapes[1]
-        })
-      ]
+      if (move.itemIndex === mainToken.getIndex()) {
+        return [
+          associatedToken.moveItem({
+            type: LocationType.LandscapeCard,
+            id: landscapes[1]
+          })
+        ]
+      } else {
+        return [
+          mainToken.moveItem({
+            type: LocationType.LandscapeCard,
+            id: landscapes[1]
+          })
+        ]
+      }
     }
 
     if (mainLandscapeIndex === 0 && associatedLandscapeIndex === 5) {

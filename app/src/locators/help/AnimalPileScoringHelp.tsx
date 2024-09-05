@@ -21,7 +21,7 @@ export const AnimalPileScoringHelp: FC<LocationHelpProps> = (props) => {
   const groupWithScore = useMemo(() => {
     const scoredGroup = helper.groups.map((group, index) => ({
       group: group,
-      score: helper.getGroupScore(index, getAnimalFromCard(group[0].id), group.length)
+      score: helper.getGroupScore(index, getAnimalFromCard(group[0].item.id), group.length)
     }))
     return scoredGroup.reverse()
   }, [helper])
@@ -34,7 +34,7 @@ export const AnimalPileScoringHelp: FC<LocationHelpProps> = (props) => {
         <div key={groupIndex} css={groupCss}>
           {group.group.map((item, i) => (
             <div key={i}>
-              <MaterialComponent type={MaterialType.AnimalCard} itemId={item.id} css={itemCss(isEnd, group, i)} onClick={() => play(displayMaterialHelp(MaterialType.AnimalCard, item), { local: true })}/>
+              <MaterialComponent type={MaterialType.AnimalCard} itemId={item.item.id} css={itemCss(isEnd, group, i)} onClick={() => play(displayMaterialHelp(MaterialType.AnimalCard, item.item, item.index), { local: true })}/>
             </div>
           ))}
           { isEnd && <div css={scoreCss}>{group.score}</div>}

@@ -576,7 +576,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       move: {
         filter: (move) => {
           console.log(move)
-          return isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data === 1
+          return isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data === -1
         }
       }
     }, {
@@ -602,8 +602,6 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       }),
       move: {}
     },
-    { move: {} },
-    { move: {} },
     { move: {} },
     {
       popup: {

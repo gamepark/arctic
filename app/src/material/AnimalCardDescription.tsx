@@ -286,20 +286,32 @@ class AnimalCardDescription extends CardDescription {
     return super.getItemExtraCss(item, context)
   }
 
-  isFlipped(item: Partial<MaterialItem>, context: MaterialContext): boolean {
-    return super.isFlipped(item, context) || item.location?.type === LocationType.PenaltyZone || item.location?.rotation
+  isFlippedInDialog(item: Partial<MaterialItem>, context: MaterialContext) {
+    console.log(item)
+    if (item.location?.type === LocationType.PenaltyZone && item.location.type === context.player) return false
+    return super.isFlippedInDialog(item, context)
+  }
+
+  isFlippedOnTable(item: Partial<MaterialItem>, context: MaterialContext): boolean {
+    if (item.location?.type === LocationType.PenaltyZone || item.location?.rotation) return true
+    return super.isFlippedOnTable(item, context) || item.location?.rotation
   }
 
   canShortClick(move: MaterialMove, context: ItemContext): boolean {
     if (!isMoveItemType(MaterialType.AnimalCard)(move) || move.itemIndex !== context.index) return false
     if (move.location.type === LocationType.PenaltyZone) return true
     if (move.location.type === LocationType.AnimalPile) return true
-    if (move.location.type === LocationType.PlayerHand && context.rules.material(MaterialType.AnimalCard).getItem(move.itemIndex)?.location.type !== LocationType.AnimalPile) return true
+    if (move.location.type === LocationType.PlayerHand) {
+      const actualLocationType =  context.rules.material(MaterialType.AnimalCard).getItem(move.itemIndex)?.location.type
+      console.log("???", actualLocationType, LocationType.PenaltyZone, actualLocationType !== LocationType.PenaltyZone && actualLocationType !== LocationType.AnimalPile)
+      return actualLocationType !== LocationType.PenaltyZone && actualLocationType !== LocationType.AnimalPile
+    }
     return false
   }
 
   displayHelp(item: MaterialItem<number, number>, context: ItemContext) {
     if (item.location.type === LocationType.AnimalPile) return MaterialMoveBuilder.displayLocationHelp({ type: LocationType.AnimalPileScoring, player: item.location.player })
+    if (item.location.type === LocationType.PenaltyZone) return MaterialMoveBuilder.displayLocationHelp({ type: LocationType.PenaltyZone, player: item.location.player })
     if (item.location.type === LocationType.AnimalCardsDeck || item.location.type === LocationType.Reserve) return MaterialMoveBuilder.displayLocationHelp(item.location)
     return super.displayHelp(item, context)
 }

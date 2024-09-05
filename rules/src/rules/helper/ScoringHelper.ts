@@ -34,7 +34,7 @@ export class ScoringHelper extends MaterialRulesPart {
   }
 
   get differentAnimals() {
-    const validGroups = this.groups.filter((group, groupIndex) => this.getGroupScore(groupIndex, getAnimalFromCard(group[0].id), group.length) > 0)
+    const validGroups = this.groups.filter((group, groupIndex) => this.getGroupScore(groupIndex, getAnimalFromCard(group[0].item.id), group.length) > 0)
     return [0, 0, 1, 3, 6, 10, 15][validGroups.length]
   }
 
@@ -44,20 +44,21 @@ export class ScoringHelper extends MaterialRulesPart {
   }
 
   getGroupIndex(location: Location) {
-    return this.groups.findIndex((items) => items.some((item) => item.location.x === location.x))
+    return this.groups.findIndex((items) => items.some((item) => item.item.location.x === location.x))
   }
 
   get groups() {
-    const cards: MaterialItem[][] = []
-    for (const card of this.animalPile.getItems()) {
+    const cards: { item: MaterialItem, index: number }[][] = []
+    for (const index of this.animalPile.getIndexes()) {
+      const card = this.animalPile.getItem(index)!
       if (!cards.length) {
-        cards.push([card])
+        cards.push([{ item: card, index }])
       } else {
         const lastGroup = last(cards) ?? []
-        if (getAnimalFromCard(card.id) === getAnimalFromCard(last(lastGroup)!.id)) {
-          lastGroup.push(card)
+        if (getAnimalFromCard(card.id) === getAnimalFromCard(last(lastGroup)!.item.id)) {
+          lastGroup.push({ item: card, index })
         } else {
-          cards.push([card])
+          cards.push([{ item: card, index }])
         }
       }
     }
@@ -68,14 +69,14 @@ export class ScoringHelper extends MaterialRulesPart {
   getAnimalGroups(animal: Animal) {
     return this
       .groups
-      .filter((group) => group.some((item) => getAnimalFromCard(item.id) === animal))
+      .filter((group) => group.some((item) => getAnimalFromCard(item.item.id) === animal))
   }
 
   getGroupScore(groupIndex: number, animalId: Animal, size: number) {
     const otherPreviousGroupOrGreaterThan = this.groups.find(
       (group, index) => (
         ((index < groupIndex && group.length >= size) || group.length > size) &&
-        (group.some((item) => getAnimalFromCard(item.id) === animalId))
+        (group.some((item) => getAnimalFromCard(item.item.id) === animalId))
       )
     )
     if (otherPreviousGroupOrGreaterThan) return 0
