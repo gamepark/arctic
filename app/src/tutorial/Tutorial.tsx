@@ -18,7 +18,7 @@ const me = 1
 const opponent = 2
 
 export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationType> {
-  version = 3
+  version = 4
   options = { players: 2 }
   setup = new TutorialSetup()
 
@@ -576,7 +576,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       move: {
         filter: (move) => {
           console.log(move)
-          return isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data === 0
+          return isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data === 1
         }
       }
     }, {
@@ -602,6 +602,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       }),
       move: {}
     },
+    { move: {} },
     { move: {} },
     { move: {} },
     {
