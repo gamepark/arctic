@@ -1,9 +1,10 @@
 import { MaterialGameSetup } from '@gamepark/rules-api'
+import sampleSize from 'lodash/sampleSize'
 import shuffle from 'lodash/shuffle'
 import { ArcticOptions } from './ArcticOptions'
 import { ArcticRules } from './ArcticRules'
 import { animals } from './material/Animal'
-import { animalCards } from './material/AnimalCard'
+import { animalPile1, animalPile2, animalPile3, animalPile4 } from './material/AnimalSetup'
 import { Landscape } from './material/Landscape'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
@@ -33,7 +34,8 @@ export class ArcticSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
   }
 
   setupAnimalCardsDeck() {
-    this.material(MaterialType.AnimalCard).createItems(animalCards.map(animalCard =>
+    const piles = sampleSize([animalPile1, animalPile2, animalPile3, animalPile4], this.players.length).flat()
+    this.material(MaterialType.AnimalCard).createItems(piles.map(animalCard =>
       ({ id: animalCard, location: { type: LocationType.AnimalCardsDeck } })
     ))
     this.material(MaterialType.AnimalCard).shuffle()
