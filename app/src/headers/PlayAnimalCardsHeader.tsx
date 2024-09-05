@@ -1,10 +1,11 @@
 /** @jsxImportSource @emotion/react */
 
+import { CustomMoveType } from '@gamepark/arctic/rules/CustomMoveType'
 import { Memory } from '@gamepark/arctic/rules/Memory'
 import { PlayAnimalCardsRule } from '@gamepark/arctic/rules/PlayAnimalCardsRule'
 import { PlayerState } from '@gamepark/arctic/rules/PlayerState'
-import { useGame, usePlayerId, usePlayerName } from '@gamepark/react-game'
-import { MaterialGame } from '@gamepark/rules-api'
+import { PlayMoveButton, useGame, useLegalMove, usePlayerId, usePlayerName } from '@gamepark/react-game'
+import { isCustomMoveType, MaterialGame } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 
 export const PlayAnimalCardsHeader = () => {
@@ -16,8 +17,25 @@ export const PlayAnimalCardsHeader = () => {
   const itsMe = playerId && playerId === activePlayer
   const depositValue = rules.remind(Memory.DepositValue)
   const name = usePlayerName(activePlayer)
+  const canModifyPlayValue = playerState.canModifyPlayValue
+  const minValue = useLegalMove((move) => isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data === -1)
+  const noValue = useLegalMove((move) => isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data === 0)
+  const maxValue = useLegalMove((move) => isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data === 1)
 
   if (itsMe) {
+    if (canModifyPlayValue) {
+      const min = depositValue - 1
+      const max = depositValue + 1
+
+      return (
+        <Trans defaults="header.moose.play.you">
+          <PlayMoveButton move={minValue}>{min}</PlayMoveButton>
+          <PlayMoveButton move={noValue}>{depositValue}</PlayMoveButton>
+          <PlayMoveButton move={maxValue}>{max}</PlayMoveButton>
+        </Trans>
+      )
+    }
+
     if (depositValue === 1) {
       if (playerState.canPlaceCardUnderAnimalPile) {
         return <Trans defaults="header.fox.under-pile" />
@@ -29,6 +47,12 @@ export const PlayAnimalCardsHeader = () => {
     }
 
     return <Trans defaults="header.play-card.you" values={{ number: depositValue }} />
+  }
+
+  if (canModifyPlayValue) {
+    return (
+      <Trans defaults="header.moose.play.player" values={{ player: name }} />
+    )
   }
 
 

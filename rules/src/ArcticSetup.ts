@@ -33,8 +33,12 @@ export class ArcticSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
     ))
   }
 
+  get piles() {
+    return sampleSize([animalPile1, animalPile2, animalPile3, animalPile4], this.players.length).flat()
+  }
+
   setupAnimalCardsDeck() {
-    const piles = sampleSize([animalPile1, animalPile2, animalPile3, animalPile4], this.players.length).flat()
+    const piles = this.piles
     this.material(MaterialType.AnimalCard).createItems(piles.map(animalCard =>
       ({ id: animalCard, location: { type: LocationType.AnimalCardsDeck } })
     ))

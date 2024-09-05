@@ -432,7 +432,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       focus: (game) => ({
         materials: [
-          this.material(game, MaterialType.AnimalCard).id(AnimalCard.MooseFox2)
+          this.material(game, MaterialType.AnimalCard).id(AnimalCard.MooseFox3)
         ],
         locations: [
           this.location(LocationType.AnimalPile).player(me).location
@@ -446,7 +446,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       }),
       move: {
         filter: (move, game) => isMoveItemType(MaterialType.AnimalCard)(move)
-          && this.material(game, MaterialType.AnimalCard).getItem(move.itemIndex)!.id === AnimalCard.MooseFox2
+          && this.material(game, MaterialType.AnimalCard).getItem(move.itemIndex)!.id === AnimalCard.MooseFox3
       }
     }, {
       popup: {
@@ -574,7 +574,10 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         }
       }),
       move: {
-        filter: (move) => isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data === 1
+        filter: (move) => {
+          console.log(move)
+          return isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data === 0
+        }
       }
     }, {
       popup: {

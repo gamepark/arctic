@@ -19,8 +19,18 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
     const moves: MaterialMove[] = []
     const hand = this.hand
 
-    const animalPile = this.animalPile.length
     const playerState = new PlayerState(this.game, this.player)
+    if (playerState.canModifyPlayValue) {
+      moves.push(
+        this.customMove(CustomMoveType.ModifyValue, 1),
+        this.customMove(CustomMoveType.ModifyValue, 0),
+        this.customMove(CustomMoveType.ModifyValue, -1)
+      )
+
+      return moves
+    }
+
+    const animalPile = this.animalPile.length
     if (animalPile && playerState.canPlaceCardUnderAnimalPile) {
       moves.push(
         ...hand.moveItems({ type: LocationType.AnimalPile, player: this.player, x: 0 })
@@ -35,19 +45,14 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
       ...hand.moveItems({ type: LocationType.AnimalPile, player: this.player })
     )
 
-    if (playerState.canModifyPlayValue) {
-      moves.push(
-        this.customMove(CustomMoveType.ModifyValue, 1),
-        this.customMove(CustomMoveType.ModifyValue, -1)
-      )
-    }
-
     return moves
   }
 
   onCustomMove(move: CustomMove) {
     if (!isCustomMoveType(CustomMoveType.ModifyValue)(move)) return []
-    this.memorize(Memory.DepositValue, (depositValue: number) => depositValue + move.data)
+    if (move.data) {
+      this.memorize(Memory.DepositValue, (depositValue: number) => depositValue + move.data)
+    }
     this.memorize(Memory.Modifier, move.data)
     const playerState = new PlayerState(this.game, this.player)
     if (!playerState.depositValue) return [this.startRule(RuleId.MoveAnimalTokens)]

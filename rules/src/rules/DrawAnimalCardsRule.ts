@@ -23,8 +23,11 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
     if (playerState.canModifyDrawValue) {
       moves.push(
         this.customMove(CustomMoveType.ModifyValue, 1),
+        this.customMove(CustomMoveType.ModifyValue, 0),
         this.customMove(CustomMoveType.ModifyValue, -1)
       )
+
+      return moves
     }
 
     if (playerState.canDrawFromPenaltyCards) {
@@ -60,7 +63,9 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
 
   onCustomMove(move: CustomMove) {
     if (!isCustomMoveType(CustomMoveType.ModifyValue)(move)) return []
-    this.memorize(Memory.DrawValue, (drawValue: number) => drawValue + move.data)
+    if (move.data) {
+     this.memorize(Memory.DrawValue, (drawValue: number) => drawValue + move.data)
+    }
     this.memorize(Memory.Modifier, move.data)
     if (!this.depositValue) return [this.startRule(RuleId.DiscardCards)]
     return []

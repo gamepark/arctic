@@ -1,26 +1,17 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { ArcticRules } from '@gamepark/arctic/ArcticRules'
-import { PowerCard } from '@gamepark/arctic/material/PowerCard'
-import { CustomMoveType } from '@gamepark/arctic/rules/CustomMoveType'
-import { RuleId } from '@gamepark/arctic/rules/RuleId'
-import { MaterialHelpProps, PlayMoveButton, useLegalMove, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
-import { isCustomMoveType } from '@gamepark/rules-api'
+import { MaterialHelpProps, usePlayerId, usePlayerName } from '@gamepark/react-game'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 
 export const PowerCardHelp: FC<MaterialHelpProps> = (props) => {
   const { t } = useTranslation()
-  const rules = useRules<ArcticRules>()!
-  const { item, closeDialog } = props
+  const { item } = props
   const playerId = usePlayerId()
   const onwedByMe = playerId && item.location?.player === playerId
   const ownedByOther = item.location?.player && item.location.player !== playerId
   const notMine = !playerId || item.location?.player !== playerId
   const name = usePlayerName(item.location?.player)
-  const isMoose = item.id === PowerCard.Moose1 || item.id === PowerCard.Moose2
-  const increaseValue = useLegalMove((move) => isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data === 1)
-  const decreaseValue = useLegalMove((move) => isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data === -1)
 
   return (
     <>
@@ -33,21 +24,6 @@ export const PowerCardHelp: FC<MaterialHelpProps> = (props) => {
           <strong/><i/>
         </Trans>
       </p>
-      {isMoose && <p>{t('power.moose.help')}</p>}
-      {isMoose && increaseValue && (
-        <p>
-          <PlayMoveButton move={increaseValue} onPlay={closeDialog}>
-            <Trans defaults={rules.game.rule?.id === RuleId.PlayAnimalCards? 'power.place.more': 'power.draw.more'} />
-          </PlayMoveButton>
-        </p>
-      )}
-      {isMoose &&decreaseValue && (
-        <p>
-          <PlayMoveButton move={decreaseValue} onPlay={closeDialog}>
-            <Trans defaults={rules.game.rule?.id === RuleId.PlayAnimalCards? 'power.place.less': 'power.draw.less'} />
-          </PlayMoveButton>
-        </p>
-      )}
     </>
   )
 }

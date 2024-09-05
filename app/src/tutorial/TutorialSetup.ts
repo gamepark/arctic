@@ -1,20 +1,25 @@
 import { ArcticSetup } from '@gamepark/arctic/ArcticSetup'
 import { Animal, animals } from '@gamepark/arctic/material/Animal'
 import { AnimalCard } from '@gamepark/arctic/material/AnimalCard'
+import { animalPile1, animalPile3 } from '@gamepark/arctic/material/AnimalSetup'
 import { LocationType } from '@gamepark/arctic/material/LocationType'
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
 import { PowerCard } from '@gamepark/arctic/material/PowerCard'
+import sampleSize from 'lodash/sampleSize'
 
 
 const me = 1
 const opponent = 2
 
-const myHand = [AnimalCard.OrcaPuffin1, AnimalCard.MooseFox2, AnimalCard.OrcaMoose4]
+const myHand = [AnimalCard.OrcaPuffin1, AnimalCard.MooseFox3, AnimalCard.OrcaMoose4]
 const opponentHand = [AnimalCard.OrcaBear2, AnimalCard.BearMoose2, AnimalCard.FoxBear3]
 const allHands = [...myHand, ...opponentHand]
 
 export class TutorialSetup extends ArcticSetup {
 
+  get piles() {
+    return sampleSize([animalPile1, animalPile3], this.players.length).flat()
+  }
 
   setupReserve() {
     this.material(MaterialType.AnimalCard)
