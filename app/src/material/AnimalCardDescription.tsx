@@ -1,4 +1,4 @@
-import { css } from '@emotion/react'
+ import { css } from '@emotion/react'
 import { AnimalCard } from '@gamepark/arctic/material/AnimalCard'
 import { LocationType } from '@gamepark/arctic/material/LocationType'
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'

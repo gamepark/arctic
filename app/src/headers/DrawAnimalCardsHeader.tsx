@@ -59,7 +59,7 @@ export const DrawAnimalCardsHeader = () => {
 
   if (canModifyDrawValue) {
     return (
-      <Trans defaults="header.moose.play.player" values={{ player: name }} />
+      <Trans defaults="header.moose.draw.player" values={{ player: name }} />
     )
   }
 
