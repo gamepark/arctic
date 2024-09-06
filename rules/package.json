@@ -1,6 +1,6 @@
 {
   "name": "@gamepark/arctic",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "The rules of Arctic adapted for Game Park",
   "sideEffects": false,
   "main": "dist/index.js",
