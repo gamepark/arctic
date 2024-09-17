@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
 
+import { CustomMoveType } from '@gamepark/arctic/rules/CustomMoveType'
 import { DrawAnimalCardsRule } from '@gamepark/arctic/rules/DrawAnimalCardsRule'
 import { PlayerState } from '@gamepark/arctic/rules/PlayerState'
-import { RuleId } from '@gamepark/arctic/rules/RuleId'
 import { PlayMoveButton, useGame, useLegalMove, usePlayerId, usePlayerName } from '@gamepark/react-game'
-import { isStartRule, MaterialGame } from '@gamepark/rules-api'
+import { isCustomMoveType, MaterialGame } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 
 export const DrawAnimalCardsHeader = () => {
@@ -19,7 +19,7 @@ export const DrawAnimalCardsHeader = () => {
   const canTakeCardsOnDeck = playerState.canTakeCardsOnDeck
   const canDrawFromPenaltyCards = playerState.canDrawFromPenaltyCards
   const canModifyDrawValue = playerState.canModifyDrawValue
-  const stop = useLegalMove((move) => isStartRule(move) && move.id === RuleId.DiscardCards)
+  const stop = useLegalMove((move) => isCustomMoveType(CustomMoveType.Pass)(move))
 
   if (itsMe) {
     if (canModifyDrawValue) {

@@ -3,6 +3,7 @@ import { getDrawValue } from '../material/AnimalCard'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PowerCard } from '../material/PowerCard'
+import { CustomMoveType } from './CustomMoveType'
 import { Memory } from './Memory'
 import { PlayerState } from './PlayerState'
 import { RuleId } from './RuleId'
@@ -20,7 +21,7 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
     const moves: MaterialMove[] = []
     const playerState = new PlayerState(this.game, this.player)
     if (playerState.canModifyDrawValue && playerState.drawValue <= 2) {
-      moves.push(this.startRule(RuleId.DiscardCards))
+      moves.push(this.customMove(CustomMoveType.Pass))
     }
 
     if (playerState.canDrawFromPenaltyCards) {
@@ -54,6 +55,10 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
     return moves
   }
 
+  onCustomMove() {
+    return this.goToNextRule()
+  }
+
   afterItemMove(move: ItemMove): MaterialMove[] {
     if (!isMoveItemType(MaterialType.AnimalCard)(move) || move.location.type !== LocationType.PlayerHand) return []
 
@@ -61,14 +66,19 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
     const playerState = new PlayerState(this.game, this.player)
     if (!playerState.drawValue) {
       this.forget(Memory.DrawValue)
-      return [
-        this.startRule(RuleId.DiscardCards)
-      ]
+      return this.goToNextRule()
     } else if (this.isRiverRefillDirectly) {
       return this.refillRiver()
     }
 
     return []
+  }
+
+  goToNextRule() {
+    return [
+      ...this.refillRiver(),
+      this.startRule(RuleId.DiscardCards)
+    ]
   }
 
   refillRiver() {
@@ -110,9 +120,5 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
       .location(LocationType.PowerPile)
       .player(this.player)
       .id((id: PowerCard) => id === PowerCard.Orca1).length > 0
-  }
-
-  onRuleEnd() {
-    return this.refillRiver()
   }
 }

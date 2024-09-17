@@ -4,8 +4,9 @@ import { LocationType } from '@gamepark/arctic/material/LocationType'
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
 import { PowerCard } from '@gamepark/arctic/material/PowerCard'
 import { PlayerId } from '@gamepark/arctic/PlayerId'
+import { CustomMoveType } from '@gamepark/arctic/rules/CustomMoveType'
 import { linkButtonCss, MaterialTutorial, PlayMoveButton, TutorialStep } from '@gamepark/react-game'
-import { isMoveItemType, isStartRule, MaterialMoveBuilder } from '@gamepark/rules-api'
+import { isCustomMoveType, isMoveItemType, MaterialMoveBuilder } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 import { AnimalIcon } from '../locators/AnimalIconLocator'
 import { landscapeCardDescription } from '../material/LandscapeCardDescription'
@@ -595,17 +596,17 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         }
       }),
       move: {
-        filter: (move) => !isStartRule(move)
+        filter: (move) => !isCustomMoveType(CustomMoveType.Pass)(move)
       }
     },
     {
       move: {
-        filter: (move) => !isStartRule(move)
+        filter: (move) => !isCustomMoveType(CustomMoveType.Pass)(move)
       }
     },
     {
       move: {
-        filter: (move) => !isStartRule(move)
+        filter: (move) => !isCustomMoveType(CustomMoveType.Pass)(move)
       }
     },
     {
