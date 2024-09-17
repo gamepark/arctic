@@ -1,9 +1,8 @@
-import { CustomMove, isCustomMoveType, isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { getDrawValue } from '../material/AnimalCard'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PowerCard } from '../material/PowerCard'
-import { CustomMoveType } from './CustomMoveType'
 import { Memory } from './Memory'
 import { PlayerState } from './PlayerState'
 import { RuleId } from './RuleId'
@@ -13,21 +12,15 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
     const playerState = new PlayerState(this.game, this.player)
     const topPileCard = playerState.topPileCard
     const drawValue = getDrawValue(topPileCard!.id)
-    this.memorize<number>(Memory.DrawValue, topPileCard?.location.rotation? 1: drawValue)
+    this.memorize<number>(Memory.DrawValue, topPileCard?.location.rotation ? 1 : drawValue)
     return []
   }
 
   getPlayerMoves() {
     const moves: MaterialMove[] = []
     const playerState = new PlayerState(this.game, this.player)
-    if (playerState.canModifyDrawValue) {
-      moves.push(
-        this.customMove(CustomMoveType.ModifyValue, 1),
-        this.customMove(CustomMoveType.ModifyValue, 0),
-        this.customMove(CustomMoveType.ModifyValue, -1)
-      )
-
-      return moves
+    if (playerState.canModifyDrawValue && playerState.drawValue <= 2) {
+      moves.push(this.startRule(RuleId.DiscardCards))
     }
 
     if (playerState.canDrawFromPenaltyCards) {
@@ -52,40 +45,35 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
         this
           .deck
           .moveItem({
-          type: LocationType.PlayerHand,
-          player: this.player
-        })
+            type: LocationType.PlayerHand,
+            player: this.player
+          })
       )
     }
 
     return moves
   }
 
-  onCustomMove(move: CustomMove) {
-    if (!isCustomMoveType(CustomMoveType.ModifyValue)(move)) return []
-    if (move.data) {
-     this.memorize(Memory.DrawValue, (drawValue: number) => drawValue + move.data)
-    }
-    this.memorize(Memory.Modifier, move.data)
-    if (!this.depositValue) return [this.startRule(RuleId.DiscardCards)]
-    return []
-  }
-
   afterItemMove(move: ItemMove): MaterialMove[] {
     if (!isMoveItemType(MaterialType.AnimalCard)(move) || move.location.type !== LocationType.PlayerHand) return []
 
     this.memorize<number>(Memory.DrawValue, value => value - 1)
-    const missingCards = 6 - this.river.length
-    if (this.remind<number>(Memory.DrawValue) == 0) {
+    const playerState = new PlayerState(this.game, this.player)
+    if (!playerState.drawValue) {
+      this.forget(Memory.DrawValue)
       return [
-        ...this.dealCards(missingCards),
         this.startRule(RuleId.DiscardCards)
       ]
     } else if (this.isRiverRefillDirectly) {
-      return this.dealCards(missingCards)
+      return this.refillRiver()
     }
 
     return []
+  }
+
+  refillRiver() {
+    const missingCards = 6 - this.river.length
+    return this.dealCards(missingCards)
   }
 
   dealCards(count: number = 1): MaterialMove[] {
@@ -124,12 +112,7 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
       .id((id: PowerCard) => id === PowerCard.Orca1).length > 0
   }
 
-  get depositValue() {
-    return this.remind(Memory.DrawValue)
-  }
-
   onRuleEnd() {
-    this.forget(Memory.Modifier)
-    return []
+    return this.refillRiver()
   }
 }

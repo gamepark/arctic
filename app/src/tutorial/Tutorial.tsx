@@ -4,14 +4,14 @@ import { LocationType } from '@gamepark/arctic/material/LocationType'
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
 import { PowerCard } from '@gamepark/arctic/material/PowerCard'
 import { PlayerId } from '@gamepark/arctic/PlayerId'
-import { CustomMoveType } from '@gamepark/arctic/rules/CustomMoveType'
 import { linkButtonCss, MaterialTutorial, PlayMoveButton, TutorialStep } from '@gamepark/react-game'
-import { isCustomMoveType, isMoveItemType, MaterialMoveBuilder } from '@gamepark/rules-api'
+import { isMoveItemType, isStartRule, MaterialMoveBuilder } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 import { AnimalIcon } from '../locators/AnimalIconLocator'
 import { landscapeCardDescription } from '../material/LandscapeCardDescription'
 import { scoringTokenDescription } from '../material/ScoringTokenDescription'
 import { TutorialSetup } from './TutorialSetup'
+
 const displayMaterialHelp = MaterialMoveBuilder.displayMaterialHelp
 
 const me = 1
@@ -96,7 +96,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       margin: {
         top: 4,
         left: 1,
-        right: 1,
+        right: 1
       }
     }),
     move: {
@@ -118,7 +118,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           <strong/>
         </Trans>
       ),
-      position: { x: -30}
+      position: { x: -30 }
     },
     focus: (game) => ({
       materials: [
@@ -151,7 +151,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       margin: {
         top: 6,
         bottom: 2,
-        left: 10,
+        left: 10
       }
     })
   }, {
@@ -397,7 +397,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           top: 10,
           bottom: 2,
           left: 1,
-          right: 1,
+          right: 1
         }
       }),
       move: {
@@ -432,7 +432,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       focus: (game) => ({
         materials: [
-          this.material(game, MaterialType.AnimalCard).id(AnimalCard.MooseFox3)
+          this.material(game, MaterialType.AnimalCard).id(AnimalCard.MooseBear2)
         ],
         locations: [
           this.location(LocationType.AnimalPile).player(me).location
@@ -441,12 +441,12 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           top: 10,
           bottom: 2,
           left: 1,
-          right: 1,
+          right: 1
         }
       }),
       move: {
         filter: (move, game) => isMoveItemType(MaterialType.AnimalCard)(move)
-          && this.material(game, MaterialType.AnimalCard).getItem(move.itemIndex)!.id === AnimalCard.MooseFox3
+          && this.material(game, MaterialType.AnimalCard).getItem(move.itemIndex)!.id === AnimalCard.MooseBear2
       }
     }, {
       popup: {
@@ -481,7 +481,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       focus: (game) => ({
         materials: [
-          this.material(game, MaterialType.TotemToken).id((id: Animal) => id === Animal.Moose || id === Animal.Fox)
+          this.material(game, MaterialType.TotemToken).id((id: Animal) => id === Animal.Moose || id === Animal.Bear)
         ],
         staticItems: landscapeCardDescription.staticItems.map((item) => ({
           type: MaterialType.LandscapeCard,
@@ -507,7 +507,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       focus: (game) => ({
         materials: [
-          this.material(game, MaterialType.TotemToken).id((id: Animal) => id === Animal.Moose || id === Animal.Fox)
+          this.material(game, MaterialType.TotemToken).id((id: Animal) => id === Animal.Moose || id === Animal.Bear)
         ],
         staticItems: landscapeCardDescription.staticItems.map((item) => ({
           type: MaterialType.LandscapeCard,
@@ -534,7 +534,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       focus: (game) => ({
         materials: [
-          this.material(game, MaterialType.TotemToken).id((id: Animal) => id === Animal.Moose || id === Animal.Fox)
+          this.material(game, MaterialType.TotemToken).id((id: Animal) => id === Animal.Moose || id === Animal.Bear)
         ],
         staticItems: landscapeCardDescription.staticItems.map((item) => ({
           type: MaterialType.LandscapeCard,
@@ -572,10 +572,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           top: 5,
           right: 15
         }
-      }),
-      move: {
-        filter: (move) => isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data === -1
-      }
+      })
     }, {
       popup: {
         text: () => (
@@ -597,9 +594,20 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           right: 1
         }
       }),
-      move: {}
+      move: {
+        filter: (move) => !isStartRule(move)
+      }
     },
-    { move: {} },
+    {
+      move: {
+        filter: (move) => !isStartRule(move)
+      }
+    },
+    {
+      move: {
+        filter: (move) => !isStartRule(move)
+      }
+    },
     {
       popup: {
         text: () => (
@@ -607,8 +615,8 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
             <strong/>
           </Trans>
         ),
-        position: { y: -20},
-        size: { width: 100}
+        position: { y: -20 },
+        size: { width: 100 }
       },
       focus: (game) => ({
         materials: [
@@ -643,7 +651,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         text: () => (
           <Trans defaults="tuto.scoring">
             <strong/>
-            <PlayMoveButton css={linkButtonCss} move={displayMaterialHelp(MaterialType.ScoringToken, scoringTokenDescription.staticItem)} />
+            <PlayMoveButton css={linkButtonCss} move={displayMaterialHelp(MaterialType.ScoringToken, scoringTokenDescription.staticItem)}/>
           </Trans>
         ),
         position: { x: 10 }

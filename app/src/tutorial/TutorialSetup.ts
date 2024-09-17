@@ -11,7 +11,7 @@ import sampleSize from 'lodash/sampleSize'
 const me = 1
 const opponent = 2
 
-const myHand = [AnimalCard.OrcaPuffin1, AnimalCard.MooseFox3, AnimalCard.OrcaMoose4]
+const myHand = [AnimalCard.OrcaPuffin1, AnimalCard.MooseBear2, AnimalCard.OrcaMoose4]
 const opponentHand = [AnimalCard.OrcaBear2, AnimalCard.BearMoose2, AnimalCard.FoxBear3]
 const allHands = [...myHand, ...opponentHand]
 

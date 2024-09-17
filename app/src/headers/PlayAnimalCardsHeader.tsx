@@ -1,11 +1,10 @@
 /** @jsxImportSource @emotion/react */
 
-import { CustomMoveType } from '@gamepark/arctic/rules/CustomMoveType'
-import { Memory } from '@gamepark/arctic/rules/Memory'
 import { PlayAnimalCardsRule } from '@gamepark/arctic/rules/PlayAnimalCardsRule'
 import { PlayerState } from '@gamepark/arctic/rules/PlayerState'
+import { RuleId } from '@gamepark/arctic/rules/RuleId'
 import { PlayMoveButton, useGame, useLegalMove, usePlayerId, usePlayerName } from '@gamepark/react-game'
-import { isCustomMoveType, MaterialGame } from '@gamepark/rules-api'
+import { isStartRule, MaterialGame } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 
 export const PlayAnimalCardsHeader = () => {
@@ -15,29 +14,43 @@ export const PlayAnimalCardsHeader = () => {
   const activePlayer = rules.game.rule!.player!
   const playerState = new PlayerState(game, activePlayer)
   const itsMe = playerId && playerId === activePlayer
-  const depositValue = rules.remind(Memory.DepositValue)
+  const depositValue = playerState.depositValue
   const name = usePlayerName(activePlayer)
   const canModifyPlayValue = playerState.canModifyPlayValue
-  const minValue = useLegalMove((move) => isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data === -1)
-  const noValue = useLegalMove((move) => isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data === 0)
-  const maxValue = useLegalMove((move) => isCustomMoveType(CustomMoveType.ModifyValue)(move) && move.data === 1)
+  const stop = useLegalMove((move) => isStartRule(move) && move.id === RuleId.MoveAnimalTokens)
 
   if (itsMe) {
     if (canModifyPlayValue) {
-      const min = depositValue - 1
-      const max = depositValue + 1
-
-      const Decrease = () => <PlayMoveButton move={minValue}>{min}</PlayMoveButton>
-      const Increase = () => <PlayMoveButton move={maxValue}>{max}</PlayMoveButton>
-      const NoChange = () => <PlayMoveButton move={noValue}>{depositValue}</PlayMoveButton>
-
-      return (
-        <Trans defaults="header.moose.play.you">
-          <Decrease />
-          <NoChange />
-          <Increase />
-        </Trans>
-      )
+      if (depositValue <= 2) {
+        if (playerState.fox !== undefined) {
+          return (
+            <Trans
+              defaults="header.moose.fox.play"
+              components={{
+                pass: <PlayMoveButton move={stop}/>
+              }}
+            />
+          )
+        }
+        return (
+          <Trans
+            defaults={depositValue === 1 ? "header.moose.play.one" : "header.moose.play.two"}
+            components={{
+              pass: <PlayMoveButton move={stop}/>
+            }}
+          />
+        )
+      } else {
+        return (
+          <Trans
+            defaults="header.moose.play.more"
+            values={{ number: depositValue }}
+            components={{
+              pass: <PlayMoveButton move={stop}/>
+            }}
+          />
+        )
+      }
     }
 
     if (depositValue === 1) {
@@ -53,13 +66,5 @@ export const PlayAnimalCardsHeader = () => {
     return <Trans defaults="header.play-card.you" values={{ number: depositValue }} />
   }
 
-  if (canModifyPlayValue) {
-    return (
-      <Trans defaults="header.moose.play.player" values={{ player: name }} />
-    )
-  }
-
-
   return <Trans defaults="header.play-card.player" values={{ number: depositValue, player: name }} />
-
 }

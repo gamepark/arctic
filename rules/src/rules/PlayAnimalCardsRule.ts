@@ -1,9 +1,8 @@
-import { CustomMove, isCustomMoveType, isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { getAnimalFromCard, getDepositValue } from '../material/AnimalCard'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PowerCard } from '../material/PowerCard'
-import { CustomMoveType } from './CustomMoveType'
 import { Memory } from './Memory'
 import { PlayerState } from './PlayerState'
 import { RuleId } from './RuleId'
@@ -20,14 +19,8 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
     const hand = this.hand
 
     const playerState = new PlayerState(this.game, this.player)
-    if (playerState.canModifyPlayValue) {
-      moves.push(
-        this.customMove(CustomMoveType.ModifyValue, 1),
-        this.customMove(CustomMoveType.ModifyValue, 0),
-        this.customMove(CustomMoveType.ModifyValue, -1)
-      )
-
-      return moves
+    if (playerState.canModifyPlayValue && playerState.depositValue <= 2) {
+      moves.push(this.startRule(RuleId.DiscardCards))
     }
 
     const animalPile = this.animalPile.length
@@ -46,17 +39,6 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
     )
 
     return moves
-  }
-
-  onCustomMove(move: CustomMove) {
-    if (!isCustomMoveType(CustomMoveType.ModifyValue)(move)) return []
-    if (move.data) {
-      this.memorize(Memory.DepositValue, (depositValue: number) => depositValue + move.data)
-    }
-    this.memorize(Memory.Modifier, move.data)
-    const playerState = new PlayerState(this.game, this.player)
-    if (!playerState.depositValue) return [this.startRule(RuleId.MoveAnimalTokens)]
-    return []
   }
 
   afterItemMove(move: ItemMove): MaterialMove[] {
@@ -135,7 +117,7 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
 
   onRuleEnd() {
     this.forget(Memory.HasPlacedCard)
-    this.forget(Memory.Modifier)
+    this.forget(Memory.DepositValue)
     return []
   }
 }

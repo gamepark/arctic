@@ -20,11 +20,13 @@ export class PlayerState extends MaterialRulesPart {
       .location(LocationType.PowerPile)
       .player(this.player)
       .id((id: PowerCard) => id === PowerCard.Fox1 || id === PowerCard.Fox2)
-      .getItem()!
+      .getItem()
   }
 
   get depositValue() {
-    return this.remind(Memory.DepositValue)
+    const depositValue = this.remind(Memory.DepositValue) ?? 0
+    if (this.canModifyPlayValue) return depositValue + 1
+    return depositValue
   }
 
   get canPlaceCardUnderAnimalPile() {
@@ -87,7 +89,6 @@ export class PlayerState extends MaterialRulesPart {
   }
 
   get canModifyDrawValue() {
-    if (this.remind(Memory.Modifier) !== undefined) return false
     return this
       .material(MaterialType.PowerCard)
       .location(LocationType.PowerPile)
@@ -96,7 +97,6 @@ export class PlayerState extends MaterialRulesPart {
   }
 
   get canModifyPlayValue() {
-    if (this.remind(Memory.Modifier) !== undefined) return false
     return this
       .material(MaterialType.PowerCard)
       .location(LocationType.PowerPile)
@@ -157,5 +157,11 @@ export class PlayerState extends MaterialRulesPart {
       .material(MaterialType.AnimalCard)
       .location(LocationType.AnimalPile)
       .player(this.player)
+  }
+
+  get drawValue() {
+    const drawValue = this.remind(Memory.DrawValue) ?? 0
+    if (this.canModifyDrawValue) return drawValue + 1
+    return drawValue
   }
 }
