@@ -66,5 +66,23 @@ export const PlayAnimalCardsHeader = () => {
     return <Trans defaults="header.play-card.you" values={{ number: depositValue }} />
   }
 
+  if (canModifyPlayValue) {
+    if (depositValue <= 2) {
+      return (
+        <Trans
+          defaults={depositValue === 1 ? "header.moose.play.one.player" : "header.moose.play.two.player"}
+          values={{ player: name }}
+        />
+      )
+    } else {
+      return (
+        <Trans
+          defaults="header.moose.play.more.player"
+          values={{ player: name, number: depositValue }}
+        />
+      )
+    }
+  }
+
   return <Trans defaults="header.play-card.player" values={{ number: depositValue, player: name }} />
 }

@@ -26,7 +26,7 @@ export const DrawAnimalCardsHeader = () => {
       if (drawValue <= 2) {
         return (
           <Trans
-            defaults={drawValue === 1 ? "header.moose.draw.one" : "header.moose.draw.two"}
+            defaults={drawValue === 1 ? 'header.moose.draw.one' : 'header.moose.draw.two'}
             components={{
               pass: <PlayMoveButton move={stop}/>
             }}
@@ -58,6 +58,24 @@ export const DrawAnimalCardsHeader = () => {
     }
 
     return <Trans defaults="header.draw.you" values={{ number: drawValue }}/>
+  }
+
+  if (canModifyDrawValue) {
+    if (drawValue <= 2) {
+      return (
+        <Trans
+          defaults={drawValue === 1 ? 'header.moose.draw.one.player' : 'header.moose.draw.two.player'}
+          values={{ player: name }}
+        />
+      )
+    } else {
+      return (
+        <Trans
+          defaults="header.moose.draw.more.player"
+          values={{ player: name, number: drawValue }}
+        />
+      )
+    }
   }
 
   return <Trans defaults="header.draw.player" values={{ player: name, number: drawValue }}/>
