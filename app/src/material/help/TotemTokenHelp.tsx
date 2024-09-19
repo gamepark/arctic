@@ -6,6 +6,9 @@ import { MaterialHelpProps, PlayMoveButton, useLegalMove } from '@gamepark/react
 import { isMoveItemType } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft'
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons/faArrowRight'
 
 export const TotemTokenHelp: FC<MaterialHelpProps> = (props) => {
   const { t } = useTranslation()
@@ -24,24 +27,27 @@ export const TotemTokenHelp: FC<MaterialHelpProps> = (props) => {
     <>
       <h2 css={titleCss}>{t('animal-token')}</h2>
       <p>{t('totem.score')}</p>
+      <p css={spreadButtonsCss}>
       {moveLeft && (
-        <p>
 
           <PlayMoveButton move={moveLeft} onPlay={closeDialog}>
-            <Trans defaults="animal-token.left"/>
+            <FontAwesomeIcon icon={faArrowLeft} />&nbsp;<Trans defaults="animal-token.left"/>
           </PlayMoveButton>
-        </p>
       )}
       {moveRigth && (
-        <p>
           <PlayMoveButton move={moveRigth} onPlay={closeDialog}>
-            <Trans defaults="animal-token.right"/>
+            <Trans defaults="animal-token.right"/>&nbsp;<FontAwesomeIcon icon={faArrowRight} />
           </PlayMoveButton>
-        </p>
       )}
+      </p>
     </>
   )
 }
+
+const spreadButtonsCss = css`
+  display: flex;
+  justify-content: space-between;
+`
 
 const titleCss = css`
   margin-bottom: 0.5em !important;
