@@ -67,7 +67,6 @@ class AnimalPileLocator extends PileLocator {
 
     getNavigationSorts(context: ItemContext): SortFunction[] {
         const topItem = context.rules.material(context.type).getItem(context.index)
-        console.log(topItem)
         if (!topItem || topItem.location.type !== LocationType.AnimalPile || topItem.location.player === context.player) return super.getNavigationSorts(context)
         return []
     }
