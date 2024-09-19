@@ -20,7 +20,7 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
 
     const playerState = new PlayerState(this.game, this.player)
     if (playerState.canModifyPlayValue && playerState.depositValue <= 2) {
-      moves.push(this.startRule(RuleId.DiscardCards))
+      moves.push(this.startRule(RuleId.MoveAnimalTokens))
     }
 
     const animalPile = this.animalPile.length
