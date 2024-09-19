@@ -31,7 +31,7 @@ export const PlayAnimalCardsHeader = () => {
             />
           )
         }
-        if (playerState.isLastCardHidden && depositValue > 1) {
+        if (playerState.isLastCardHidden) {
           return (
             <Trans
               defaults="header.moose.play.more"
@@ -71,7 +71,7 @@ export const PlayAnimalCardsHeader = () => {
   }
 
   if (canModifyPlayValue) {
-    if (playerState.isLastCardHidden && depositValue > 1) {
+    if (playerState.isLastCardHidden) {
       return (
         <Trans
           defaults="header.moose.play.more.player"

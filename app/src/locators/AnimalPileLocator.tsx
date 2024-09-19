@@ -1,7 +1,7 @@
 import { LocationType } from '@gamepark/arctic/material/LocationType'
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
 import { PlayerState } from '@gamepark/arctic/rules/PlayerState'
-import { getRelativePlayerIndex, isItemContext, MaterialContext, PileLocator } from '@gamepark/react-game'
+import { getRelativePlayerIndex, isItemContext, ItemContext, MaterialContext, PileLocator, SortFunction } from '@gamepark/react-game'
 import { Coordinates, Location } from '@gamepark/rules-api'
 import { animalCardDescription } from '../material/AnimalCardDescription'
 import { AnimalPileDescription } from './descriptions/AnimalPileDescription'
@@ -37,6 +37,7 @@ class AnimalPileLocator extends PileLocator {
     limit = 100
 
     getMaxAngle(location: Location, context: MaterialContext) {
+        if (location.player !== context.player) return 0
         if (isItemContext(context)) return super.getMaxAngle(location, context)
         return 0
     }
@@ -62,6 +63,13 @@ class AnimalPileLocator extends PileLocator {
             if (cards) return []
             return [{ type: LocationType.AnimalPile, player }]
         })
+    }
+
+    getNavigationSorts(context: ItemContext): SortFunction[] {
+        const topItem = context.rules.material(context.type).getItem(context.index)
+        console.log(topItem)
+        if (!topItem || topItem.location.type !== LocationType.AnimalPile || topItem.location.player === context.player) return super.getNavigationSorts(context)
+        return []
     }
 }
 

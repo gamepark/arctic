@@ -1,10 +1,10 @@
- import { css } from '@emotion/react'
+import { css } from '@emotion/react'
 import { AnimalCard } from '@gamepark/arctic/material/AnimalCard'
 import { LocationType } from '@gamepark/arctic/material/LocationType'
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
 import { ScoringHelper } from '@gamepark/arctic/rules/helper/ScoringHelper'
 import { CardDescription, ItemContext, MaterialContext } from '@gamepark/react-game'
-import { MaterialMoveBuilder, isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { isMoveItemType, MaterialItem, MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
 import Back from '../images/cards/animals/AnimalBack1.jpg'
 
 // Import images for all animal cards
@@ -131,10 +131,12 @@ import WalrusPuffin5 from '../images/cards/animals/WalrusPuffin5.jpg'
 import Draw from '../images/icons/draw.jpg'
 import InPile from '../images/icons/in-pile.png'
 import OnPile from '../images/icons/on-pile.png'
+import Penalty from '../images/icons/penalty.png'
 import Play from '../images/icons/play.jpg'
 import UnderPile from '../images/icons/under-pile.png'
-import Penalty from '../images/icons/penalty.png'
 import { AnimalCardHelp } from './help/AnimalCardHelp'
+import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
+import displayMaterialHelp = MaterialMoveBuilder.displayMaterialHelp
 
 class AnimalCardDescription extends CardDescription {
   height = 8.89
@@ -263,7 +265,7 @@ class AnimalCardDescription extends CardDescription {
     [AnimalCard.WalrusPuffin1]: WalrusPuffin1,
     [AnimalCard.WalrusPuffin2]: WalrusPuffin2,
     [AnimalCard.WalrusPuffin4]: WalrusPuffin4,
-    [AnimalCard.WalrusPuffin5]: WalrusPuffin5,
+    [AnimalCard.WalrusPuffin5]: WalrusPuffin5
   }
 
   getImages() {
@@ -274,7 +276,7 @@ class AnimalCardDescription extends CardDescription {
       InPile,
       OnPile,
       UnderPile,
-      Penalty,
+      Penalty
     ]
   }
 
@@ -306,18 +308,22 @@ class AnimalCardDescription extends CardDescription {
     if (move.location.type === LocationType.PenaltyZone) return true
     if (move.location.type === LocationType.AnimalPile) return true
     if (move.location.type === LocationType.PlayerHand) {
-      const actualLocationType =  context.rules.material(MaterialType.AnimalCard).getItem(move.itemIndex)?.location.type
+      const actualLocationType = context.rules.material(MaterialType.AnimalCard).getItem(move.itemIndex)?.location.type
       return actualLocationType !== LocationType.PenaltyZone && actualLocationType !== LocationType.AnimalPile
     }
     return false
   }
 
   displayHelp(item: MaterialItem<number, number>, context: ItemContext) {
-    if (item.location.type === LocationType.AnimalPile) return MaterialMoveBuilder.displayLocationHelp({ type: LocationType.AnimalPileScoring, player: item.location.player })
-    if (item.location.type === LocationType.PenaltyZone) return MaterialMoveBuilder.displayLocationHelp({ type: LocationType.PenaltyZone, player: item.location.player })
-    if (item.location.type === LocationType.AnimalCardsDeck || item.location.type === LocationType.Reserve) return MaterialMoveBuilder.displayLocationHelp(item.location)
+    if (item.location.type === LocationType.AnimalPile) {
+      if (item.location.player === context.player) return displayLocationHelp({ type: LocationType.AnimalPileScoring, player: item.location.player })
+      const topItem = context.rules.material(context.type).location(LocationType.AnimalPile).player(item.location.player).maxBy((item) => item.location.x!)
+      return displayMaterialHelp(context.type, topItem.getItem(), topItem.getIndex(), topItem.getIndex())
+    }
+    if (item.location.type === LocationType.PenaltyZone) return displayLocationHelp({ type: LocationType.PenaltyZone, player: item.location.player })
+    if (item.location.type === LocationType.AnimalCardsDeck || item.location.type === LocationType.Reserve) return displayLocationHelp(item.location)
     return super.displayHelp(item, context)
-}
+  }
 }
 
 const transparentCss = css`
