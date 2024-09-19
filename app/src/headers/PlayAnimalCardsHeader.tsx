@@ -18,11 +18,10 @@ export const PlayAnimalCardsHeader = () => {
   const name = usePlayerName(activePlayer)
   const canModifyPlayValue = playerState.canModifyPlayValue
   const stop = useLegalMove((move) => isStartRule(move) && move.id === RuleId.MoveAnimalTokens)
-
   if (itsMe) {
     if (canModifyPlayValue) {
       if (depositValue <= 2) {
-        if (playerState.fox !== undefined) {
+        if (playerState.fox !== undefined && (!playerState.isLastCardHidden || playerState.canPlaceCardUnderAnimalPile)) {
           return (
             <Trans
               defaults="header.moose.fox.play"
@@ -32,9 +31,17 @@ export const PlayAnimalCardsHeader = () => {
             />
           )
         }
+        if (playerState.isLastCardHidden && depositValue > 1) {
+          return (
+            <Trans
+              defaults="header.moose.play.more"
+              values={{ number: depositValue }}
+            />
+          )
+        }
         return (
           <Trans
-            defaults={depositValue === 1 ? "header.moose.play.one" : "header.moose.play.two"}
+            defaults={depositValue === 1 ? 'header.moose.play.one' : 'header.moose.play.two'}
             components={{
               pass: <PlayMoveButton move={stop}/>
             }}
@@ -45,9 +52,6 @@ export const PlayAnimalCardsHeader = () => {
           <Trans
             defaults="header.moose.play.more"
             values={{ number: depositValue }}
-            components={{
-              pass: <PlayMoveButton move={stop}/>
-            }}
           />
         )
       }
@@ -55,22 +59,31 @@ export const PlayAnimalCardsHeader = () => {
 
     if (depositValue === 1) {
       if (playerState.canPlaceCardUnderAnimalPile) {
-        return <Trans defaults="header.fox.under-pile" />
+        return <Trans defaults="header.fox.under-pile"/>
       }
 
       if (playerState.canPlaceCardUnderLastAnimalInPile) {
-        return <Trans defaults="header.fox.under-animal" />
+        return <Trans defaults="header.fox.under-animal"/>
       }
     }
 
-    return <Trans defaults="header.play-card.you" values={{ number: depositValue }} />
+    return <Trans defaults="header.play-card.you" values={{ number: depositValue }}/>
   }
 
   if (canModifyPlayValue) {
+    if (playerState.isLastCardHidden && depositValue > 1) {
+      return (
+        <Trans
+          defaults="header.moose.play.more.player"
+          values={{ player: name, number: depositValue }}
+        />
+      )
+    }
+
     if (depositValue <= 2) {
       return (
         <Trans
-          defaults={depositValue === 1 ? "header.moose.play.one.player" : "header.moose.play.two.player"}
+          defaults={depositValue === 1 ? 'header.moose.play.one.player' : 'header.moose.play.two.player'}
           values={{ player: name }}
         />
       )
@@ -84,5 +97,5 @@ export const PlayAnimalCardsHeader = () => {
     }
   }
 
-  return <Trans defaults="header.play-card.player" values={{ number: depositValue, player: name }} />
+  return <Trans defaults="header.play-card.player" values={{ number: depositValue, player: name }}/>
 }

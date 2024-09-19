@@ -34,6 +34,7 @@ export class PlayerState extends MaterialRulesPart {
   }
 
   get canPlaceCardUnderLastAnimalInPile() {
+    if (!!this.animalPile.maxBy((item) => item.location.x!).getItem()?.location.rotation) return false
     return this.depositValue === 1 && this.fox?.id === PowerCard.Fox2
   }
 
@@ -48,6 +49,7 @@ export class PlayerState extends MaterialRulesPart {
 
   get canGetVisibleCardInHand() {
     if (!this.animalPile.length) return false
+    if (!!this.animalPile.maxBy((item) => item.location.x!).getItem()?.location.rotation) return false
     return this
       .material(MaterialType.PowerCard)
       .location(LocationType.PowerPile)
@@ -163,5 +165,9 @@ export class PlayerState extends MaterialRulesPart {
     const drawValue = this.remind(Memory.DrawValue) ?? 0
     if (this.canModifyDrawValue) return drawValue + 1
     return drawValue
+  }
+
+  get isLastCardHidden() {
+    return this.animalPile.maxBy((item) => item.location.x!).getItem()?.location.rotation
   }
 }

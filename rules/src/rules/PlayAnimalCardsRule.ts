@@ -9,7 +9,7 @@ import { RuleId } from './RuleId'
 
 export class PlayAnimalCardsRule extends PlayerTurnRule {
   onRuleStart() {
-    this.refreshDepositValue()
+    this.computeDepositValue()
 
     return []
   }
@@ -19,8 +19,10 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
     const hand = this.hand
 
     const playerState = new PlayerState(this.game, this.player)
-    if (playerState.canModifyPlayValue && playerState.depositValue <= 2) {
-      moves.push(this.startRule(RuleId.MoveAnimalTokens))
+    if (playerState.canModifyPlayValue) {
+      if (!this.isLastCardHidden && playerState.depositValue <= 2) {
+        moves.push(this.startRule(RuleId.MoveAnimalTokens))
+      }
     }
 
     const animalPile = this.animalPile.length
@@ -39,6 +41,10 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
     )
 
     return moves
+  }
+
+  get isLastCardHidden() {
+    return this.animalPile.maxBy((item) => item.location.x!).getItem()?.location.rotation
   }
 
   afterItemMove(move: ItemMove): MaterialMove[] {
@@ -73,10 +79,6 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
       }
     }
 
-    if (move.location.type === LocationType.PlayerHand) {
-      this.refreshDepositValue()
-    }
-
     return moves
   }
 
@@ -90,7 +92,7 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
     return powerCard.moveItems({ type: LocationType.PowerPile, player: this.player })
   }
 
-  refreshDepositValue() {
+  computeDepositValue() {
     const topPileCard = this.animalPile.sort(item => -item.location.x!).getItem()
 
     if (!topPileCard || topPileCard.location.rotation) {
