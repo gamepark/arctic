@@ -17,7 +17,7 @@ export type ArcticOptions = {
 }
 
 const powerValueSpec = (power: PowerCard): Option => ({
-  label: t => t('power.number', { number: power % 10 }),
+  label: t => t('power.number', { number: power % 10 + 1 }),
   help: t => t(`power.${power}`),
   competitiveDisabled: true
 })
