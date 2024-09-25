@@ -3,7 +3,7 @@ import sampleSize from 'lodash/sampleSize'
 import shuffle from 'lodash/shuffle'
 import { ArcticOptions } from './ArcticOptions'
 import { ArcticRules } from './ArcticRules'
-import { animals } from './material/Animal'
+import { Animal, animals } from './material/Animal'
 import { animalPile1, animalPile2, animalPile3, animalPile4 } from './material/AnimalSetup'
 import { Landscape } from './material/Landscape'
 import { LocationType } from './material/LocationType'
@@ -17,11 +17,11 @@ import { RuleId } from './rules/RuleId'
 export class ArcticSetup extends MaterialGameSetup<PlayerId, MaterialType, LocationType, ArcticOptions> {
   Rules = ArcticRules
 
-  setupMaterial(_options: ArcticOptions) {
+  setupMaterial(options: ArcticOptions) {
     this.setupTotemToken()
     this.setupAnimalCardsDeck()
     this.setupReserve()
-    this.setupPower()
+    this.setupPower(options)
     this.setupTotem()
     this.dealPlayerCards()
     this.setupRiver()
@@ -53,10 +53,31 @@ export class ArcticSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
       .moveItems({ type: LocationType.Reserve })
   }
 
-  setupPower() {
-    this.material(MaterialType.PowerCard).createItems(animals.map(animal =>
-      ({ id: animal * 10 + Math.floor(Math.random() * 2), location: { type: LocationType.Powers } })
-    ))
+  setupPower(options: ArcticOptions) {
+    this.material(MaterialType.PowerCard).createItem({
+      id: options.bear ?? Animal.Bear * 10 + Math.floor(Math.random() * 2),
+      location: { type: LocationType.Powers }
+    })
+    this.material(MaterialType.PowerCard).createItem({
+      id: options.fox ?? Animal.Fox * 10 + Math.floor(Math.random() * 2),
+      location: { type: LocationType.Powers }
+    })
+    this.material(MaterialType.PowerCard).createItem({
+      id: options.moose ?? Animal.Moose * 10 + Math.floor(Math.random() * 2),
+      location: { type: LocationType.Powers }
+    })
+    this.material(MaterialType.PowerCard).createItem({
+      id: options.orca ?? Animal.Orca * 10 + Math.floor(Math.random() * 2),
+      location: { type: LocationType.Powers }
+    })
+    this.material(MaterialType.PowerCard).createItem({
+      id: options.puffin ?? Animal.Puffin * 10 + Math.floor(Math.random() * 2),
+      location: { type: LocationType.Powers }
+    })
+    this.material(MaterialType.PowerCard).createItem({
+      id: options.walrus ?? Animal.Walrus * 10 + Math.floor(Math.random() * 2),
+      location: { type: LocationType.Powers }
+    })
   }
 
   setupTotem() {
