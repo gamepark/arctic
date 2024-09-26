@@ -3,7 +3,6 @@ import {
   FillGapStrategy,
   hideItemId,
   hideItemIdToOthers,
-  isMoveItemType,
   MaterialGame,
   MaterialItem,
   MaterialMove,
@@ -32,7 +31,7 @@ import { WalrusRule } from './rules/WalrusRule'
  */
 export class ArcticRules extends SecretMaterialRules<PlayerId, MaterialType, LocationType>
   implements TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId>,
-    CompetitiveScore<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId>{
+    CompetitiveScore<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId> {
   rules = {
     [RuleId.PlayAnimalCards]: PlayAnimalCardsRule,
     [RuleId.MoveAnimalTokens]: MoveAnimalTokensRule,
@@ -59,7 +58,7 @@ export class ArcticRules extends SecretMaterialRules<PlayerId, MaterialType, Loc
     },
     [MaterialType.TotemToken]: {
       [LocationType.LandscapeCard]: new FillGapStrategy()
-    },
+    }
   }
 
   hidingStrategies = {
@@ -78,19 +77,9 @@ export class ArcticRules extends SecretMaterialRules<PlayerId, MaterialType, Loc
     return false
   }
 
-  giveTime(): number {
-    return 60
-  }
-
   getScore(playerId: PlayerId): number {
     return new ScoringHelper(this.game, playerId).score
   }
-
-  protected moveBlocksUndo(move: MaterialMove): boolean {
-    if (isMoveItemType(MaterialType.AnimalCard)(move) && move.location.type === LocationType.AnimalPile) return false
-    return super.moveBlocksUndo(move)
-  }
-
 }
 
 export const hideItemWhileNotRotated = <P extends number = number, L extends number = number>(

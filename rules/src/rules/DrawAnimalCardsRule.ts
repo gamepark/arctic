@@ -121,4 +121,8 @@ export class DrawAnimalCardsRule extends PlayerTurnRule {
       .player(this.player)
       .id((id: PowerCard) => id === PowerCard.Orca1).length > 0
   }
+
+  giveTime() {
+    return 0
+  }
 }
