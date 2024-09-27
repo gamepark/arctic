@@ -8,6 +8,7 @@ import { getAnimalFromCard } from '../../material/AnimalCard'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { PlayerId } from '../../PlayerId'
+import { Memory } from '../Memory'
 import { PlayerState } from '../PlayerState'
 
 type Groups = { item: MaterialItem, index: number }[][]
@@ -127,6 +128,7 @@ export class ScoringHelper extends MaterialRulesPart {
       .location(LocationType.PenaltyZone)
       .player(this.player)
       .length
+    + (this.remind(Memory.ExtraPenalties, this.player) ?? 0)
   }
 
   get forestScore() {

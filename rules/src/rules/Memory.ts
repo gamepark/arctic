@@ -5,5 +5,6 @@ export enum Memory {
   WalrusUsed,
   HasPlacedCard,
   Modifier,
+  ExtraPenalties,
   LastRound = 7
 }

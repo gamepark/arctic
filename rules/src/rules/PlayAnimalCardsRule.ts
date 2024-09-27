@@ -65,11 +65,15 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
         if (penalties <= 0) {
           return this.endRuleMoves
         } else {
+          const deck = this
+            .material(MaterialType.AnimalCard)
+            .location(LocationType.AnimalCardsDeck)
+            .deck()
+          if (deck.length < penalties) {
+            this.memorize(Memory.ExtraPenalties, value => (value ?? 0) + penalties - deck.length, this.player)
+          }
           return [
-            ...this
-              .material(MaterialType.AnimalCard)
-              .location(LocationType.AnimalCardsDeck)
-              .deck()
+            ...deck
               .limit(penalties)
               .moveItems({
                 type: LocationType.PenaltyZone,
