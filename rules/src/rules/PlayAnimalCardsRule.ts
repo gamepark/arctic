@@ -1,8 +1,9 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { CustomMove, isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { getAnimalFromCard, getDepositValue } from '../material/AnimalCard'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PowerCard } from '../material/PowerCard'
+import { CustomMoveType } from './CustomMoveType'
 import { Memory } from './Memory'
 import { PlayerState } from './PlayerState'
 import { RuleId } from './RuleId'
@@ -21,7 +22,7 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
     const playerState = new PlayerState(this.game, this.player)
     if (playerState.canModifyPlayValue) {
       if (!this.isLastCardHidden && playerState.depositValue <= 2) {
-        moves.push(this.startRule(RuleId.MoveAnimalTokens))
+        moves.push(this.customMove(CustomMoveType.Pass))
       }
     }
 
@@ -57,9 +58,7 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
       this.memorize(Memory.DepositValue, (value: number) => value - 1)
       const depositValue = playerState.depositValue
       if (depositValue === 0) {
-        moves.push(...this.movePowerCard())
-        moves.push(this.startRule(RuleId.MoveAnimalTokens))
-        return moves
+        return this.endRuleMoves
       }
 
       if (move.location.type === LocationType.AnimalPile) {
@@ -80,6 +79,17 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
     }
 
     return moves
+  }
+
+  onCustomMove(move: CustomMove) {
+    if (move.type === CustomMoveType.Pass) {
+      return this.endRuleMoves
+    }
+    return []
+  }
+
+  get endRuleMoves() {
+    return this.movePowerCard().concat(this.startRule(RuleId.MoveAnimalTokens))
   }
 
   movePowerCard(): MaterialMove[] {
