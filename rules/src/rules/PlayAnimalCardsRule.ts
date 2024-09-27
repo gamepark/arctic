@@ -51,8 +51,7 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
   afterItemMove(move: ItemMove): MaterialMove[] {
     if (!isMoveItemType(MaterialType.AnimalCard)(move)) return []
 
-    const moves: MaterialMove[] = []
-    if (move.location.type === LocationType.AnimalPile || move.location.type === LocationType.PenaltyZone) {
+    if (move.location.type === LocationType.AnimalPile) {
       const playerState = new PlayerState(this.game, this.player)
 
       this.memorize(Memory.DepositValue, (value: number) => value - 1)
@@ -61,24 +60,28 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
         return this.endRuleMoves
       }
 
-      if (move.location.type === LocationType.AnimalPile) {
-        if (!this.hand.length) {
-          moves.push(
+      if (!this.hand.length) {
+        const penalties = playerState.canModifyPlayValue ? depositValue - 2 : depositValue
+        if (penalties <= 0) {
+          return this.endRuleMoves
+        } else {
+          return [
             ...this
               .material(MaterialType.AnimalCard)
               .location(LocationType.AnimalCardsDeck)
               .deck()
-              .limit(depositValue)
+              .limit(penalties)
               .moveItems({
                 type: LocationType.PenaltyZone,
                 player: this.player
-              })
-          )
+              }),
+            ...this.endRuleMoves
+          ]
         }
       }
     }
 
-    return moves
+    return []
   }
 
   onCustomMove(move: CustomMove) {
