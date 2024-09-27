@@ -2,6 +2,7 @@ import { isMoveItemType, ItemMove, MaterialMove, MoveItem, PlayerTurnRule } from
 import { landscapes } from '../material/Landscape'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
+import { DiscardCardsRule } from './DiscardCardsRule'
 import { AnimalTokensHelper } from './helper/AnimalTokensHelper'
 import { Memory } from './Memory'
 import { PlayerState } from './PlayerState'
@@ -152,8 +153,7 @@ export class MoveAnimalTokensRule extends PlayerTurnRule {
         if (this.player === this.game.players[this.game.players.length - 1]) {
           return [this.startRule(RuleId.Scoring)]
         } else {
-          const nextPlayer = this.nextPlayer
-          return [this.startPlayerTurn(RuleId.PlayAnimalCards, nextPlayer)]
+          return [new DiscardCardsRule(this.game).goToNextPlayer()]
         }
       }
 
