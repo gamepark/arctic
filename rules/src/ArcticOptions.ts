@@ -18,8 +18,7 @@ export type ArcticOptions = {
 
 const powerValueSpec = (power: PowerCard): Option => ({
   label: t => t('power.number', { number: power % 10 + 1 }),
-  help: t => t(`power.${power}`),
-  competitiveDisabled: true
+  help: t => t(`power.${power}`)
 })
 
 /**
@@ -30,31 +29,37 @@ export const ArcticOptionsSpec: OptionsSpec<ArcticOptions> = {
   bear: {
     label: t => t(`power.animal.${Animal.Bear}`),
     values: [PowerCard.Bear1, PowerCard.Bear2],
-    valueSpec: powerValueSpec
+    valueSpec: powerValueSpec,
+    competitiveDisabled: true
   },
   fox: {
     label: t => t(`power.animal.${Animal.Fox}`),
     values: [PowerCard.Fox1, PowerCard.Fox2],
-    valueSpec: powerValueSpec
+    valueSpec: powerValueSpec,
+    competitiveDisabled: true
   },
   moose: {
     label: t => t(`power.animal.${Animal.Moose}`),
     values: [PowerCard.Moose1, PowerCard.Moose2],
-    valueSpec: powerValueSpec
+    valueSpec: powerValueSpec,
+    competitiveDisabled: true
   },
   orca: {
     label: t => t(`power.animal.${Animal.Orca}`),
     values: [PowerCard.Orca1, PowerCard.Orca2],
-    valueSpec: powerValueSpec
+    valueSpec: powerValueSpec,
+    competitiveDisabled: true
   },
   puffin: {
     label: t => t(`power.animal.${Animal.Puffin}`),
     values: [PowerCard.Puffin1, PowerCard.Puffin2],
-    valueSpec: powerValueSpec
+    valueSpec: powerValueSpec,
+    competitiveDisabled: true
   },
   walrus: {
     label: t => t(`power.animal.${Animal.Walrus}`),
     values: [PowerCard.Walrus1, PowerCard.Walrus2],
-    valueSpec: powerValueSpec
+    valueSpec: powerValueSpec,
+    competitiveDisabled: true
   }
 }
