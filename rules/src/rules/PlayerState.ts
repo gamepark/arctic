@@ -30,11 +30,13 @@ export class PlayerState extends MaterialRulesPart {
   }
 
   get canPlaceCardUnderAnimalPile() {
+    if (this.canModifyPlayValue && this.depositValue === 2 && this.fox?.id === PowerCard.Fox1) return true
     return this.depositValue === 1 && this.fox?.id === PowerCard.Fox1
   }
 
   get canPlaceCardUnderLastAnimalInPile() {
     if (!!this.animalPile.maxBy((item) => item.location.x!).getItem()?.location.rotation) return false
+    if (this.canModifyPlayValue && this.depositValue === 2 && this.fox?.id === PowerCard.Fox2) return true
     return this.depositValue === 1 && this.fox?.id === PowerCard.Fox2
   }
 
