@@ -11,8 +11,7 @@ import { RuleId } from './RuleId'
 export class PlayAnimalCardsRule extends PlayerTurnRule {
   onRuleStart() {
     this.computeDepositValue()
-
-    return []
+    return this.handleEmptyHand()
   }
 
   getPlayerMoves() {
@@ -60,28 +59,36 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
         return this.endRuleMoves
       }
 
-      if (!this.hand.length) {
-        const penalties = playerState.canModifyPlayValue ? depositValue - 2 : depositValue
-        if (penalties <= 0) {
-          return this.endRuleMoves
-        } else {
-          const deck = this
-            .material(MaterialType.AnimalCard)
-            .location(LocationType.AnimalCardsDeck)
-            .deck()
-          if (deck.length < penalties) {
-            this.memorize(Memory.ExtraPenalties, value => (value ?? 0) + penalties - deck.length, this.player)
-          }
-          return [
-            ...deck
-              .limit(penalties)
-              .moveItems({
-                type: LocationType.PenaltyZone,
-                player: this.player
-              }),
-            ...this.endRuleMoves
-          ]
+      return this.handleEmptyHand()
+    }
+
+    return []
+  }
+
+  handleEmptyHand() {
+    const playerState = new PlayerState(this.game, this.player)
+    const depositValue = playerState.depositValue
+    if (!this.hand.length) {
+      const penalties = playerState.canModifyPlayValue ? depositValue - 2 : depositValue
+      if (penalties <= 0) {
+        return this.endRuleMoves
+      } else {
+        const deck = this
+          .material(MaterialType.AnimalCard)
+          .location(LocationType.AnimalCardsDeck)
+          .deck()
+        if (deck.length < penalties) {
+          this.memorize(Memory.ExtraPenalties, value => (value ?? 0) + penalties - deck.length, this.player)
         }
+        return [
+          ...deck
+            .limit(penalties)
+            .moveItems({
+              type: LocationType.PenaltyZone,
+              player: this.player
+            }),
+          ...this.endRuleMoves
+        ]
       }
     }
 
