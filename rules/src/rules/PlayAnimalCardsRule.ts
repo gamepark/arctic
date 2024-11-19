@@ -66,33 +66,31 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
   }
 
   handleEmptyHand() {
+    if (this.hand.length > 0) return []
+    const moves: MaterialMove[] = []
     const playerState = new PlayerState(this.game, this.player)
     const depositValue = playerState.depositValue
-    if (!this.hand.length) {
-      const penalties = playerState.canModifyPlayValue ? depositValue - 2 : depositValue
-      if (penalties <= 0) {
-        return this.endRuleMoves
-      } else {
-        const deck = this
-          .material(MaterialType.AnimalCard)
-          .location(LocationType.AnimalCardsDeck)
-          .deck()
-        if (deck.length < penalties) {
-          this.memorize(Memory.ExtraPenalties, value => (value ?? 0) + penalties - deck.length, this.player)
+    let penalties = playerState.canModifyPlayValue ? depositValue - 2 : depositValue
+    if (penalties > 0) {
+      const deck = this.material(MaterialType.AnimalCard).location(LocationType.AnimalCardsDeck).deck()
+      moves.push(...deck.limit(penalties).moveItems({ type: LocationType.PenaltyZone, player: this.player }))
+      penalties -= deck.length
+      if (penalties > 0) {
+        const reserve = this.material(MaterialType.AnimalCard).location(LocationType.Reserve).deck()
+        moves.push(...reserve.limit(penalties).moveItems({ type: LocationType.PenaltyZone, player: this.player }))
+        penalties -= reserve.length
+        if (penalties > 0) {
+          const river = this.material(MaterialType.AnimalCard).location(LocationType.River).deck()
+          moves.push(...river.limit(penalties).moveItems({ type: LocationType.PenaltyZone, player: this.player }))
+          penalties -= river.length
+          if (penalties > 0) {
+            this.memorize(Memory.ExtraPenalties, value => (value ?? 0) + penalties, this.player)
+          }
         }
-        return [
-          ...deck
-            .limit(penalties)
-            .moveItems({
-              type: LocationType.PenaltyZone,
-              player: this.player
-            }),
-          ...this.endRuleMoves
-        ]
       }
     }
-
-    return []
+    moves.push(...this.endRuleMoves)
+    return moves
   }
 
   onCustomMove(move: CustomMove) {
