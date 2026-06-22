@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { LocationType } from '@gamepark/arctic/material/LocationType'
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
@@ -31,12 +30,12 @@ export const TotemTokenHelp: FC<MaterialHelpProps> = (props) => {
       {moveLeft && (
 
           <PlayMoveButton move={moveLeft} onPlay={closeDialog}>
-            <FontAwesomeIcon icon={faArrowLeft} />&nbsp;<Trans defaults="animal-token.left"/>
+            <FontAwesomeIcon icon={faArrowLeft} />&nbsp;<Trans i18nKey="animal-token.left"/>
           </PlayMoveButton>
       )}
       {moveRigth && (
           <PlayMoveButton move={moveRigth} onPlay={closeDialog}>
-            <Trans defaults="animal-token.right"/>&nbsp;<FontAwesomeIcon icon={faArrowRight} />
+            <Trans i18nKey="animal-token.right"/>&nbsp;<FontAwesomeIcon icon={faArrowRight} />
           </PlayMoveButton>
       )}
       </p>

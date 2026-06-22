@@ -6,7 +6,7 @@ import { PowerCard } from '../material/PowerCard'
 import { Memory } from './Memory'
 import { PlayerState } from './PlayerState'
 import { RuleId } from './RuleId'
-import isEqual from 'lodash/isEqual'
+import { isEqual } from 'es-toolkit'
 
 export class PuffinRule extends PlayerTurnRule {
   getPlayerMoves(): MaterialMove[] {

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 
 import { PlayerState } from '@gamepark/arctic/rules/PlayerState'
 import { PuffinRule } from '@gamepark/arctic/rules/PuffinRule'
@@ -11,7 +10,7 @@ export const PuffinHeader = () => {
   const game = useGame<MaterialGame>()!
   const rules = new PuffinRule(game)
   const playerId = usePlayerId()
-  const activePlayer = rules.game.rule?.player!
+  const activePlayer = rules.game.rule!.player!
   const playerState = new PlayerState(rules.game, activePlayer)
   const itsMe = playerId && playerId === activePlayer
   const name = usePlayerName(activePlayer)
@@ -20,13 +19,13 @@ export const PuffinHeader = () => {
   if (itsMe) {
     if (playerState.canExchangeCardWithRiver) {
       return (
-        <Trans defaults="header.puffin.trade.you">
+        <Trans i18nKey="header.puffin.trade.you">
           <PlayMoveButton move={pass} />
         </Trans>
       )
     } else {
       return (
-        <Trans defaults="header.puffin.draw.you">
+        <Trans i18nKey="header.puffin.draw.you">
           <PlayMoveButton move={pass} />
         </Trans>
       )
@@ -34,8 +33,8 @@ export const PuffinHeader = () => {
   }
 
   if (playerState.canExchangeCardWithRiver) {
-    return <Trans defaults="header.puffin.trade.player" values={{ player: name }} />
+    return <Trans i18nKey="header.puffin.trade.player" values={{ player: name }} />
   } else {
-    return <Trans defaults="header.puffin.draw.player" values={{ player: name }} />
+    return <Trans i18nKey="header.puffin.draw.player" values={{ player: name }} />
   }
 }

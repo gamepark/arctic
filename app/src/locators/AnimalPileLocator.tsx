@@ -32,6 +32,15 @@ class AnimalPileLocator extends PileLocator {
         return coordinates
     }
 
+    getPositionDependencies(location: Location, context: MaterialContext) {
+        const playerState = new PlayerState(context.rules.game, location.player!)
+        return {
+            count: super.getPositionDependencies(location, context),
+            canPlaceCardUnderAnimalPile: playerState.canPlaceCardUnderAnimalPile,
+            canPlaceCardUnderLastAnimalInPile: playerState.canPlaceCardUnderLastAnimalInPile
+        }
+    }
+
     locationDescription = new AnimalPileDescription()
     maxAngle = 5
     limit = 100

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
 import { LocationDescription, Locator } from '@gamepark/react-game'
 

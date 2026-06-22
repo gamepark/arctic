@@ -28,7 +28,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
   steps: TutorialStep[] = [{
     popup: {
       text: () => (
-        <Trans defaults="tuto.welcome">
+        <Trans i18nKey="tuto.welcome">
           <strong/>
         </Trans>
       )
@@ -36,7 +36,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
   }, {
     popup: {
       text: () => (
-        <Trans defaults="tuto.hand">
+        <Trans i18nKey="tuto.hand">
           <strong/>
         </Trans>
       ),
@@ -55,7 +55,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
   }, {
     popup: {
       text: () => (
-        <Trans defaults="tuto.choice">
+        <Trans i18nKey="tuto.choice">
           <strong/>
         </Trans>
       ),
@@ -79,7 +79,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
   }, {
     popup: {
       text: () => (
-        <Trans defaults="tuto.place">
+        <Trans i18nKey="tuto.place">
           <strong/>
         </Trans>
       ),
@@ -107,7 +107,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
   }, {
     popup: {
       text: () => (
-        <Trans defaults="tuto.goal">
+        <Trans i18nKey="tuto.goal">
           <strong/>
         </Trans>
       )
@@ -115,7 +115,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
   }, {
     popup: {
       text: () => (
-        <Trans defaults="tuto.powers">
+        <Trans i18nKey="tuto.powers">
           <strong/>
         </Trans>
       ),
@@ -134,7 +134,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
   }, {
     popup: {
       text: () => (
-        <Trans defaults="tuto.power">
+        <Trans i18nKey="tuto.power">
           <strong/>
         </Trans>
       ),
@@ -158,7 +158,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
   }, {
     popup: {
       text: () => (
-        <Trans defaults="tuto.power.orca">
+        <Trans i18nKey="tuto.power.orca">
           <strong/>
         </Trans>
       ),
@@ -178,7 +178,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
   }, {
     popup: {
       text: () => (
-        <Trans defaults="tuto.animals">
+        <Trans i18nKey="tuto.animals">
           <strong/>
         </Trans>
       ),
@@ -202,7 +202,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
   }, {
     popup: {
       text: () => (
-        <Trans defaults="tuto.animal.tiles">
+        <Trans i18nKey="tuto.animal.tiles">
           <strong/>
         </Trans>
       ),
@@ -228,7 +228,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
   }, {
     popup: {
       text: () => (
-        <Trans defaults="tuto.animals.totem">
+        <Trans i18nKey="tuto.animals.totem">
           <strong/>
         </Trans>
       ),
@@ -247,7 +247,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
   }, {
     popup: {
       text: () => (
-        <Trans defaults="tuto.moose">
+        <Trans i18nKey="tuto.moose">
           <strong/>
         </Trans>
       ),
@@ -278,7 +278,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
   }, {
     popup: {
       text: () => (
-        <Trans defaults="tuto.draw-value">
+        <Trans i18nKey="tuto.draw-value">
           <strong/>
         </Trans>
       ),
@@ -301,7 +301,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
   }, {
     popup: {
       text: () => (
-        <Trans defaults="tuto.river">
+        <Trans i18nKey="tuto.river">
           <strong/>
         </Trans>
       ),
@@ -334,7 +334,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.opponent">
+          <Trans i18nKey="tuto.opponent">
             <strong/>
           </Trans>
         )
@@ -353,7 +353,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.you">
+          <Trans i18nKey="tuto.you">
             <strong/>
           </Trans>
         )
@@ -361,7 +361,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     }, {
       popup: {
         text: () => (
-          <Trans defaults="tuto.deposit-value">
+          <Trans i18nKey="tuto.deposit-value">
             <strong/>
           </Trans>
         ),
@@ -382,7 +382,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     }, {
       popup: {
         text: () => (
-          <Trans defaults="tuto.place">
+          <Trans i18nKey="tuto.place">
             <strong/>
           </Trans>
         )
@@ -408,7 +408,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     }, {
       popup: {
         text: () => (
-          <Trans defaults="tuto.placed">
+          <Trans i18nKey="tuto.placed">
             <strong/>
           </Trans>
         ),
@@ -426,7 +426,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     }, {
       popup: {
         text: () => (
-          <Trans defaults="tuto.place">
+          <Trans i18nKey="tuto.place">
             <strong/>
           </Trans>
         )
@@ -452,7 +452,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     }, {
       popup: {
         text: () => (
-          <Trans defaults="tuto.power.moose">
+          <Trans i18nKey="tuto.power.moose">
             <strong/>
           </Trans>
         ),
@@ -472,7 +472,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     }, {
       popup: {
         text: () => (
-          <Trans defaults="tuto.move-animal">
+          <Trans i18nKey="tuto.move-animal">
             <strong/>
           </Trans>
         ),
@@ -498,7 +498,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     }, {
       popup: {
         text: () => (
-          <Trans defaults="tuto.move-animal.one">
+          <Trans i18nKey="tuto.move-animal.one">
             <strong/>
           </Trans>
         ),
@@ -525,7 +525,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     }, {
       popup: {
         text: () => (
-          <Trans defaults="tuto.move-animal.exception">
+          <Trans i18nKey="tuto.move-animal.exception">
             <strong/>
           </Trans>
         ),
@@ -551,7 +551,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     }, {
       popup: {
         text: () => (
-          <Trans defaults="tuto.draw-phase">
+          <Trans i18nKey="tuto.draw-phase">
             <strong/>
           </Trans>
         )
@@ -559,7 +559,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     }, {
       popup: {
         text: () => (
-          <Trans defaults="tuto.moose.draw-more">
+          <Trans i18nKey="tuto.moose.draw-more">
             <strong/>
           </Trans>
         ),
@@ -577,7 +577,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     }, {
       popup: {
         text: () => (
-          <Trans defaults="tuto.draw.cards">
+          <Trans i18nKey="tuto.draw.cards">
             <strong/>
           </Trans>
         )
@@ -612,7 +612,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.hand.limit">
+          <Trans i18nKey="tuto.hand.limit">
             <strong/>
           </Trans>
         ),
@@ -634,7 +634,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     }, {
       popup: {
         text: () => (
-          <Trans defaults="tuto.penalty">
+          <Trans i18nKey="tuto.penalty">
             <strong/>
           </Trans>
         )
@@ -642,7 +642,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     }, {
       popup: {
         text: () => (
-          <Trans defaults="tuto.end.trigger">
+          <Trans i18nKey="tuto.end.trigger">
             <strong/>
           </Trans>
         )
@@ -650,7 +650,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     }, {
       popup: {
         text: () => (
-          <Trans defaults="tuto.scoring">
+          <Trans i18nKey="tuto.scoring">
             <strong/>
             <PlayMoveButton css={linkButtonCss} move={displayMaterialHelp(MaterialType.ScoringToken, scoringTokenDescription.staticItem)}/>
           </Trans>
@@ -669,7 +669,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     }, {
       popup: {
         text: () => (
-          <Trans defaults="tuto.go">
+          <Trans i18nKey="tuto.go">
             <strong/>
           </Trans>
         )

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { AnimalTokensHelper } from '@gamepark/arctic/rules/helper/AnimalTokensHelper'
 import { PlayerState } from '@gamepark/arctic/rules/PlayerState'
 import { PuffinRule } from '@gamepark/arctic/rules/PuffinRule'
@@ -12,7 +11,7 @@ export const WalrusHeader = () => {
   const pass = useLegalMove((move) => isStartRule(move) || isStartPlayerTurn(move))
   const rules = new PuffinRule(game)
   const playerId = usePlayerId()
-  const activePlayer = rules.game.rule?.player!
+  const activePlayer = rules.game.rule!.player!
   const itsMe = playerId && playerId === activePlayer
   const name = usePlayerName(activePlayer)
   const playerState = new PlayerState(game, activePlayer)
@@ -20,11 +19,11 @@ export const WalrusHeader = () => {
   const isMainMoving = playerState.canMoveMainAnimalTokenOnceMore
   if (itsMe) {
     return (
-      <Trans defaults="header.walrus.you" values={{ animal: t(`animal.${isMainMoving? mainAnimalId: associatedAnimalId}`) }}>
+      <Trans i18nKey="header.walrus.you" values={{ animal: t(`animal.${isMainMoving? mainAnimalId: associatedAnimalId}`) }}>
         <PlayMoveButton move={pass} />
       </Trans>
     )
   }
 
-  return <Trans defaults="header.walrus.player" values={{ player: name, animal: t(`animal.${isMainMoving? mainAnimalId: associatedAnimalId}`) }}/>
+  return <Trans i18nKey="header.walrus.player" values={{ player: name, animal: t(`animal.${isMainMoving? mainAnimalId: associatedAnimalId}`) }}/>
 }

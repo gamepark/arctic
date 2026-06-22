@@ -13,6 +13,7 @@ import { TotemTokenHelp } from './help/TotemTokenHelp'
 class TotemTokenDescription extends TokenDescription {
     width = 2.55
     height = 2.75
+    transparency = true
 
     getFrontExtraCss() {
         return css`

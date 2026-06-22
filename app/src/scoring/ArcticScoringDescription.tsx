@@ -1,10 +1,9 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ArcticRules } from '@gamepark/arctic/ArcticRules'
 import { Animal } from '@gamepark/arctic/material/Animal'
 import { PlayerId } from '@gamepark/arctic/PlayerId'
 import { ScoringHelper } from '@gamepark/arctic/rules/helper/ScoringHelper'
-import { ScoringDescription } from '@gamepark/react-client'
+import { ScoringDescription } from '@gamepark/react-game'
 import { Trans } from 'react-i18next'
 
 enum ScoringKeys {
@@ -39,25 +38,25 @@ export class ArcticScoringDescription implements ScoringDescription<PlayerId, Ar
   getScoringHeader(key: ScoringKeys) {
     switch (key) {
       case ScoringKeys.BearSeries:
-        return <Trans defaults="scoring.series.bear"/>
+        return <Trans i18nKey="scoring.series.bear"/>
       case ScoringKeys.FoxSeries:
-        return <Trans defaults="scoring.series.fox"/>
+        return <Trans i18nKey="scoring.series.fox"/>
       case ScoringKeys.MooseSeries:
-        return <Trans defaults="scoring.series.moose"/>
+        return <Trans i18nKey="scoring.series.moose"/>
       case ScoringKeys.OrcaSeries:
-        return <Trans defaults="scoring.series.orca"/>
+        return <Trans i18nKey="scoring.series.orca"/>
       case ScoringKeys.PuffinSeries:
-        return <Trans defaults="scoring.series.puffin"/>
+        return <Trans i18nKey="scoring.series.puffin"/>
       case ScoringKeys.WalrusSeries:
-        return <Trans defaults="scoring.series.walrus"/>
+        return <Trans i18nKey="scoring.series.walrus"/>
       case ScoringKeys.DifferentAnimal:
-        return <Trans defaults="scoring.different-animal"/>
+        return <Trans i18nKey="scoring.different-animal"/>
       case ScoringKeys.Forest:
-        return <Trans defaults="scoring.forest"/>
+        return <Trans i18nKey="scoring.forest"/>
       case ScoringKeys.Penalties:
-        return <Trans defaults="scoring.penalties"/>
+        return <Trans i18nKey="scoring.penalties"/>
       case ScoringKeys.Total:
-        return <div css={bold}><Trans defaults="scoring.total"/></div>
+        return <div css={bold}><Trans i18nKey="scoring.total"/></div>
     }
   }
 

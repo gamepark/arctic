@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 
 import { CustomMoveType } from '@gamepark/arctic/rules/CustomMoveType'
 import { DrawAnimalCardsRule } from '@gamepark/arctic/rules/DrawAnimalCardsRule'
@@ -11,7 +10,7 @@ export const DrawAnimalCardsHeader = () => {
   const game = useGame<MaterialGame>()!
   const rules = new DrawAnimalCardsRule(game)
   const playerId = usePlayerId()
-  const activePlayer = rules.game.rule?.player!
+  const activePlayer = rules.game.rule!.player!
   const playerState = new PlayerState(game, activePlayer)
   const itsMe = playerId && playerId === activePlayer
   const name = usePlayerName(activePlayer)
@@ -46,18 +45,18 @@ export const DrawAnimalCardsHeader = () => {
     }
 
     if (canTakeCardsOnDeck && canDrawFromPenaltyCards) {
-      return <Trans defaults="header.draw.pile-penalty.you" values={{ number: drawValue }}/>
+      return <Trans i18nKey="header.draw.pile-penalty.you" values={{ number: drawValue }}/>
     }
 
     if (canTakeCardsOnDeck) {
-      return <Trans defaults="header.draw.pile.you" values={{ number: drawValue }}/>
+      return <Trans i18nKey="header.draw.pile.you" values={{ number: drawValue }}/>
     }
 
     if (canDrawFromPenaltyCards) {
-      return <Trans defaults="header.draw.penalty.you" values={{ number: drawValue }}/>
+      return <Trans i18nKey="header.draw.penalty.you" values={{ number: drawValue }}/>
     }
 
-    return <Trans defaults="header.draw.you" values={{ number: drawValue }}/>
+    return <Trans i18nKey="header.draw.you" values={{ number: drawValue }}/>
   }
 
   if (canModifyDrawValue) {
@@ -78,5 +77,5 @@ export const DrawAnimalCardsHeader = () => {
     }
   }
 
-  return <Trans defaults="header.draw.player" values={{ player: name, number: drawValue }}/>
+  return <Trans i18nKey="header.draw.player" values={{ player: name, number: drawValue }}/>
 }

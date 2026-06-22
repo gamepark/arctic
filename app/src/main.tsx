@@ -1,22 +1,18 @@
-/** @jsxImportSource @emotion/react */
 import { ArcticOptionsSpec } from '@gamepark/arctic/ArcticOptions'
 import { ArcticRules } from '@gamepark/arctic/ArcticRules'
 import { ArcticSetup } from '@gamepark/arctic/ArcticSetup'
-import { GameProvider, setupTranslation } from '@gamepark/react-game'
+import { GameProvider } from '@gamepark/react-game'
 import { StrictMode } from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { arcticAnimations } from './animations/ArcticAnimations'
-import App from './App'
+import { App } from './App'
 import Forest from './images/background.jpg'
 import { Locators } from './locators/Locators'
 import { Material } from './material/Material'
 import { ArcticScoringDescription } from './scoring/ArcticScoringDescription'
-import translations from './translations.json'
 import { Tutorial } from './tutorial/Tutorial'
 
-setupTranslation(translations, { debug: false })
-
-ReactDOM.render(
+createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <GameProvider
       game="arctic"
@@ -34,10 +30,10 @@ ReactDOM.render(
             image: Forest,
             overlay: 'rgba(0, 0, 0, 0.3)'
           }
-        },
-      }}>
-      <App/>
+        }
+      }}
+    >
+      <App />
     </GameProvider>
-  </StrictMode>,
-  document.getElementById('root')
+  </StrictMode>
 )

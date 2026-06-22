@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ArcticRules } from '@gamepark/arctic/ArcticRules'
 import { LocationType } from '@gamepark/arctic/material/LocationType'

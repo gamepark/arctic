@@ -1,12 +1,10 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { PlayerId } from '@gamepark/arctic/PlayerId'
 import { usePlayerId, usePlayers } from '@gamepark/react-game'
 import { FC } from 'react'
 import { createPortal } from 'react-dom'
 import { ArcticPlayerPanel } from './ArcticPlayerPanel'
 
-export const PlayerPanels: FC<any> = () => {
+export const PlayerPanels: FC = () => {
   const players = usePlayers({ sortFromMe: true })
   const root = document.getElementById('root')
   const playerId = usePlayerId()
@@ -63,11 +61,4 @@ const getFourPlayerPanelPosition = (index: number, isSpectator: boolean) => {
   }
 
   return
-}
-
-export const playerColorCode: Record<PlayerId, string> = {
-  1: 'red',
-  2: 'blue',
-  3: 'green',
-  4: 'yellow'
 }

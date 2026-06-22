@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { PlayerId } from '@gamepark/arctic/PlayerId'
 import { Player } from '@gamepark/react-client'

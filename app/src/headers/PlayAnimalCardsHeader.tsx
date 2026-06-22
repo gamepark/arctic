@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 
 import { CustomMoveType } from '@gamepark/arctic/rules/CustomMoveType'
 import { PlayAnimalCardsRule } from '@gamepark/arctic/rules/PlayAnimalCardsRule'
@@ -59,15 +58,15 @@ export const PlayAnimalCardsHeader = () => {
 
     if (depositValue === 1) {
       if (playerState.canPlaceCardUnderAnimalPile) {
-        return <Trans defaults="header.fox.under-pile"/>
+        return <Trans i18nKey="header.fox.under-pile"/>
       }
 
       if (playerState.canPlaceCardUnderLastAnimalInPile) {
-        return <Trans defaults="header.fox.under-animal"/>
+        return <Trans i18nKey="header.fox.under-animal"/>
       }
     }
 
-    return <Trans defaults="header.play-card.you" values={{ number: depositValue }}/>
+    return <Trans i18nKey="header.play-card.you" values={{ number: depositValue }}/>
   }
 
   if (canModifyPlayValue) {
@@ -97,5 +96,5 @@ export const PlayAnimalCardsHeader = () => {
     }
   }
 
-  return <Trans defaults="header.play-card.player" values={{ number: depositValue, player: name }}/>
+  return <Trans i18nKey="header.play-card.player" values={{ number: depositValue, player: name }}/>
 }

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
 import { AnimalTokensHelper } from '@gamepark/arctic/rules/helper/AnimalTokensHelper'
@@ -12,7 +11,7 @@ export const MoveAnimalTokensHeader = () => {
   const game = useGame<MaterialGame>()!
   const rules = new MoveAnimalTokensRule(game)
   const playerId = usePlayerId()
-  const activePlayer = rules.game.rule?.player!
+  const activePlayer = rules.game.rule!.player!
   const itsMe = playerId && playerId === activePlayer
   const name = usePlayerName(activePlayer)
   const { mainToken, mainAnimalId, associatedToken, associatedAnimalId } = new AnimalTokensHelper(game, activePlayer).animalTokens
@@ -56,7 +55,7 @@ export const MoveAnimalTokensHeader = () => {
   }
 
   return (
-    <Trans defaults="header.move-tokens.player"
+    <Trans i18nKey="header.move-tokens.player"
            values={{
              player: name,
              animal1: t(`animal.${mainAnimalId}`),

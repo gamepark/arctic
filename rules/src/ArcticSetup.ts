@@ -1,6 +1,6 @@
 import { MaterialGameSetup } from '@gamepark/rules-api'
-import sampleSize from 'lodash/sampleSize'
-import shuffle from 'lodash/shuffle'
+import { sampleSize } from 'es-toolkit'
+import { shuffle } from 'es-toolkit'
 import { ArcticOptions } from './ArcticOptions'
 import { ArcticRules } from './ArcticRules'
 import { Animal, animals } from './material/Animal'

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { DeckLocator, LocationDescription, MaterialContext } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 import { DeckHelp } from './help/DeckHelp'

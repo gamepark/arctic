@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ArcticRules } from '@gamepark/arctic/ArcticRules'
 import { getAnimalFromCard } from '@gamepark/arctic/material/AnimalCard'
@@ -25,7 +24,7 @@ export const AnimalPileScoringHelp: FC<LocationHelpProps> = (props) => {
       group: group,
       score: !isEnded ? 0 : helper.getGroupScore(index, getAnimalFromCard(group[0].item.id), group.length)
     }))
-  }, [helper])
+  }, [helper, isEnded])
 
   return (
     <>
@@ -67,7 +66,7 @@ const groupCss = css`
   height: ${animalCardDescription.height + 2}em;
 `
 
-const itemCss = (isEnded: boolean, groupWithScore: any, index: number) => {
+const itemCss = (isEnded: boolean, groupWithScore: { group: unknown[]; score: number }, index: number) => {
   const validArea = 49 / 3 - 2 - animalCardDescription.width
   const count = groupWithScore.group.length
   const score = groupWithScore.score

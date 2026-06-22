@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { MaterialHelpProps } from '@gamepark/react-game'
 import { FC } from 'react'

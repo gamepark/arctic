@@ -5,7 +5,7 @@ import { animalPile1, animalPile3 } from '@gamepark/arctic/material/AnimalSetup'
 import { LocationType } from '@gamepark/arctic/material/LocationType'
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
 import { PowerCard } from '@gamepark/arctic/material/PowerCard'
-import sampleSize from 'lodash/sampleSize'
+import { sampleSize } from 'es-toolkit'
 
 
 const me = 1

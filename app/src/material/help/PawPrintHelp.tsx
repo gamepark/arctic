@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { MaterialHelpProps, usePlayerId, usePlayerName } from '@gamepark/react-game'
 import { FC } from 'react'
@@ -16,7 +15,7 @@ export const PawPrintHelp: FC<MaterialHelpProps> = (props) => {
       {mine && <p>{t('paw-print-token.you')}</p>}
       {!mine && <p>{t('paw-print-token.player', { player: name })}</p>}
       <p css={endGameCss}>
-        <Trans defaults="paw-print-token.help"
+        <Trans i18nKey="paw-print-token.help"
                components={{
                  underline: <span css={underlineCss} />
                }}

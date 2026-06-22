@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css, keyframes } from '@emotion/react'
 import { DropAreaDescription, LocationContext, shineEffect } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'

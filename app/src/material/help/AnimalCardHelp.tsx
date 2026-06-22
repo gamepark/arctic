@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ArcticRules } from '@gamepark/arctic/ArcticRules'
 import { Animal } from '@gamepark/arctic/material/Animal'
@@ -62,7 +61,7 @@ export const AnimalCardHelp: FC<MaterialHelpProps> = (props) => {
       {placeOnTop && (
         <p>
           <PlayMoveButton move={placeOnTop} onPlay={closeDialog}>
-            <Trans defaults="animal.play" />
+            <Trans i18nKey="animal.play" />
           </PlayMoveButton>
         </p>
       )}
@@ -72,14 +71,14 @@ export const AnimalCardHelp: FC<MaterialHelpProps> = (props) => {
       {discard && (
         <p>
           <PlayMoveButton move={discard} onPlay={closeDialog}>
-            <Trans defaults="animal.discard" />
+            <Trans i18nKey="animal.discard" />
           </PlayMoveButton>
         </p>
       )}
       {draw && (
         <p>
           <PlayMoveButton move={draw} onPlay={closeDialog}>
-            <Trans defaults="animal.draw" />
+            <Trans i18nKey="animal.draw" />
           </PlayMoveButton>
         </p>
       )}
@@ -107,12 +106,12 @@ const VisibleAnimalCardHelp: FC<MaterialHelpProps> = (props) => {
             </div>
             <div>
               {t('animal.place-value', { number: 1 })}<br/>
-              <span css={helpCss}><Trans defaults="animal.place-value.help"><strong/></Trans></span>
+              <span css={helpCss}><Trans i18nKey="animal.place-value.help"><strong/></Trans></span>
             </div>
           </div>
         </div>
         <p>
-          <Trans defaults={mine ? 'animal.pile.you.hidden' : 'animal.pile.player.hidden'} values={{ player: name }}>
+          <Trans i18nKey={mine ? 'animal.pile.you.hidden' : 'animal.pile.player.hidden'} values={{ player: name }}>
             <strong/>
           </Trans>
         </p>
@@ -140,7 +139,7 @@ const VisibleAnimalCardHelp: FC<MaterialHelpProps> = (props) => {
         </div>
         <div>
           {t('animal.draw-value', { number: getDrawValue(item.id) })}<br/>
-          <span css={helpCss}><Trans defaults="animal.draw-value.help"><strong/></Trans></span>
+          <span css={helpCss}><Trans i18nKey="animal.draw-value.help"><strong/></Trans></span>
         </div>
       </div>
       <div css={textAndIconCss}>
@@ -149,7 +148,7 @@ const VisibleAnimalCardHelp: FC<MaterialHelpProps> = (props) => {
         </div>
         <div>
           {t('animal.place-value', { number: getDepositValue(item.id) })}<br/>
-          <span css={helpCss}><Trans defaults="animal.place-value.help"><strong/></Trans></span>
+          <span css={helpCss}><Trans i18nKey="animal.place-value.help"><strong/></Trans></span>
         </div>
       </div>
     </div>
@@ -166,7 +165,7 @@ const AnimalCardLocation: FC<MaterialHelpProps> = (props) => {
   const mine = item.location?.player && item.location.player === playerId
   return (
     <div css={locationCss}>
-      {location.type === LocationType.PlayerHand && <Trans defaults={mine ? 'animal.hand.you' : 'animal.hand.player'} values={{ player: name }}/>}
+      {location.type === LocationType.PlayerHand && <Trans i18nKey={mine ? 'animal.hand.you' : 'animal.hand.player'} values={{ player: name }}/>}
       {location.type === LocationType.AnimalPile && <PileLocation {...props} />}
     </div>
   )
@@ -183,8 +182,8 @@ const PileLocation: FC<MaterialHelpProps> = (props) => {
   const isTopCard = (pileLength - 1 === location.x)
   return (
     <>
-      {!isTopCard && <Trans defaults={mine ? 'animal.pile.you' : 'animal.pile.player'} values={{ player: name }}/>}
-      {isTopCard && <Trans defaults={mine ? 'animal.pile.top.you' : 'animal.pile.top.player'} values={{ player: name }}/>}
+      {!isTopCard && <Trans i18nKey={mine ? 'animal.pile.you' : 'animal.pile.player'} values={{ player: name }}/>}
+      {isTopCard && <Trans i18nKey={mine ? 'animal.pile.top.you' : 'animal.pile.top.player'} values={{ player: name }}/>}
     </>
   )
 }
@@ -210,14 +209,14 @@ const HandLocation: FC<MaterialHelpProps> = (props) => {
       {placeUnderTop && (
         <p>
           <PlayMoveButton move={placeUnderTop} onPlay={closeDialog}>
-            <Trans defaults="power.fox.under-last"/>
+            <Trans i18nKey="power.fox.under-last"/>
           </PlayMoveButton>
         </p>
       )}
       {placeUnderPile && (
         <p>
           <PlayMoveButton move={placeUnderPile} onPlay={closeDialog}>
-            <Trans defaults="power.fox.under-pile"/>
+            <Trans i18nKey="power.fox.under-pile"/>
           </PlayMoveButton>
         </p>
       )}
@@ -238,13 +237,13 @@ export const PenaltyZoneLocation: FC<MaterialHelpProps> = (props) => {
   return (
     <>
       <h2 css={titleCss}>{t('penalty-area')}</h2>
-      <Trans defaults={mine ? 'penalty-area.you' : 'penalty-area.player'} values={{ player: name, number: penaltyLength }}/>
+      <Trans i18nKey={mine ? 'penalty-area.you' : 'penalty-area.player'} values={{ player: name, number: penaltyLength }}/>
       <p>{t('penalty-area.help')}</p>
     </>
   )
 }
 
-const AnimalTokenImages = {
+const AnimalTokenImages: Record<number, string> = {
   [Animal.Fox]: Fox,
   [Animal.Bear]: Bear,
   [Animal.Orca]: Orca,

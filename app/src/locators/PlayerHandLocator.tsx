@@ -3,7 +3,7 @@ import { LocationType } from '@gamepark/arctic/material/LocationType'
 import { MaterialType } from '@gamepark/arctic/material/MaterialType'
 import { getRelativePlayerIndex, HandLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
-import orderBy from 'lodash/orderBy'
+import { orderBy } from 'es-toolkit/compat'
 import { PlayerHandDescription } from './descriptions/PlayerHandDescription'
 import { getPlayerPosition } from './PlayerPosition'
 
