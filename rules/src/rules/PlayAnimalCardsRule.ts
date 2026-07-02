@@ -54,6 +54,14 @@ export class PlayAnimalCardsRule extends PlayerTurnRule {
       const playerState = new PlayerState(this.game, this.player)
 
       this.memorize(Memory.DepositValue, (value: number) => value - 1)
+
+      // A card slipped under the pile (Fox power) can only ever be the last card of the deposit,
+      // even when the Moose lets the player modify the deposit value: it always ends the deposit.
+      const placedUnderPile = move.location.rotation === true || (move.location.x === 0 && this.animalPile.length > 1)
+      if (placedUnderPile) {
+        return this.endRuleMoves
+      }
+
       const depositValue = playerState.depositValue
       if (depositValue === 0) {
         return this.endRuleMoves
