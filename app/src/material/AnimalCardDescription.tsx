@@ -316,7 +316,8 @@ class AnimalCardDescription extends CardDescription {
 
   displayHelp(item: MaterialItem<number, number>, context: ItemContext) {
     if (item.location.type === LocationType.AnimalPile) {
-      if (item.location.player === context.player) return displayLocationHelp({ type: LocationType.AnimalPileScoring, player: item.location.player })
+      const isEnded = !context.rules.game.rule
+      if (item.location.player === context.player || isEnded) return displayLocationHelp({ type: LocationType.AnimalPileScoring, player: item.location.player })
       const topItem = context.rules.material(context.type).location(LocationType.AnimalPile).player(item.location.player).maxBy((item) => item.location.x!)
       return displayMaterialHelp(context.type, topItem.getItem(), topItem.getIndex(), topItem.getIndex())
     }
