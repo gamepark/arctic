@@ -1,3 +1,3 @@
 export { ArcticRules } from './ArcticRules'
-export { ArcticOptionsSpec } from './ArcticOptions'
+export { ArcticOptionsSpecV2 } from './ArcticOptions'
 export { ArcticSetup } from './ArcticSetup'

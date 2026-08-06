@@ -1,5 +1,4 @@
-import { Option, OptionsSpec } from '@gamepark/rules-api'
-import { Animal } from './material/Animal'
+import { OptionsSpecV2 } from '@gamepark/rules-api'
 import { PowerCard } from './material/PowerCard'
 
 /**
@@ -16,50 +15,24 @@ export type ArcticOptions = {
   walrus: PowerCard.Walrus1 | PowerCard.Walrus2
 }
 
-const powerValueSpec = (power: PowerCard): Option => ({
-  label: t => t('power.number', { number: power % 10 + 1 }),
-  help: t => t(`power.${power}`)
-})
-
 /**
- * This object describes all the options a game can have, and will be used by GamePark website to create automatically forms for you game
- * (forms for friendly games, or forms for matchmaking preferences, for instance).
+ * The option space of arctic: structure only.
+ *
+ * Labels live in the game's presentation document, published beside its translations at
+ * `/options/<locale>.json` and keyed by convention. Subscription and competitive gates live in
+ * the platform database, so they can change without releasing the game again.
+ *
+ * That is where the competitive settings went.
  */
-export const ArcticOptionsSpec: OptionsSpec<ArcticOptions> = {
-  bear: {
-    label: t => t(`power.animal.${Animal.Bear}`),
-    values: [PowerCard.Bear1, PowerCard.Bear2],
-    valueSpec: powerValueSpec,
-    competitiveDisabled: true
-  },
-  fox: {
-    label: t => t(`power.animal.${Animal.Fox}`),
-    values: [PowerCard.Fox1, PowerCard.Fox2],
-    valueSpec: powerValueSpec,
-    competitiveDisabled: true
-  },
-  moose: {
-    label: t => t(`power.animal.${Animal.Moose}`),
-    values: [PowerCard.Moose1, PowerCard.Moose2],
-    valueSpec: powerValueSpec,
-    competitiveDisabled: true
-  },
-  orca: {
-    label: t => t(`power.animal.${Animal.Orca}`),
-    values: [PowerCard.Orca1, PowerCard.Orca2],
-    valueSpec: powerValueSpec,
-    competitiveDisabled: true
-  },
-  puffin: {
-    label: t => t(`power.animal.${Animal.Puffin}`),
-    values: [PowerCard.Puffin1, PowerCard.Puffin2],
-    valueSpec: powerValueSpec,
-    competitiveDisabled: true
-  },
-  walrus: {
-    label: t => t(`power.animal.${Animal.Walrus}`),
-    values: [PowerCard.Walrus1, PowerCard.Walrus2],
-    valueSpec: powerValueSpec,
-    competitiveDisabled: true
+export const ArcticOptionsSpecV2: OptionsSpecV2 = {
+  specVersion: 2,
+  players: { min: 2, max: 4 },
+  options: {
+    bear: { kind: 'enum', values: [PowerCard.Bear1, PowerCard.Bear2] },
+    fox: { kind: 'enum', values: [PowerCard.Fox1, PowerCard.Fox2] },
+    moose: { kind: 'enum', values: [PowerCard.Moose1, PowerCard.Moose2] },
+    orca: { kind: 'enum', values: [PowerCard.Orca1, PowerCard.Orca2] },
+    puffin: { kind: 'enum', values: [PowerCard.Puffin1, PowerCard.Puffin2] },
+    walrus: { kind: 'enum', values: [PowerCard.Walrus1, PowerCard.Walrus2] }
   }
 }

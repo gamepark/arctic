@@ -1,4 +1,4 @@
-import { ArcticOptionsSpec } from '@gamepark/arctic/ArcticOptions'
+import { ArcticOptionsSpecV2 } from '@gamepark/arctic/ArcticOptions'
 import { ArcticRules } from '@gamepark/arctic/ArcticRules'
 import { ArcticSetup } from '@gamepark/arctic/ArcticSetup'
 import { GameProvider } from '@gamepark/react-game'
@@ -17,7 +17,7 @@ createRoot(document.getElementById('root')!).render(
     <GameProvider
       game="arctic"
       Rules={ArcticRules}
-      optionsSpec={ArcticOptionsSpec}
+      optionsSpec={ArcticOptionsSpecV2}
       GameSetup={ArcticSetup}
       material={Material}
       locators={Locators}
